@@ -14,7 +14,7 @@ export default defineConfig({
       },
       manifest: {
         name: "Lider Avtoservis",
-        short_name: "LA",
+        short_name: "Lider Avtoservis",
         description: "Car Wash",
         theme_color: "#ffffff",
         icons: [
