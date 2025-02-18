@@ -1,4 +1,3 @@
-import { url } from 'inspector'
 import { mainApi } from './index'
 
 const extendedApi = mainApi.injectEndpoints({
