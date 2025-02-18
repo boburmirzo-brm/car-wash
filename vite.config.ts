@@ -1,7 +1,10 @@
-import { defineConfig } from 'vite'
+import { defineConfig, AliasOptions } from 'vite'
 import react from '@vitejs/plugin-react'
 import { VitePWA } from 'vite-plugin-pwa'
 import tailwindcss from '@tailwindcss/vite'
+import path from "path";
+
+const root = path.resolve(__dirname, "src");
 
 export default defineConfig({
   plugins: [
@@ -13,8 +16,8 @@ export default defineConfig({
         enabled: false
       },
       manifest: {
-        name: "Lider Avtoservis",
-        short_name: "Lider Avtoservis",
+        name: "Car Wash",
+        short_name: "Car Wash",
         description: "Car Wash",
         theme_color: "#ffffff",
         icons: [
@@ -31,5 +34,10 @@ export default defineConfig({
         ]
       }
     })
-  ]
+  ],
+  resolve: {
+    alias: {
+      "@": root,
+    } as AliasOptions,
+  },
 })

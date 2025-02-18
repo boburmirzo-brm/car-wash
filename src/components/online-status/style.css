@@ -1,0 +1,8 @@
+.online-status{
+    animation: OnlineStatus .01s  2s   forwards;
+}
+@keyframes OnlineStatus {
+    to{
+        display: none;
+    }
+}

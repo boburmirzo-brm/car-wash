@@ -1,9 +1,13 @@
+import OnlineStatus from "./components/online-status/OnlineStatus"
+import AppRouter from "./pages"
 
 const App = () => {
+  
   return (
-    <div >
-      <h2 className="text-center text-red-500">Car Wash</h2>
-    </div>
+    <>
+      <OnlineStatus/>
+      <AppRouter/>
+    </>
   )
 }
 

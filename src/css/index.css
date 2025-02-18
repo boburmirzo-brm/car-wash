@@ -1,0 +1,14 @@
+@font-face {
+    font-family: Roboto;
+    src: url("../assets/fonts/Roboto-VariableFont_wdth\,wght.ttf") format("woff2");
+}
+
+@import "tailwindcss";
+
+*{
+    font-family: Roboto;
+}
+
+@theme{
+    --font-roboto: Roboto, sans-serif;
+}
