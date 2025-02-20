@@ -11,4 +11,10 @@
 
 @theme{
     --font-roboto: Roboto, sans-serif;
+    --color-primary: #1E90FF;
+}
+
+.container{
+    max-width: 924px;
+    padding: 0 12px;
 }

@@ -1,6 +1,7 @@
 import React from "react";
 import type { FormProps } from "antd";
 import { Button, Form, Input } from "antd";
+import { useNavigate } from "react-router-dom";
 
 type FieldType = {
   username?: string;
@@ -8,8 +9,10 @@ type FieldType = {
 };
 
 const Login: React.FC = () => {
+  const navigate = useNavigate()
   const onFinish: FormProps<FieldType>["onFinish"] = (values: FieldType) => {
     console.log("Success:", values);
+    navigate("/employer")
   };
 
   // const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (errorInfo: any) => {
@@ -44,8 +47,8 @@ const Login: React.FC = () => {
           </Form.Item>
 
           <Form.Item label={null} style={{margin:0}}>
-            <Button className="w-full bg-amber-500" type="primary" htmlType="submit">
-              Submit
+            <Button className="w-full" color="primary" type="primary" htmlType="submit">
+              Kirish
             </Button>
           </Form.Item>
         </Form>
