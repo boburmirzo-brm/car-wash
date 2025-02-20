@@ -2,9 +2,9 @@ import { Link } from "react-router-dom"
 
 const Dashboard = () => {
   return (
-    <div>
+    <div className="container mx-auto">
       <h2>Dashboard</h2>
-      <Link to={"/employer"}>Employer</Link>
+      <Link to={"/employer"} className="text-blue-500">Employer</Link>
     </div>
   )
 }

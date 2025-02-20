@@ -12,6 +12,7 @@
 @theme{
     --font-roboto: Roboto, sans-serif;
     --color-primary: #1E90FF;
+    --radius-py: 10px;
 }
 
 .container{
