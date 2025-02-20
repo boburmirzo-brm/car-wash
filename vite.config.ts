@@ -19,7 +19,7 @@ export default defineConfig({
         name: "Car Wash",
         short_name: "Car Wash",
         description: "Car Wash",
-        display: "fullscreen",
+        // display: "fullscreen",
         theme_color: "#ffffff",
         icons: [
           {
