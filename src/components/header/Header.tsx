@@ -8,7 +8,8 @@ const Header = () => {
         <div className="container mx-auto">
             <nav className="h-[60px] max-[500px]:h-[50px] flex items-center justify-between">
                 <Link to={"/employer"} className="">
-                  <img className="w-[50px]" src={logo} alt="logo" />
+                  {/* <img className="w-[50px]" src={logo} alt="logo" /> */}
+                  <span className="font-medium text-xl">Car Wash</span>
                 </Link>
                 <Button>Profile</Button>
             </nav>

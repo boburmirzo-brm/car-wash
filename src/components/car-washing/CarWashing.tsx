@@ -11,205 +11,169 @@ const CarWashing = () => {
   );
   return (
     <div className="my-5">
-      <div className="border border-slate-200 rounded-py p-3 mb-2 space-y-1">
-        <div className="flex gap-2 justify-between">
+      <div className="border-b border-slate-200 pb-2 mb-2 space-y-1">
+        <div className="flex gap-2 items-center justify-between">
           <h3 className="font-medium">Abduhalilov Muhammadumar</h3>
-          <a href="#" className="whitespace-nowrap flex-1 text-right text-blue-500">+998 91 343 12 23</a>
+          <Popover content={content} title="" trigger="click" placement="bottomRight">
+            <Button type="text">
+              <MoreOutlined />
+            </Button>
+          </Popover>
         </div>
-        <div className="flex gap-2 justify-between">
+        <div className="flex gap-2 items-center justify-between">
           <p>Chevrolet Trecker</p>
           <b>01 A 000 AA</b>
         </div>
         <div className="flex gap-2 justify-between items-end">
           <p className="text-sm text-gray-500">2-Fevral. 12:50</p>
-          <Popover content={content} title="" trigger="click" placement="bottomRight">
-            <Button type="text">
-              <MoreOutlined />
-            </Button>
-          </Popover>
+          <a href="tel:+998 91 343 12 23" className="whitespace-nowrap flex-1 text-right text-emerald-900">+998 91 343 12 23</a>
         </div>
       </div>
-      <div className="border border-slate-200 rounded-py p-3 mb-2 space-y-1">
-        <div className="flex gap-2 justify-between">
-          <h3 className="font-medium">Xalilov Umar</h3>
-          <a href="#" className="whitespace-nowrap flex-1 text-right text-blue-500">+998 91 343 12 23</a>
-        </div>
-        <div className="flex gap-2 justify-between">
-          <p>Matiz</p>
-          <b>01 A 000 AA</b>
-        </div>
-        <div className="flex gap-2 justify-between items-end">
-          <p className="text-sm text-gray-500">2-Fevral. 12:50</p>
-          <Popover content={content} title="" trigger="click" placement="bottomRight">
-            <Button type="text">
-              <MoreOutlined />
-            </Button>
-          </Popover>
-        </div>
-      </div>
-      <div className="border border-slate-200 rounded-py p-3 mb-2 space-y-1">
-        <div className="flex gap-2 justify-between">
-          <h3 className="font-medium">Akmaljon</h3>
-          <a href="#" className="whitespace-nowrap flex-1 text-right text-blue-500">+998 91 343 12 23</a>
-        </div>
-        <div className="flex gap-2 justify-between">
-          <p>Nexia 2</p>
-          <b>01 A 000 AA</b>
-        </div>
-        <div className="flex gap-2 justify-between items-end">
-          <p className="text-sm text-gray-500">2-Fevral. 12:50</p>
-          <Popover content={content} title="" trigger="click" placement="bottomRight">
-            <Button type="text">
-              <MoreOutlined />
-            </Button>
-          </Popover>
-        </div>
-      </div>
-      <div className="border border-slate-200 rounded-py p-3 mb-2 space-y-1">
-        <div className="flex gap-2 justify-between">
+      <div className="border-b border-slate-200 pb-2 mb-2 space-y-1">
+        <div className="flex gap-2 items-center justify-between">
           <h3 className="font-medium">Abduhalilov Muhammadumar</h3>
-          <a href="#" className="whitespace-nowrap flex-1 text-right text-blue-500">+998 91 343 12 23</a>
+          <Popover content={content} title="" trigger="click" placement="bottomRight">
+            <Button type="text">
+              <MoreOutlined />
+            </Button>
+          </Popover>
         </div>
-        <div className="flex gap-2 justify-between">
+        <div className="flex gap-2 items-center justify-between">
           <p>Chevrolet Trecker</p>
           <b>01 A 000 AA</b>
         </div>
         <div className="flex gap-2 justify-between items-end">
           <p className="text-sm text-gray-500">2-Fevral. 12:50</p>
+          <a href="tel:+998 91 343 12 23" className="whitespace-nowrap flex-1 text-right text-emerald-900">+998 91 343 12 23</a>
+        </div>
+      </div>
+      <div className="border-b border-slate-200 pb-2 mb-2 space-y-1">
+        <div className="flex gap-2 items-center justify-between">
+          <h3 className="font-medium">Abduhalilov Muhammadumar</h3>
           <Popover content={content} title="" trigger="click" placement="bottomRight">
             <Button type="text">
               <MoreOutlined />
             </Button>
           </Popover>
         </div>
-      </div>
-      <div className="border border-slate-200 rounded-py p-3 mb-2 space-y-1">
-        <div className="flex gap-2 justify-between">
-          <h3 className="font-medium">Abduhalilov Muhammadumar</h3>
-          <a href="#" className="whitespace-nowrap flex-1 text-right text-blue-500">+998 91 343 12 23</a>
-        </div>
-        <div className="flex gap-2 justify-between">
+        <div className="flex gap-2 items-center justify-between">
           <p>Chevrolet Trecker</p>
           <b>01 A 000 AA</b>
         </div>
         <div className="flex gap-2 justify-between items-end">
           <p className="text-sm text-gray-500">2-Fevral. 12:50</p>
+          <a href="tel:+998 91 343 12 23" className="whitespace-nowrap flex-1 text-right text-emerald-900">+998 91 343 12 23</a>
+        </div>
+      </div>
+      <div className="border-b border-slate-200 pb-2 mb-2 space-y-1">
+        <div className="flex gap-2 items-center justify-between">
+          <h3 className="font-medium">Abduhalilov Muhammadumar</h3>
           <Popover content={content} title="" trigger="click" placement="bottomRight">
             <Button type="text">
               <MoreOutlined />
             </Button>
           </Popover>
         </div>
-      </div>
-      <div className="border border-slate-200 rounded-py p-3 mb-2 space-y-1">
-        <div className="flex gap-2 justify-between">
-          <h3 className="font-medium">Abduhalilov Muhammadumar</h3>
-          <a href="#" className="whitespace-nowrap flex-1 text-right text-blue-500">+998 91 343 12 23</a>
-        </div>
-        <div className="flex gap-2 justify-between">
+        <div className="flex gap-2 items-center justify-between">
           <p>Chevrolet Trecker</p>
           <b>01 A 000 AA</b>
         </div>
         <div className="flex gap-2 justify-between items-end">
           <p className="text-sm text-gray-500">2-Fevral. 12:50</p>
+          <a href="tel:+998 91 343 12 23" className="whitespace-nowrap flex-1 text-right text-emerald-900">+998 91 343 12 23</a>
+        </div>
+      </div>
+      <div className="border-b border-slate-200 pb-2 mb-2 space-y-1">
+        <div className="flex gap-2 items-center justify-between">
+          <h3 className="font-medium">Abduhalilov Muhammadumar</h3>
           <Popover content={content} title="" trigger="click" placement="bottomRight">
             <Button type="text">
               <MoreOutlined />
             </Button>
           </Popover>
         </div>
-      </div>
-      <div className="border border-slate-200 rounded-py p-3 mb-2 space-y-1">
-        <div className="flex gap-2 justify-between">
-          <h3 className="font-medium">Abduhalilov Muhammadumar</h3>
-          <a href="#" className="whitespace-nowrap flex-1 text-right text-blue-500">+998 91 343 12 23</a>
-        </div>
-        <div className="flex gap-2 justify-between">
+        <div className="flex gap-2 items-center justify-between">
           <p>Chevrolet Trecker</p>
           <b>01 A 000 AA</b>
         </div>
         <div className="flex gap-2 justify-between items-end">
           <p className="text-sm text-gray-500">2-Fevral. 12:50</p>
+          <a href="tel:+998 91 343 12 23" className="whitespace-nowrap flex-1 text-right text-emerald-900">+998 91 343 12 23</a>
+        </div>
+      </div>
+      <div className="border-b border-slate-200 pb-2 mb-2 space-y-1">
+        <div className="flex gap-2 items-center justify-between">
+          <h3 className="font-medium">Abduhalilov Muhammadumar</h3>
           <Popover content={content} title="" trigger="click" placement="bottomRight">
             <Button type="text">
               <MoreOutlined />
             </Button>
           </Popover>
         </div>
-      </div>
-      <div className="border border-slate-200 rounded-py p-3 mb-2 space-y-1">
-        <div className="flex gap-2 justify-between">
-          <h3 className="font-medium">Abduhalilov Muhammadumar</h3>
-          <a href="#" className="whitespace-nowrap flex-1 text-right text-blue-500">+998 91 343 12 23</a>
-        </div>
-        <div className="flex gap-2 justify-between">
+        <div className="flex gap-2 items-center justify-between">
           <p>Chevrolet Trecker</p>
           <b>01 A 000 AA</b>
         </div>
         <div className="flex gap-2 justify-between items-end">
           <p className="text-sm text-gray-500">2-Fevral. 12:50</p>
+          <a href="tel:+998 91 343 12 23" className="whitespace-nowrap flex-1 text-right text-emerald-900">+998 91 343 12 23</a>
+        </div>
+      </div>
+      <div className="border-b border-slate-200 pb-2 mb-2 space-y-1">
+        <div className="flex gap-2 items-center justify-between">
+          <h3 className="font-medium">Abduhalilov Muhammadumar</h3>
           <Popover content={content} title="" trigger="click" placement="bottomRight">
             <Button type="text">
               <MoreOutlined />
             </Button>
           </Popover>
         </div>
-      </div>
-      <div className="border border-slate-200 rounded-py p-3 mb-2 space-y-1">
-        <div className="flex gap-2 justify-between">
-          <h3 className="font-medium">Abduhalilov Muhammadumar</h3>
-          <a href="#" className="whitespace-nowrap flex-1 text-right text-blue-500">+998 91 343 12 23</a>
-        </div>
-        <div className="flex gap-2 justify-between">
+        <div className="flex gap-2 items-center justify-between">
           <p>Chevrolet Trecker</p>
           <b>01 A 000 AA</b>
         </div>
         <div className="flex gap-2 justify-between items-end">
           <p className="text-sm text-gray-500">2-Fevral. 12:50</p>
+          <a href="tel:+998 91 343 12 23" className="whitespace-nowrap flex-1 text-right text-emerald-900">+998 91 343 12 23</a>
+        </div>
+      </div>
+      <div className="border-b border-slate-200 pb-2 mb-2 space-y-1">
+        <div className="flex gap-2 items-center justify-between">
+          <h3 className="font-medium">Abduhalilov Muhammadumar</h3>
           <Popover content={content} title="" trigger="click" placement="bottomRight">
             <Button type="text">
               <MoreOutlined />
             </Button>
           </Popover>
         </div>
-      </div>
-      <div className="border border-slate-200 rounded-py p-3 mb-2 space-y-1">
-        <div className="flex gap-2 justify-between">
-          <h3 className="font-medium">Abduhalilov Muhammadumar</h3>
-          <a href="#" className="whitespace-nowrap flex-1 text-right text-blue-500">+998 91 343 12 23</a>
-        </div>
-        <div className="flex gap-2 justify-between">
+        <div className="flex gap-2 items-center justify-between">
           <p>Chevrolet Trecker</p>
           <b>01 A 000 AA</b>
         </div>
         <div className="flex gap-2 justify-between items-end">
           <p className="text-sm text-gray-500">2-Fevral. 12:50</p>
+          <a href="tel:+998 91 343 12 23" className="whitespace-nowrap flex-1 text-right text-emerald-900">+998 91 343 12 23</a>
+        </div>
+      </div>
+      <div className="border-b border-slate-200 pb-2 mb-2 space-y-1">
+        <div className="flex gap-2 items-center justify-between">
+          <h3 className="font-medium">Abduhalilov Muhammadumar</h3>
           <Popover content={content} title="" trigger="click" placement="bottomRight">
             <Button type="text">
               <MoreOutlined />
             </Button>
           </Popover>
         </div>
-      </div>
-      <div className="border border-slate-200 rounded-py p-3 mb-2 space-y-1">
-        <div className="flex gap-2 justify-between">
-          <h3 className="font-medium">Abduhalilov Muhammadumar</h3>
-          <a href="#" className="whitespace-nowrap flex-1 text-right text-blue-500">+998 91 343 12 23</a>
-        </div>
-        <div className="flex gap-2 justify-between">
+        <div className="flex gap-2 items-center justify-between">
           <p>Chevrolet Trecker</p>
           <b>01 A 000 AA</b>
         </div>
         <div className="flex gap-2 justify-between items-end">
           <p className="text-sm text-gray-500">2-Fevral. 12:50</p>
-          <Popover content={content} title="" trigger="click" placement="bottomRight">
-            <Button type="text">
-              <MoreOutlined />
-            </Button>
-          </Popover>
+          <a href="tel:+998 91 343 12 23" className="whitespace-nowrap flex-1 text-right text-emerald-900">+998 91 343 12 23</a>
         </div>
       </div>
-      
+   
     </div>
   );
 };
