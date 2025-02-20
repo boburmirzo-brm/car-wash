@@ -1,5 +1,5 @@
 import { Suspense } from "@/utils";
-import { lazy } from "react";
+import React, { lazy } from "react";
 import { useRoutes } from "react-router-dom";
 
 const Dashboard = lazy(() => import("./dashboard/Dashboard"));
@@ -107,4 +107,4 @@ const AppRouter = () => {
   );
 };
 
-export default AppRouter;
+export default React.memo(AppRouter);

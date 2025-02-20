@@ -1,43 +1,67 @@
-import React from "react";
+import React, { FC } from "react";
 import Options from "./Options";
+import { FiPhone } from "react-icons/fi";
+import { TbCoins } from "react-icons/tb";
+import { AiOutlineUser } from "react-icons/ai";
+import { IoCarOutline } from "react-icons/io5";
 
-const data = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
+const data = Array.from({ length: 15 }, (_, i) => i + 1);
 
-const CarWashing = () => {
+interface Props {
+  role: string;
+}
+
+const CarWashing: FC<Props> = ({ role }) => {
   return (
-    <div className="my-5">
-      {data?.map((item) => (
+    <div className="my-5 space-y-4">
+      {data.map((item) => (
         <div
           key={item}
-          className="border-b border-slate-200 pb-2 mb-2 space-y-1"
+          className="bg-white shadow-sm rounded-md p-4 max-[500px]:p-3 border border-gray-300"
         >
-          <div className="flex gap-2 items-center justify-between">
-            <h3 className="font-medium">Abduhalilov Muhammadumar</h3>
+          <div className="flex items-center justify-between">
+            <h3 className="text-base font-semibold text-gray-800">
+              Abduhalilov Muhammadumar
+            </h3>
             <Options id={item} />
           </div>
-          <div className="flex gap-2 items-center justify-between">
-            <p>Chevrolet Trecker</p>
-            <b className="border-2 border- inline-block text-sm px-2 rounded-[4px] uppercase">
+
+          <div className="flex items-center justify-between mt-2">
+            <p className="flex items-center gap-2 text-gray-700 text-sm">
+              <IoCarOutline className="text-lg text-gray-600" />
+              <span>Chevrolet Trecker</span>
+            </p>
+            <b className="border border-gray-500 px-2 py-1 rounded-md text-xs uppercase text-gray-700">
               01 A 000 AA
             </b>
           </div>
-          <div className="flex gap-2 justify-between">
-            <div>
-              <p className="text-primary">Samandar Hamraqulov</p>
-              <span className="text-sm font-medium">60 000</span>
+
+          {role === "admin" && (
+            <div className="flex justify-between items-center bg-gray-100 p-3 rounded-md mt-3">
+              <div>
+                <p className="flex items-center gap-2 text-gray-700 text-sm">
+                  <AiOutlineUser className="text-lg" />
+                  <span>Samandar Hamraqulov</span>
+                </p>
+                <p className="flex items-center gap-2 text-gray-700 text-sm font-medium">
+                  <TbCoins className="text-lg" />
+                  <span>60 000 UZS</span>
+                </p>
+              </div>
+              <strong className="text-lg text-gray-900 font-semibold">
+                120 000 UZS
+              </strong>
             </div>
-            <strong className="">120 000</strong>
-          </div>
-          <p className="text-gray-500 text-sm">
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-          </p>
-          <div className="flex gap-2 justify-between items-end">
-            <p className="text-sm text-gray-500">2-Fevral. 12:50</p>
+          )}
+
+          <div className="flex justify-between items-center mt-3 text-gray-600 text-sm">
+            <span>2-Fevral, 12:50</span>
             <a
-              href="tel:+998 91 343 12 23"
-              className="whitespace-nowrap flex-1 text-right underline text-green-600"
+              href="tel:+998913431223"
+              className="flex items-center gap-2 text-gray-700 hover:text-gray-900 transition"
             >
-              +998 91 343 12 23
+              <span>+998 91 343 12 23</span>
+              <FiPhone className="text-lg" />
             </a>
           </div>
         </div>

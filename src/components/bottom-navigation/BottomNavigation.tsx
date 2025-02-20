@@ -1,3 +1,4 @@
+import React from "react"
 import { NavLink } from "react-router-dom"
 import {HomeOutlined, AppstoreAddOutlined, UserOutlined} from "@ant-design/icons"
 import "./style.css"
@@ -20,4 +21,4 @@ const BottomNavigation = () => {
   )
 }
 
-export default BottomNavigation
+export default React.memo(BottomNavigation)

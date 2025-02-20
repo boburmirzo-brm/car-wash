@@ -1,65 +1,101 @@
 import React, { FC } from "react";
-import { Modal } from "antd";
+import { Modal, Button, Form, Input, Checkbox } from "antd";
 import type { FormProps } from "antd";
-import { Button, InputNumber, Form, Input } from "antd";
+import { NumericFormat } from "react-number-format";
 
 type FieldType = {
   price?: string;
   amount?: string;
+  nasiya?: string;
 };
 
 interface Props {
   isModalOpen: boolean;
-  handleOk: () => void;
   handleCancel: () => void;
+  id: null | number;
+  data?: any;
 }
 
-const Payment: FC<Props> = ({ isModalOpen, handleOk, handleCancel }) => {
+const Payment: FC<Props> = ({ isModalOpen, handleCancel, id, data }) => {
+  const [form] = Form.useForm();
+
+  const nasiya = Form.useWatch("nasiya", form)
+
   const onFinish: FormProps<FieldType>["onFinish"] = (values) => {
-    console.log("Success:", values);
-    handleOk();
+    const price = Number(values.price?.split(" ").join(""))
+    const amount = Number(values.amount?.split(" ").join(""))
+    
+    let data = {
+      price,
+      amount: values.nasiya ? amount : price
+    }
+    console.log("Success:", data);  
+
+    form.resetFields();
+    handleCancel();
   };
 
   return (
     <Modal
-      title="To'lov qilish"
+      title={`To'lov qilish ${id}`}
       open={isModalOpen}
-      onOk={handleOk}
-      onCancel={handleCancel}
+      onCancel={()=> {
+        handleCancel()
+        form.resetFields();
+      }}
       footer={null}
     >
       <Form
-        name="basic"
+        form={form}
+        // name="basic"
         layout="vertical"
-        initialValues={{ remember: true }}
+        initialValues={data}
         onFinish={onFinish}
         autoComplete="off"
       >
         <Form.Item<FieldType>
           label="Kelishilgan summa"
           name="price"
-          rules={[{ required: true, message: "Please input your username!" }]}
+          rules={[{ required: true, message: "Summani kiriting!" }]}
         >
-          <InputNumber<number>
-            formatter={(value) =>
-              `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-            }
-            parser={(value) =>
-              value?.replace(/\$\s?|(,*)/g, "") as unknown as number
-            }
+          <NumericFormat
+            className="w-full p-2 border border-gray-300 rounded-md"
+            customInput={Input}
+            thousandSeparator=" "
+            fixedDecimalScale
+            allowNegative={false}
+            autoFocus={true}
+            placeholder="Summani kiriting"
           />
         </Form.Item>
 
+        {nasiya && (
+          <Form.Item<FieldType>
+            label="To'langan summa"
+            name="amount"
+            rules={[{ required: true, message: "To'lov summasini kiriting!" }]}
+          >
+            <NumericFormat
+              className="w-full p-2 border border-gray-300 rounded-md"
+              customInput={Input}
+              thousandSeparator=" "
+              fixedDecimalScale
+              allowNegative={false}
+              placeholder="Summani kiriting"
+            />
+          </Form.Item>
+        )}
+
         <Form.Item<FieldType>
-          label="To'langan summa"
-          name="amount"
-          rules={[{ required: true, message: "Please input your password!" }]}
+          name="nasiya"
+          valuePropName="checked"
+          label={null}
         >
-          <Input />
+          <Checkbox>Nasiya</Checkbox>
         </Form.Item>
 
-        <Form.Item label={null}>
-          <Button type="primary" htmlType="submit">
+        <Form.Item style={{ margin: 0 }}>
+          <Button type="primary" htmlType="submit" className="w-full">
             Submit
           </Button>
         </Form.Item>

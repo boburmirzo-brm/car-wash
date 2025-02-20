@@ -1,3 +1,4 @@
+import React from "react";
 // import { RootState } from "@/redux";
 // import { useSelector } from "react-redux";
 import { Navigate, Outlet } from "react-router-dom";
@@ -7,4 +8,4 @@ const Auth = () => {
   return token ? <Outlet /> : <Navigate replace to={"/login"} />;
 };
 
-export default Auth;
+export default React.memo(Auth);

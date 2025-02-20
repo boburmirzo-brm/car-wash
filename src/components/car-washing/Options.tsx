@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { MoreOutlined } from "@ant-design/icons";
 import { Popover, Button } from "antd";
 import Payment from "../payment/Payment";
@@ -9,22 +9,18 @@ const Options = ({ id }: { id: number }) => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const showModal = () => {
+  const showModal = useCallback(() => {
     setIsModalOpen(true);
-  };
+    setOpen(false);
+  }, []);
 
-  const handleOk = () => {
+  const handleCancel = useCallback(() => {
     setIsModalOpen(false);
-  };
-
-  const handleCancel = () => {
-    setIsModalOpen(false);
-  };
+  }, []);
 
   const handlePayment = () => {
     console.log("Payment for: ", selectedId);
-    setOpen(false)
-    showModal()
+    showModal();
   };
   const content = (
     <div className="flex flex-col">
@@ -42,13 +38,18 @@ const Options = ({ id }: { id: number }) => {
         trigger="click"
         placement="bottomRight"
         open={open}
-        onOpenChange={() => setOpen(true)}
+        onOpenChange={(open) => setOpen(open)}
       >
-        <Button onClick={()=>setSelectedId(id)} type="text">
+        <Button onClick={() => setSelectedId(id)} type="text">
           <MoreOutlined />
         </Button>
       </Popover>
-      <Payment handleCancel={handleCancel} handleOk={handleOk} isModalOpen={isModalOpen}/>
+      <Payment
+        handleCancel={handleCancel}
+        id={selectedId}
+        isModalOpen={isModalOpen}
+        // data={{price: 1500, amount: 5000}}
+      />
     </>
   );
 };

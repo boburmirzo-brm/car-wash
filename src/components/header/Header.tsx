@@ -1,3 +1,4 @@
+import React from "react";
 import { Button } from "antd";
 // import logo from "@/assets/images/pwa-192x192.png"
 import { Link } from "react-router-dom";
@@ -21,4 +22,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default React.memo(Header);
