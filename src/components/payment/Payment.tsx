@@ -1,5 +1,5 @@
-import React, { FC } from "react";
-import { Modal, Button, Form, Input, Checkbox } from "antd";
+import React, { FC, useRef, useEffect } from "react";
+import { Modal, Button, Form, Input, Checkbox, InputRef } from "antd";
 import type { FormProps } from "antd";
 import { NumericFormat } from "react-number-format";
 
@@ -20,6 +20,16 @@ const Payment: FC<Props> = ({ isModalOpen, handleCancel, id, data }) => {
   const [form] = Form.useForm();
 
   const nasiya = Form.useWatch("nasiya", form)
+
+  const priceInputRef = useRef<InputRef>(null);
+
+  useEffect(() => {
+    if (isModalOpen) {
+      setTimeout(() => {
+        priceInputRef.current?.focus(); 
+      }, 100);
+    }
+  }, [isModalOpen]);
 
   const onFinish: FormProps<FieldType>["onFinish"] = (values) => {
     const price = Number(values.price?.split(" ").join(""))
@@ -64,8 +74,8 @@ const Payment: FC<Props> = ({ isModalOpen, handleCancel, id, data }) => {
             thousandSeparator=" "
             fixedDecimalScale
             allowNegative={false}
-            autoFocus={true}
             placeholder="Summani kiriting"
+            getInputRef={priceInputRef}
           />
         </Form.Item>
 

@@ -7,7 +7,9 @@ const Login = lazy(() => import("./login/Login"));
 const Auth = lazy(() => import("./auth/Auth"));
 const CustomAuth = lazy(() => import("./custom-auth/CustomAuth"));
 const Employer = lazy(() => import("./employer/Employer"));
-const Layout = lazy(() => import("./employer/Layout"));
+const Layout = lazy(() => import("./layout/Layout"));
+const Order = lazy(() => import("./employer/order/Order"));
+const Profile = lazy(() => import("./profile/Profile"));
 const NotFound = lazy(() => import("./not-found/NotFound"));
 
 const AppRouter = () => {
@@ -26,7 +28,7 @@ const AppRouter = () => {
               path: "/",
               element: (
                 <Suspense>
-                  <CustomAuth role="admin" to="/employer" />
+                  <Layout />
                 </Suspense>
               ),
               children: [
@@ -34,25 +36,25 @@ const AppRouter = () => {
                   path: "/",
                   element: (
                     <Suspense>
-                      <Dashboard />
+                      <CustomAuth role="admin" to="/employer" />
                     </Suspense>
                   ),
+                  children: [
+                    {
+                      path: "/",
+                      element: (
+                        <Suspense>
+                          <Dashboard />
+                        </Suspense>
+                      ),
+                    },
+                  ],
                 },
-              ],
-            },
-            {
-              path: "/",
-              element: (
-                <Suspense>
-                  <CustomAuth role="employer" to="/" />
-                </Suspense>
-              ),
-              children: [
                 {
                   path: "/",
                   element: (
                     <Suspense>
-                      <Layout />
+                      <CustomAuth role="employer" to="/" />
                     </Suspense>
                   ),
                   children: [
@@ -68,19 +70,19 @@ const AppRouter = () => {
                       path: "employer/order",
                       element: (
                         <Suspense>
-                          <div>order</div>
-                        </Suspense>
-                      ),
-                    },
-                    {
-                      path: "employer/profile",
-                      element: (
-                        <Suspense>
-                          <div>profile</div>
+                          <Order />
                         </Suspense>
                       ),
                     },
                   ],
+                },
+                {
+                  path: "profile",
+                  element: (
+                    <Suspense>
+                      <Profile/>
+                    </Suspense>
+                  ),
                 },
               ],
             },

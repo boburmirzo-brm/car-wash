@@ -13,7 +13,7 @@ const BottomNavigation = () => {
         <NavLink className={`bottom-navigation text-gray-700 flex-1 flex items-center justify-center text-[20px]`} to={'/employer/order'}>
           <AppstoreAddOutlined />
         </NavLink>
-        <NavLink className={`bottom-navigation text-gray-700 flex-1 flex items-center justify-center text-[20px]`} to={'/employer/profile'}>
+        <NavLink className={`bottom-navigation text-gray-700 flex-1 flex items-center justify-center text-[20px]`} to={'/profile'}>
           <UserOutlined />
         </NavLink>
       </div>

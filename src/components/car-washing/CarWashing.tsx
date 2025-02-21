@@ -13,7 +13,7 @@ interface Props {
 
 const CarWashing: FC<Props> = ({ role }) => {
   return (
-    <div className="my-5 space-y-4">
+    <div className="my-4 space-y-4">
       {data.map((item) => (
         <div
           key={item}

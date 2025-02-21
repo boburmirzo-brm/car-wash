@@ -1,8 +1,11 @@
+import Search from '@/components/search/Search'
 import React from 'react'
 
 const Order = () => {
   return (
-    <div>Order</div>
+    <div className='mt-4'>
+      <Search/>
+    </div>
   )
 }
 
