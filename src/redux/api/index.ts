@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { fetchBaseQuery, createApi } from "@reduxjs/toolkit/query/react";
 import { logout } from "../features/auth.slice";
 
