@@ -1,23 +1,39 @@
 import React from "react";
 import type { FormProps } from "antd";
-import { Button, Form, Input } from "antd";
+import { Button, Form, Input, message } from "antd";
 import { useNavigate } from "react-router-dom";
+import { useSignInUserMutation } from "../../redux/api/auth";
+import { useDispatch } from "react-redux";
+import { setRole } from "../../redux/features/role.slice";
+import { login } from "../../redux/features/auth.slice";
 
 type FieldType = {
-  username?: string;
-  password?: string;
+  username: string;
+  password: string;
 };
 
 const Login: React.FC = () => {
-  const navigate = useNavigate()
-  const onFinish: FormProps<FieldType>["onFinish"] = (values: FieldType) => {
-    console.log("Success:", values);
-    navigate("/employer")
+  const [signInUser, { isLoading }] = useSignInUserMutation();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const onFinish: FormProps<FieldType>["onFinish"] = async (values) => {
+    try {
+      const response = await signInUser(values).unwrap();
+      dispatch(login(response?.data?.access_token))
+      dispatch(setRole(response?.data?.role))
+      console.log("Res",response?.data?.role);
+      
+      if (response?.data?.role == "EMPLOYEE") {
+        navigate(`/EMPLOYEE`);
+      }else if (response?.data?.role == "ADMIN" || response?.data?.role == "OWNER"){
+        navigate(`/`);
+      }
+    } catch (error: any) {
+      message.error(error?.data?.message || "Login xatosi!");
+    }
   };
 
-  // const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (errorInfo: any) => {
-  //   console.log('Failed:', errorInfo);
-  // };
   return (
     <section className="w-full min-h-screen p-4 flex items-center justify-center">
       <div className="max-w-[450px] w-full border p-4 border-gray-200 rounded-[6px]">
@@ -27,7 +43,6 @@ const Login: React.FC = () => {
           layout="vertical"
           initialValues={{ remember: true }}
           onFinish={onFinish}
-          // onFinishFailed={onFinishFailed}
           autoComplete="off"
         >
           <Form.Item<FieldType>
@@ -46,8 +61,15 @@ const Login: React.FC = () => {
             <Input.Password />
           </Form.Item>
 
-          <Form.Item label={null} style={{margin:0}}>
-            <Button className="w-full" color="primary" type="primary" htmlType="submit">
+          <Form.Item label={null} style={{ margin: 0 }}>
+            <Button
+              className="w-full"
+              color="primary"
+              type="primary"
+              htmlType="submit"
+              disabled={isLoading}
+              loading={isLoading}
+            >
               Kirish
             </Button>
           </Form.Item>

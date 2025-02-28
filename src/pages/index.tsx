@@ -1,6 +1,7 @@
 import { Suspense } from "@/utils";
 import React, { lazy } from "react";
-import { useRoutes } from "react-router-dom";
+import { Navigate, useRoutes } from "react-router-dom";
+import { useCheckTokenQuery } from "../redux/api/auth";
 
 const Dashboard = lazy(() => import("./dashboard/Dashboard"));
 const Login = lazy(() => import("./login/Login"));
@@ -13,15 +14,24 @@ const Profile = lazy(() => import("./profile/Profile"));
 const NotFound = lazy(() => import("./not-found/NotFound"));
 
 const AppRouter = () => {
+  const token = localStorage.getItem("access_token");
+  const { data, error } = useCheckTokenQuery(undefined, {
+    skip: !token,
+  });
+  console.log(data);
+
+  if (error) return <Navigate to="/login" replace />;
   return (
     <>
       {useRoutes([
         {
           path: "/",
-          element: (
+          element: data?.success ? (
             <Suspense>
               <Auth />
             </Suspense>
+          ) : (
+            <Navigate to="/login" replace />
           ),
           children: [
             {
@@ -36,7 +46,7 @@ const AppRouter = () => {
                   path: "/",
                   element: (
                     <Suspense>
-                      <CustomAuth role="admin" to="/employer" />
+                      <CustomAuth role="ADMIN,OWNER" to="/EMPLOYEE" />
                     </Suspense>
                   ),
                   children: [
@@ -54,12 +64,12 @@ const AppRouter = () => {
                   path: "/",
                   element: (
                     <Suspense>
-                      <CustomAuth role="employer" to="/" />
+                      <CustomAuth role="EMPLOYEE" to="/" />
                     </Suspense>
                   ),
                   children: [
                     {
-                      path: "employer",
+                      path: "EMPLOYEE",
                       element: (
                         <Suspense>
                           <Employer />
@@ -67,7 +77,7 @@ const AppRouter = () => {
                       ),
                     },
                     {
-                      path: "employer/order",
+                      path: "EMPLOYEE/order",
                       element: (
                         <Suspense>
                           <Order />
@@ -80,7 +90,7 @@ const AppRouter = () => {
                   path: "profile",
                   element: (
                     <Suspense>
-                      <Profile/>
+                      <Profile />
                     </Suspense>
                   ),
                 },
@@ -90,7 +100,9 @@ const AppRouter = () => {
         },
         {
           path: "/login",
-          element: (
+          element: data?.success ? (
+            <Navigate to="/EMPLOYEE" replace />
+          ) : (
             <Suspense>
               <Login />
             </Suspense>
