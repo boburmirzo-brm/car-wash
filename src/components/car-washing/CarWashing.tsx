@@ -1,9 +1,9 @@
 import React, { FC } from "react";
 import Options from "./Options";
-import { FiPhone } from "react-icons/fi";
 import { TbCoins } from "react-icons/tb";
 import { AiOutlineUser } from "react-icons/ai";
 import { IoCarOutline } from "react-icons/io5";
+import TelPopUp from "../tel-pop-up/TelPopUp";
 
 const data = Array.from({ length: 15 }, (_, i) => i + 1);
 
@@ -56,13 +56,7 @@ const CarWashing: FC<Props> = ({ role }) => {
 
           <div className="flex justify-between items-center mt-3 text-gray-600 text-sm">
             <span>2-Fevral, 12:50</span>
-            <a
-              href="tel:+998913431223"
-              className="flex items-center gap-2 text-gray-700 hover:text-gray-900 transition"
-            >
-              <span>+998 91 343 12 23</span>
-              <FiPhone className="text-lg" />
-            </a>
+            <TelPopUp phoneNumber="+998 91 343 12 23" />
           </div>
         </div>
       ))}

@@ -80,7 +80,7 @@ const AppRouter = () => {
                   path: "profile",
                   element: (
                     <Suspense>
-                      <Profile/>
+                      <Profile />
                     </Suspense>
                   ),
                 },
