@@ -13,12 +13,13 @@ const CustomAuth: FC<Props> = ({ role, to }) => {
   const location = useLocation(); 
 
   // Agar userRole berilgan role'ga mos kelmasa, faqatgina bir martalik yo'naltirish ishlaydi
-  if (!role.split(",").includes(userRole)) {
+  if (!role.includes(userRole)) {
     return <Navigate to={to} replace state={{ from: location }} />;
   }
 
   return <Outlet />;
 };
+
 
 export default CustomAuth;
 

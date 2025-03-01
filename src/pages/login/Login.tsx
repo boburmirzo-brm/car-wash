@@ -17,21 +17,22 @@ const Login: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const onFinish: FormProps<FieldType>["onFinish"] = async (values) => {
-    try {
-      const response = await signInUser(values).unwrap();
-      dispatch(login(response?.data?.access_token))
-      dispatch(setRole(response?.data?.role))
-      console.log("Res",response?.data?.role);
-      
-      if (response?.data?.role == "EMPLOYEE") {
-        navigate(`/EMPLOYEE`);
-      }else if (response?.data?.role == "ADMIN" || response?.data?.role == "OWNER"){
-        navigate(`/`);
-      }
-    } catch (error: any) {
-      message.error(error?.data?.message || "Login xatosi!");
-    }
+  const onFinish: FormProps<FieldType>["onFinish"] = (values) => {
+    signInUser(values)
+      .unwrap()
+      .then((response) => {
+        dispatch(login(response?.data?.access_token));
+        dispatch(setRole(response?.data?.role));
+
+        if (response?.data?.role == "EMPLOYEE") {
+          navigate(`/EMPLOYEE`);
+        } else {
+          navigate(`/`);
+        }
+      })
+      .catch((error) => {
+        message.error(error?.data?.message || "Login xatosi!");
+      });
   };
 
   return (

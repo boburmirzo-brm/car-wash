@@ -21,24 +21,21 @@ const TelPopUp: FC<{ phoneNumber: string }> = ({ phoneNumber }) => {
       </Button>
 
       <Modal
-        title="Qo'ng'iroq qilishni tasdiqlang"
         open={isModalOpen}
         onCancel={handleClose}
         footer={null}
       >
-        <Text className="text-gray-600">
+        <Text className="text-gray-600 text-center block">
           <span className="text-xl font-bold">{phoneNumber}</span>
         </Text>
 
         <div className="mt-5 space-y-3">
           <a href={`tel:${phoneNumber}`} className="block">
             <Button type="primary" block>
-              Qo'ng'iroq qilish
+              <FiPhone className="text-[18px]"/>
+              <span>Qo'ng'iroq qilish</span>
             </Button>
           </a>
-          <Button block onClick={handleClose}>
-            Bekor qilish
-          </Button>
         </div>
       </Modal>
     </div>

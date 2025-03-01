@@ -11,18 +11,18 @@ import { setRole } from "../../redux/features/role.slice";
 const Layout = () => {
   const dispatch = useDispatch();
   const roleState = useSelector((state: RootState) => state.role.value);
-  const token = localStorage.getItem("access_token");
-  const { data, error, isLoading } = useCheckTokenQuery(undefined, {
+  const token = useSelector((state: RootState) => state.auth.access_token);
+  // const token = localStorage.getItem("access_token");
+  const { data, isLoading } = useCheckTokenQuery(undefined, {
     skip: !token,
   });
   useEffect(() => {
     if (data?.user?.role) {
       dispatch(setRole(data.user.role));
     }
-  }, [data, dispatch]);
+  }, [data]);
 
   if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error: Unable to fetch user role</div>;
 
   const isAdminOrOwner = roleState === "ADMIN" || roleState === "OWNER";
 
@@ -31,7 +31,7 @@ const Layout = () => {
       {isAdminOrOwner ? <Sidebar /> : <Header />}
       <main
         className={
-          isAdminOrOwner ? "flex-1 p-4" : `container mx-auto min-h-[80vh]`
+          isAdminOrOwner ? "flex-1 p-4" : `container mx-auto min-h-[80vh] pb-[60px]`
         }
       >
         <Outlet />

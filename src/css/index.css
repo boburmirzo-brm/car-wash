@@ -17,5 +17,6 @@
 
 .container{
     max-width: 924px;
-    padding: 0 12px;
+    padding-left: 12px;
+    padding-right: 12px;
 }
