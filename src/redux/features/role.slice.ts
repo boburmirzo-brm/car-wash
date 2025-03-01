@@ -5,7 +5,7 @@ export interface IRole {
   value: string;
 }
 const initialState: IRole = {
-    value: "employer",
+  value: "",
 };
 
 const slice = createSlice({
@@ -13,7 +13,7 @@ const slice = createSlice({
   initialState,
   reducers: {
     setRole: (state, action: PayloadAction<string>) => {
-      state.value = action.payload;
+      state.value = action.payload;      
     },
   },
 });

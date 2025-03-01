@@ -4,7 +4,7 @@ import React from "react"
 const Employer = () => {
   return (
     <>
-      <CarWashing role={"admin"}/>
+      <CarWashing role={"ADMIN"}/>
     </>
   )
 }
