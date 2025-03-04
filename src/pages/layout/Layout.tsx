@@ -7,6 +7,7 @@ import { RootState } from "@/redux";
 import Sidebar from "@/components/sidebar/Sidebar";
 import { useCheckTokenQuery } from "../../redux/api/auth";
 import { setRole } from "../../redux/features/role.slice";
+import { Role } from "../../components/edit-profile/EditProfile";
 
 const Layout = () => {
   const dispatch = useDispatch();
@@ -24,11 +25,11 @@ const Layout = () => {
 
   if (isLoading) return <div>Loading...</div>;
 
-  const isAdminOrOwner = roleState === "ADMIN" || roleState === "OWNER";
+  const isAdminOrOwner = roleState === Role.ADMIN || roleState === Role.OWNER;
 
   return (
     <div className={isAdminOrOwner ? "flex" : "bg-[#fdfdfd]"}>
-      {isAdminOrOwner ? <Sidebar /> : <Header />}
+      {isAdminOrOwner ? <Sidebar role={roleState}/> : <Header />}
       <main
         className={
           isAdminOrOwner ? "flex-1 p-4" : `container mx-auto min-h-[80vh] pb-[60px]`

@@ -27,9 +27,10 @@ export const mainApi = createApi({
   reducerPath: "api",
   baseQuery,
   tagTypes: [
-    "EMPLOYER",
+    "USER",
     "AUTH",
     "CAR",
+    "CUSTOMER",
     "CAR_WASHING",
     "PAYMENT",
     "EXPENSE",

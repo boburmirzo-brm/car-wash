@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button, Input } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { Segmented } from "antd";
@@ -6,16 +6,39 @@ import { AiOutlineUser } from "react-icons/ai";
 import { IoCarOutline } from "react-icons/io5";
 import "./style.css";
 import TelPopUp from "../tel-pop-up/TelPopUp";
+import CreateCustomerModal from "../create-customer/CreateCustomerModal";
+import { useGetCustomersQuery } from "../../redux/api/customer";
+import { useGetCarsQuery } from "../../redux/api/car";
 
 const Search = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedType, setSelectedType] = useState("customer");
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const { data: customerData, isLoading: isCustomerLoading } =
+    useGetCustomersQuery(searchTerm ? { filter: searchTerm } : {});
+
+  const { data: carData, isLoading: isCarLoading } = useGetCarsQuery(
+    searchTerm ? { filter: searchTerm } : undefined
+  );
+
+  const handleOpen = () => setIsModalOpen(true);
+  const handleClose = () => setIsModalOpen(false);
+
   return (
     <div>
       <div className="flex gap-2">
-        <Input value={"Abduhalilov"} autoFocus placeholder="Qidirish..." />
-        <Button type="primary">
+        <Input
+          autoFocus
+          placeholder="Qidirish..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+        <Button type="primary" onClick={handleOpen}>
           <PlusOutlined />
         </Button>
       </div>
+
       <div className="mt-4">
         <Segmented<string>
           options={[
@@ -32,28 +55,50 @@ const Search = () => {
               className: "flex items-center justify-center search-bar",
             },
           ]}
-          onChange={(value) => {
-            console.log(value);
-          }}
+          onChange={setSelectedType}
           block
-          //   value="car"
+          value={selectedType}
         />
       </div>
+
       <div className="space-y-4 my-4">
-        {[1, 2, 3, 4, 5]?.map((item) => (
-          <div
-            key={item}
-            className="bg-white shadow-sm rounded-md p-4 max-[500px]:p-3 border border-gray-300"
-          >
-            <div className="flex items-center justify-between max-[500px]:flex-col max-[500px]:items-start max-[500px]:gap-4">
-              <h3 className="text-base font-semibold text-gray-800">
-                Abduhalilov Muhammadumar
-              </h3>
-              <TelPopUp phoneNumber="+998 91 343 12 23" />
+        {selectedType === "customer" ? (
+          isCustomerLoading ? (
+            <p>Yuklanmoqda...</p>
+          ) : (
+            customerData?.data?.payload?.map((customer: any) => (
+              <div
+                key={customer._id}
+                className="bg-white shadow-sm rounded-md p-4 max-[500px]:p-3 border border-gray-300"
+              >
+                <div className="flex items-center justify-between max-[500px]:flex-col max-[500px]:items-start max-[500px]:gap-4">
+                  <h3 className="text-base font-semibold text-gray-800">
+                    {customer.full_name}
+                  </h3>
+                  <TelPopUp phoneNumber={customer.tel_primary} />
+                </div>
+              </div>
+            ))
+          )
+        ) : isCarLoading ? (
+          <p>Yuklanmoqda...</p>
+        ) : (
+          carData?.data?.payload?.map((car: any) => (
+            <div
+              key={car._id}
+              className="bg-white shadow-sm rounded-md p-4 max-[500px]:p-3 border border-gray-300"
+            >
+              <div className="flex items-center justify-between max-[500px]:flex-col max-[500px]:items-start max-[500px]:gap-4">
+                <h3 className="text-base font-semibold text-gray-800">
+                  {car.name} ({car.plateNumber})
+                </h3>
+              </div>
             </div>
-          </div>
-        ))}
+          ))
+        )}
       </div>
+
+      <CreateCustomerModal open={isModalOpen} onClose={handleClose} />
     </div>
   );
 };

@@ -1,35 +1,35 @@
-import React, { useCallback, useState } from "react";
+import React, { useState } from "react";
 import { MoreOutlined } from "@ant-design/icons";
 import { Popover, Button } from "antd";
 import Payment from "../payment/Payment";
+import CreateCustomerModal from "../create-customer/CreateCustomerModal";
+
+type ModalType = "payment" | "edit" | null;
 
 const Options = ({ id }: { id: number }) => {
-  const [selectedId, setSelectedId] = useState<null | number>(null);
+  const [selectedId, setSelectedId] = useState<number | null>(null);
   const [open, setOpen] = useState(false);
+  const [modalType, setModalType] = useState<ModalType>(null);
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const showModal = useCallback(() => {
-    setIsModalOpen(true);
+  const showModal = (type: ModalType) => {
+    setSelectedId(id);
+    setModalType(type);
     setOpen(false);
-  }, []);
-
-  const handleCancel = useCallback(() => {
-    setIsModalOpen(false);
-  }, []);
-
-  const handlePayment = () => {
-    console.log("Payment for: ", selectedId);
-    showModal();
   };
+
+  const handleClose = () => setModalType(null);
+
   const content = (
     <div className="flex flex-col">
-      <Button onClick={handlePayment} type="text">
+      <Button onClick={() => showModal("payment")} type="text">
         To'lov
       </Button>
-      <Button type="text">Tahrirlash</Button>
+      <Button onClick={() => showModal("edit")} type="text">
+        Tahrirlash
+      </Button>
     </div>
   );
+
   return (
     <>
       <Popover
@@ -38,18 +38,32 @@ const Options = ({ id }: { id: number }) => {
         trigger="click"
         placement="bottomRight"
         open={open}
-        onOpenChange={(open) => setOpen(open)}
+        onOpenChange={setOpen}
       >
-        <Button onClick={() => setSelectedId(id)} type="text">
+        <Button type="text">
           <MoreOutlined />
         </Button>
       </Popover>
-      <Payment
-        handleCancel={handleCancel}
-        id={selectedId}
-        isModalOpen={isModalOpen}
-        // data={{price: 1500, amount: 5000}}
-      />
+
+      {modalType === "payment" && (
+        <Payment
+          isModalOpen={true}
+          handleCancel={handleClose}
+          id={selectedId}
+        />
+      )}
+
+      {modalType === "edit" && (
+        <CreateCustomerModal
+          open={true}
+          onClose={handleClose}
+          customer={{
+            name: "Abduhalilov Muhammadumar",
+            phone: "+998913431223",
+            id: `${id}`,
+          }}
+        />
+      )}
     </>
   );
 };
