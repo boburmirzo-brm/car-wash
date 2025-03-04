@@ -30,6 +30,7 @@ export const mainApi = createApi({
     "USER",
     "AUTH",
     "CAR",
+    "CUSTOMER",
     "CAR_WASHING",
     "PAYMENT",
     "EXPENSE",
