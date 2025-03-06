@@ -32,12 +32,20 @@ const CustomerDetail = () => {
     };
   }, [modalType]);
 
-  const customer = data?.data.payload.customer;
-  const cars = data?.data.payload.cars;
+
+
+  const handleOpenModal = (type: ModalType) => {
+    setModalType(type);
+    window.history.pushState(null, "", window.location.pathname); // Tarixga yangi yozuv qo‘shish
+  };
 
   const handleClose = useCallback(() => {
     setModalType(null);
+    window.history.back();
   }, []);
+
+  const customer = data?.data.payload.customer;
+  const cars = data?.data.payload.cars;
 
   return (
     <>
@@ -50,7 +58,7 @@ const CustomerDetail = () => {
               <div className="flex items-center  w-full  flex-row gap-3">
                 <div>
                   {customer?.full_name === "Noma'lum" ? (
-                    <TbUserX className="text-7xl text-gray-600 text-yellow-500" />
+                    <TbUserX className="text-7xl text-yellow-500" />
                   ) : (
                     <TbUser className="text-7xl text-gray-600" />
                   )}
@@ -80,12 +88,12 @@ const CustomerDetail = () => {
                 </Title>
                 <TelPopUp phoneNumber={customer?.tel_primary || ""} />
                 <div className="flex gap-1.5">
-                  <Button onClick={() => setModalType("edit")} type="primary">
+                  <Button onClick={() => handleOpenModal("edit")} type="primary">
                     <FaRegEdit className="text-lg" />
                     <span>Tahrirlash</span>
                   </Button>
                   <Button
-                    onClick={() => setModalType("payment")}
+                    onClick={() => handleOpenModal("payment")}
                     type="primary"
                   >
                     <MdAttachMoney className="text-lg" />
