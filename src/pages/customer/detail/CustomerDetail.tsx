@@ -32,11 +32,9 @@ const CustomerDetail = () => {
     };
   }, [modalType]);
 
-
-
   const handleOpenModal = (type: ModalType) => {
     setModalType(type);
-    window.history.pushState(null, "", window.location.pathname); // Tarixga yangi yozuv qo‘shish
+    window.history.pushState(null, "", window.location.pathname); 
   };
 
   const handleClose = useCallback(() => {
@@ -88,7 +86,10 @@ const CustomerDetail = () => {
                 </Title>
                 <TelPopUp phoneNumber={customer?.tel_primary || ""} />
                 <div className="flex gap-1.5">
-                  <Button onClick={() => handleOpenModal("edit")} type="primary">
+                  <Button
+                    onClick={() => handleOpenModal("edit")}
+                    type="primary"
+                  >
                     <FaRegEdit className="text-lg" />
                     <span>Tahrirlash</span>
                   </Button>

@@ -112,4 +112,5 @@ export interface IPaymentCreate {
   amount: number;
   comment?: string;
   type: string;
+  customerId: string
 }

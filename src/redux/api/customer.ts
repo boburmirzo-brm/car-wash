@@ -1,6 +1,24 @@
 import { EndpointBuilder } from "@reduxjs/toolkit/query";
 import { mainApi } from ".";
-import { ICustomer, ICustomerDetail, ICustomerUpdate, IDetailPayload, IPayload } from "@/types";
+import {
+  ICustomer,
+  ICustomerDetail,
+  ICustomerUpdate,
+  IDetailPayload,
+  IPayload,
+} from "@/types";
+
+const invalidateCustomerTag = async (
+  queryFulfilled: Promise<any>,
+  dispatch: any
+) => {
+  try {
+    await queryFulfilled;
+    dispatch(customerApi.util.invalidateTags(["CUSTOMER"]));
+  } catch (error) {
+    console.error("Error:", error);
+  }
+};
 
 export const customerApi = mainApi.injectEndpoints({
   endpoints: (build: EndpointBuilder<any, any, any>) => ({
@@ -22,7 +40,9 @@ export const customerApi = mainApi.injectEndpoints({
         method: "POST",
         body,
       }),
-      invalidatesTags: ["CUSTOMER"],
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+        await invalidateCustomerTag(queryFulfilled, dispatch);
+      },
     }),
     updateCustomer: build.mutation<any, { id: string; data: ICustomerUpdate }>({
       query: ({ id, data }) => ({
@@ -30,14 +50,18 @@ export const customerApi = mainApi.injectEndpoints({
         method: "PATCH",
         body: data,
       }),
-      invalidatesTags: ["CUSTOMER"],
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+        await invalidateCustomerTag(queryFulfilled, dispatch);
+      },
     }),
     deleteCustomer: build.mutation<any, string>({
       query: (id) => ({
         url: `/customer/${id}`,
         method: "DELETE",
       }),
-      invalidatesTags: ["CUSTOMER"],
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+        await invalidateCustomerTag(queryFulfilled, dispatch);
+      },
     }),
   }),
   overrideExisting: false,

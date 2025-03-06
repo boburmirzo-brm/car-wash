@@ -1,5 +1,14 @@
 import React, { FC, useRef, useEffect } from "react";
-import { Modal, Button, Form, Input, Checkbox, InputRef, Select, message } from "antd";
+import {
+  Modal,
+  Button,
+  Form,
+  Input,
+  Checkbox,
+  InputRef,
+  Select,
+  message,
+} from "antd";
 import type { FormProps } from "antd";
 import { NumericFormat } from "react-number-format";
 import { IPaymentAmount, IPaymentCreate } from "@/types";
@@ -25,7 +34,7 @@ const { TextArea } = Input;
 const PaymentPopup: FC<Props> = ({
   open,
   onClose,
-  // id,
+  id,
   prevData,
   onlyPayment = false,
   name,
@@ -60,6 +69,7 @@ const PaymentPopup: FC<Props> = ({
       amount: values.nasiya ? amount : price,
       comment: values.comment,
       type: values.type,
+      customerId: id || "",
     };
     !data.comment && delete data.comment;
 
@@ -76,7 +86,6 @@ const PaymentPopup: FC<Props> = ({
       .catch((err) => {
         console.log(err);
       });
-
   };
 
   return (

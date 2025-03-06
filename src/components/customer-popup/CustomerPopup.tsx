@@ -51,13 +51,11 @@ const CustomerPopup: React.FC<Props> = ({ open, onClose, customer }) => {
         .then((res) => {
           console.log(res);
           apiMessage.success("Mijoz ma'lumoti yangilandi!");
+          setError(null);
           onClose();
         })
         .catch((err) => {
           setError(err.data.message[0]);
-        })
-        .finally(() => {
-          setError(null);
         });
     } else {
       createCustomer(values)
@@ -67,15 +65,12 @@ const CustomerPopup: React.FC<Props> = ({ open, onClose, customer }) => {
           navigate(`/customer/${res.data._id}`);
           apiMessage.success("Yangi mijoz qo'shildi!");
           form.resetFields();
+          setError(null);
           onClose();
         })
         .catch((err) => {
           setError(err.data.message[0]);
-        })
-        .finally(() => {
-          setError(null);
         });
-
       // setName("");
     }
   };
