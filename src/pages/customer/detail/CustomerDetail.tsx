@@ -1,7 +1,7 @@
 import TelPopUp from "@/components/tel-pop-up/TelPopUp";
 import { useGetCustomerByIdQuery } from "@/redux/api/customer";
 import { Button, Empty, Skeleton, Typography, Tooltip } from "antd";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { FaRegEdit } from "react-icons/fa";
 import { MdAttachMoney } from "react-icons/md";
 import { PlusOutlined } from "@ant-design/icons";
@@ -18,6 +18,19 @@ const CustomerDetail = () => {
   const { id } = useParams<{ id: string }>();
   const { data, isLoading } = useGetCustomerByIdQuery(id || "");
   const [modalType, setModalType] = useState<ModalType>(null);
+
+  useEffect(() => {
+    const handleBackButton = (event: PopStateEvent) => {
+      if (modalType) {
+        event.preventDefault();
+        setModalType(null);
+      }
+    };
+    window.addEventListener("popstate", handleBackButton);
+    return () => {
+      window.removeEventListener("popstate", handleBackButton);
+    };
+  }, [modalType]);
 
   const customer = data?.data.payload.customer;
   const cars = data?.data.payload.cars;
@@ -36,13 +49,11 @@ const CustomerDetail = () => {
             <div className="flex flex-col md:flex-row items-center md:items-start justify-between gap-4 md:gap-6 ">
               <div className="flex items-center  w-full  flex-row gap-3">
                 <div>
-                  {
-                    customer?.full_name === "Noma'lum" ?
+                  {customer?.full_name === "Noma'lum" ? (
                     <TbUserX className="text-7xl text-gray-600 text-yellow-500" />
-                    :
+                  ) : (
                     <TbUser className="text-7xl text-gray-600" />
-                  }
-                  
+                  )}
                 </div>
                 <div className="w-full ">
                   <h3 className="text-2xl font-medium">

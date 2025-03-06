@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Modal, Form, Input, Button, message, Alert } from "antd";
 import { PatternFormat } from "react-number-format";
 import { ICustomerUpdate } from "@/types";
@@ -16,7 +16,8 @@ interface Props {
 
 const CustomerPopup: React.FC<Props> = ({ open, onClose, customer }) => {
   const [form] = Form.useForm();
-  const [createCustomer, { isLoading, isError }] = useCreateCustomerMutation();
+  const [error, setError] = useState<null | string>(null);
+  const [createCustomer, { isLoading }] = useCreateCustomerMutation();
   const [updateCustomer, { isLoading: updateLoading }] =
     useUpdateCustomerMutation();
   const navigate = useNavigate();
@@ -53,7 +54,10 @@ const CustomerPopup: React.FC<Props> = ({ open, onClose, customer }) => {
           onClose();
         })
         .catch((err) => {
-          console.log(err);
+          setError(err.data.message[0]);
+        })
+        .finally(() => {
+          setError(null);
         });
     } else {
       createCustomer(values)
@@ -64,6 +68,12 @@ const CustomerPopup: React.FC<Props> = ({ open, onClose, customer }) => {
           apiMessage.success("Yangi mijoz qo'shildi!");
           form.resetFields();
           onClose();
+        })
+        .catch((err) => {
+          setError(err.data.message[0]);
+        })
+        .finally(() => {
+          setError(null);
         });
 
       // setName("");
@@ -74,6 +84,7 @@ const CustomerPopup: React.FC<Props> = ({ open, onClose, customer }) => {
     form.resetFields();
     // setName("");
     onClose();
+    setError(null);
   };
 
   return (
@@ -133,9 +144,9 @@ const CustomerPopup: React.FC<Props> = ({ open, onClose, customer }) => {
             customInput={Input}
           />
         </Form.Item>
-        {isError && (
+        {error && (
           <div className="mb-3 mt-[-12px]">
-            <Alert message="Telefon raqam noto'g'ri" type="error" />
+            <Alert message={error} type="error" />
           </div>
         )}
 

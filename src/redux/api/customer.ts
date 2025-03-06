@@ -2,7 +2,7 @@ import { EndpointBuilder } from "@reduxjs/toolkit/query";
 import { mainApi } from ".";
 import { ICustomer, ICustomerDetail, ICustomerUpdate, IDetailPayload, IPayload } from "@/types";
 
-const customerApi = mainApi.injectEndpoints({
+export const customerApi = mainApi.injectEndpoints({
   endpoints: (build: EndpointBuilder<any, any, any>) => ({
     getCustomers: build.query<IPayload<ICustomer>, { filter?: string }>({
       query: ({ filter }) => ({
