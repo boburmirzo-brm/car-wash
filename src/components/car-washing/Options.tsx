@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { MoreOutlined } from "@ant-design/icons";
 import { Popover, Button } from "antd";
-import Payment from "../payment/Payment";
-import CreateCustomerModal from "../create-customer/CreateCustomerModal";
+import PaymentPopup from "../payment-popup/PaymentPopup";
+import CustomerPopup from "../customer-popup/CustomerPopup";
 
 type ModalType = "payment" | "edit" | null;
 
@@ -17,7 +17,9 @@ const Options = ({ id }: { id: number }) => {
     setOpen(false);
   };
 
-  const handleClose = () => setModalType(null);
+  const handleClose = useCallback(()=> {
+    setModalType(null)
+  }, []) 
 
   const content = (
     <div className="flex flex-col">
@@ -45,17 +47,18 @@ const Options = ({ id }: { id: number }) => {
         </Button>
       </Popover>
 
-      {modalType === "payment" && (
-        <Payment
-          isModalOpen={true}
-          handleCancel={handleClose}
+      {/* {modalType === "payment" && ( */}
+        <PaymentPopup
+          open={modalType === "payment"}
+          onClose={handleClose}
           id={selectedId}
+          // prevData={{price: 5000, amount: 60000, _id: "asdsadsad"}}
         />
-      )}
+      {/* )} */}
 
-      {modalType === "edit" && (
-        <CreateCustomerModal
-          open={true}
+      {/* {modalType === "edit" && ( */}
+        <CustomerPopup
+          open={modalType === "edit"}
           onClose={handleClose}
           customer={{
             name: "Abduhalilov Muhammadumar",
@@ -63,7 +66,7 @@ const Options = ({ id }: { id: number }) => {
             id: `${id}`,
           }}
         />
-      )}
+      {/* )} */}
     </>
   );
 };

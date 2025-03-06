@@ -1,54 +1,6 @@
 import { EndpointBuilder } from "@reduxjs/toolkit/query/react";
 import { mainApi } from ".";
 
-export interface User {
-  _id: string;
-  adminId?: string;
-  f_name: string;
-  l_name: string;
-  tel_primary: string;
-  tel_secondary?: string;
-  address: string;
-  username: string;
-  role: string;
-  budget: number;
-  hashed_password: string;
-  hashed_refreshtoken?: string;
-  is_active: boolean;
-  salary: string[]; // Mongoose ObjectId bo‘lishi mumkin
-  createdAt: string;
-  updatedAt: string;
-}
-
-export interface CreateUserDto {
-  adminId?: string;
-  f_name: string;
-  l_name: string;
-  tel_primary: string;
-  tel_secondary?: string;
-  address: string;
-  username: string;
-  password: string;
-  role: string;
-  budget?: number;
-  salary?: string[]; // Mongoose ObjectId lar
-  is_active?: boolean;
-}
-
-export interface UpdateUserDto {
-  f_name?: string;
-  l_name?: string;
-  tel_primary?: string;
-  tel_secondary?: string;
-  address?: string;
-  username?: string;
-  password?: string;
-  role?: string;
-  budget?: number;
-  salary?: string[]; // ObjectId lar
-  is_active?: boolean;
-}
-
 const userApi = mainApi.injectEndpoints({
   endpoints: (build: EndpointBuilder<any, any, any>) => ({
     getUsers: build.query<any, void>({
@@ -81,7 +33,7 @@ const userApi = mainApi.injectEndpoints({
         method: "PATCH",
         body: data,
       }),
-      invalidatesTags: ["USER"],
+      invalidatesTags: ["USER", "AUTH"],
     }),
     deleteUser: build.mutation<any, string>({
       query: (id) => ({

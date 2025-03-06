@@ -1,85 +1,93 @@
-import React, { useState } from "react";
-import { Card, Typography, Tag } from "antd";
-import { UserOutlined } from "@ant-design/icons";
-import { useCheckTokenQuery } from "../../../redux/api/auth";
-import { FaPen } from "react-icons/fa";
-import EditProfile from "../../../components/edit-profile/EditProfile";
+import React, { useCallback, useState } from "react";
+import {  Typography, Tag, Button, Popconfirm, Skeleton } from "antd";
+// import { UserOutlined } from "@ant-design/icons";
+import { useCheckTokenQuery } from "@/redux/api/auth";
+import UserPopup from "@/components/user-popup/UserPopup";
+import { FaRegEdit } from "react-icons/fa";
+import TelPopUp from "@/components/tel-pop-up/TelPopUp";
+import { MdLogout } from "react-icons/md";
+import { useDispatch } from "react-redux";
+import { logout } from "@/redux/features/auth.slice";
+import { TbUserShield } from "react-icons/tb";
 
-const { Title, Text } = Typography;
+const { Title } = Typography;
 
 const Profile = () => {
-  const { data, error } = useCheckTokenQuery();
+  const { data, isLoading } = useCheckTokenQuery();
   const [isEditing, setIsEditing] = useState(false);
+  const dispatch = useDispatch();
 
-  if (error) {
-    return (
-      <div className="flex justify-center items-center min-h-[80vh]">
-        <Text type="danger">
-          Foydalanuvchi ma'lumotlarini olishda xatolik yuz berdi.
-        </Text>
-      </div>
-    );
-  }
+  const handleClose = useCallback(() => {
+    setIsEditing(false);
+  }, []);
 
   const user = data?.user || {};
 
-  return (
-    <div className="flex flex-col items-center p-4">
-      <Card className="w-full max-w-[900px] shadow-md rounded-lg relative p-4">
-        <button
-          onClick={() => setIsEditing(true)}
-          className="absolute top-4 right-4 bg-white"
-        >
-          <FaPen className="text-gray-800 text-lg hover:text-gray-600" />
-        </button>
+  const handleLogout = () => {
+    dispatch(logout());
+  };
 
-        <div className="flex flex-col md:flex-row items-center md:items-start justify-between gap-4 md:gap-6 w-full">
-          <div className="flex items-center gap-3 md:gap-4">
-            <div className="w-16 h-16 md:w-20 md:h-20 flex items-center justify-center bg-gray-200 rounded-full">
-              <UserOutlined className="text-3xl md:text-4xl text-gray-600" />
+  return (
+    <div className="flex flex-col items-center py-4">
+      <div className="shadow-md md:p-6 p-4 rounded-md border border-gray-100 w-full">
+        {isLoading ? (
+          <Skeleton active />
+        ) : (
+          <div className="flex flex-col md:flex-row items-center md:items-start justify-between gap-4 md:gap-6 ">
+            <div className="flex   w-full  flex-row gap-3">
+              <div>
+                <TbUserShield className="text-8xl text-gray-600" />
+              </div>
+              <div className="w-full ">
+                <h3 className="text-2xl font-medium">{user.f_name}</h3>
+                <h4 className="text-base">{user.l_name}</h4>
+                <p className="text-gray-700 mt-2">@{user.username}</p>
+                <div className="mt-2">
+                  <Tag
+                    color={user.is_active ? "green" : "red"}
+                    className="text-xs md:text-sm"
+                  >
+                    {user.is_active ? "Faol" : "Faol emas"}
+                  </Tag>
+                </div>
+              </div>
             </div>
-            <div>
-              <Title level={2} className="text-lg md:text-2xl text-start">
-                {user.f_name || "Ism yo'q"}
-              </Title>
-              <Title level={5} className="text-sm md:text-lg text-start">
-                {user.l_name || ""}
-              </Title>
-              <Text
-                type="secondary"
-                className="text-xs md:text-base block text-start"
+
+            <div className="flex w-full flex-col items-end gap-1.5">
+              <Title
+                level={3}
+                type={user.budget >= 0 ? "success" : "danger"}
+                style={{ marginBottom: 0 }}
               >
-                {user.username || "Username yo'q"}
-              </Text>
-              <Text className="text-xs md:text-base block text-start">
-                {user.tel_primary || "Telefon yo'q"}
-              </Text>
-              <div className="mt-1 md:mt-2">
-                <Tag
-                  color={user.is_active ? "green" : "red"}
-                  className="text-xs md:text-sm"
+                {user.budget?.toLocaleString() || "0"} UZS
+              </Title>
+              <TelPopUp phoneNumber={user.tel_primary} />
+              <div className="flex gap-1.5">
+                <Button onClick={() => setIsEditing(true)} type="primary">
+                  <FaRegEdit className="text-lg" />
+                  <span>Tahrirlash</span>
+                </Button>
+                <Popconfirm
+                  title="Tizimdan chiqish"
+                  description="Chindan ham tizimdan chiqmoqchimisiz"
+                  onConfirm={handleLogout}
+                  okText="Ha"
+                  cancelText="Yo'q"
                 >
-                  {user.is_active ? "Faol" : "Faol emas"}
-                </Tag>
+                  <Button type="primary">
+                    <MdLogout className="text-lg" />
+                    <span>Log out</span>
+                  </Button>
+                </Popconfirm>
               </div>
             </div>
           </div>
+        )}
+      </div>
 
-          <div className="flex md:items-end w-full md:w-auto justify-center md:justify-start pr-5">
-            <Title
-              level={3}
-              type={user.budget >= 0 ? "success" : "danger"}
-              className="text-base md:text-2xl text-center md:text-end"
-            >
-              {user.budget?.toLocaleString() || "0"} UZS
-            </Title>
-          </div>
-        </div>
-      </Card>
-
-      <EditProfile
+      <UserPopup
         open={isEditing}
-        onClose={() => setIsEditing(false)}
+        onClose={handleClose}
         user={user}
         currentRole={user?.role}
       />

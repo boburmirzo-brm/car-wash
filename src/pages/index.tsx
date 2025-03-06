@@ -9,6 +9,10 @@ const CustomAuth = lazy(() => import("./custom-auth/CustomAuth"));
 const Employer = lazy(() => import("./employer/Employer"));
 const Layout = lazy(() => import("./layout/Layout"));
 const Order = lazy(() => import("./employer/order/Order"));
+const CarSearch = lazy(() => import("./employer/order/car-search/CarSearch"));
+const CustomerSearch = lazy(() => import("./employer/order/customer-search/CustomerSearch"));
+const CustomerDetail = lazy(() => import("./customer/detail/CustomerDetail"));
+const CarDetail = lazy(() => import("./car/detail/CarDetail"));
 const EmployeeProfile = lazy(() => import("./employer/profile/Profile"));
 const NotFound = lazy(() => import("./not-found/NotFound"));
 
@@ -73,6 +77,24 @@ const AppRouter = () => {
                           <Order />
                         </Suspense>
                       ),
+                      children: [
+                        {
+                          path: "",
+                          element: (
+                            <Suspense>
+                              <CarSearch />
+                            </Suspense>
+                          ),
+                        },
+                        {
+                          path: "customer",
+                          element: (
+                            <Suspense>
+                              <CustomerSearch />
+                            </Suspense>
+                          ),
+                        },
+                      ]
                     },
                     {
                       path: "employee/profile",
@@ -83,6 +105,22 @@ const AppRouter = () => {
                       ),
                     },
                   ],
+                },
+                {
+                  path: "customer/:id",
+                  element: (
+                    <Suspense>
+                      <CustomerDetail />
+                    </Suspense>
+                  ),
+                },
+                {
+                  path: "car/:id",
+                  element: (
+                    <Suspense>
+                      <CarDetail />
+                    </Suspense>
+                  ),
                 },
               ],
             },

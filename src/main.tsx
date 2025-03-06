@@ -5,6 +5,8 @@ import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import { store } from "./redux/index.ts";
 import { ConfigProvider } from "antd";
+import { Suspense } from "./utils/index.tsx";
+import "@/static/methods.ts"
 
 const theme = {
   token: {
@@ -21,7 +23,9 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
   <ConfigProvider theme={theme}>
     <BrowserRouter>
       <Provider store={store}>
-        <App />
+        <Suspense>
+          <App />
+        </Suspense>
       </Provider>
     </BrowserRouter>
   </ConfigProvider>

@@ -16,6 +16,7 @@ const Login: React.FC = () => {
   const [signInUser, { isLoading }] = useSignInUserMutation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [apiMessage, contextHolder] = message.useMessage();
 
   const onFinish: FormProps<FieldType>["onFinish"] = (values) => {
     signInUser(values)
@@ -31,7 +32,7 @@ const Login: React.FC = () => {
         }
       })
       .catch((error) => {
-        message.error(error?.data?.message || "Login xatosi!");
+        apiMessage.error(error?.data?.message || "Login xatosi!");
       });
   };
 
@@ -76,6 +77,7 @@ const Login: React.FC = () => {
           </Form.Item>
         </Form>
       </div>
+      {contextHolder}
     </section>
   );
 };

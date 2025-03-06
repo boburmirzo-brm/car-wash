@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import EditProfile, { Role } from "../edit-profile/EditProfile";
+import UserPopup from "../user-popup/UserPopup";
+import { Role } from "@/constant"; 
 import { MdGroupAdd } from "react-icons/md";
 import { Button } from "antd";
 
@@ -30,7 +31,7 @@ const Sidebar: React.FC<{ role: Role }> = ({ role }) => {
       )}
 
       {isEditing && (
-        <EditProfile
+        <UserPopup
           open={isEditing}
           onClose={() => setIsEditing(false)}
           user={selectedUser}

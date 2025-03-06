@@ -1,9 +1,10 @@
 import { EndpointBuilder } from "@reduxjs/toolkit/query";
 import { mainApi } from ".";
+import { ICar, IDetailCar, IDetailPayload, IPayload } from "@/types";
 
 const carApi = mainApi.injectEndpoints({
   endpoints: (build: EndpointBuilder<any, any, any>) => ({
-    getCars: build.query<any, { filter?: string } | void>({
+    getCars: build.query<IPayload<ICar>, { filter?: string } | void>({
       query: (params) => ({
         url: "/cars",
         method: "GET",
@@ -11,8 +12,8 @@ const carApi = mainApi.injectEndpoints({
       }),
       providesTags: ["CAR"],
     }),
-    getCarById: build.query<any, string>({
-      query: (id) => `/car/${id}`,
+    getCarById: build.query<IDetailPayload<IDetailCar>, string>({
+      query: (id) => `/cars/${id}`,
       providesTags: ["CAR"],
     }),
     createCar: build.mutation<any, any>({

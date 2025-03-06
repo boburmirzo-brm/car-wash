@@ -216,23 +216,17 @@
 
 // export default React.memo(EditProfile);
 
-
-import React, { useEffect } from "react";
+import React from "react";
 import { Modal, Form, Input, Button, Select, message } from "antd";
 import {
   useCreateAdminMutation,
   useCreateEmployerMutation,
   useUpdateUserMutation,
-} from "../../redux/api/user";
+} from "@/redux/api/user";
 import { PatternFormat } from "react-number-format";
+import { Role } from "@/constant";
 
-export enum Role {
-  OWNER = "OWNER",
-  ADMIN = "ADMIN",
-  EMPLOYEE = "EMPLOYEE",
-}
-
-interface EditProfileProps {
+interface Props {
   open: boolean;
   onClose: () => void;
   user?: any;
@@ -241,32 +235,27 @@ interface EditProfileProps {
 
 const { Option } = Select;
 
-const EditProfile: React.FC<EditProfileProps> = ({
-  open,
-  onClose,
-  user,
-  currentRole,
-}) => {
+const UserPopup: React.FC<Props> = ({ open, onClose, user, currentRole }) => {
   const [form] = Form.useForm();
   const [updateUser, { isLoading: updating }] = useUpdateUserMutation();
   const [createUser, { isLoading: creating }] = useCreateEmployerMutation();
   const [createAdmin, { isLoading: creatingAdmin }] = useCreateAdminMutation();
 
-  useEffect(() => {
-    if (user) {
-      form.setFieldsValue({
-        f_name: user?.f_name,
-        l_name: user?.l_name,
-        username: user?.username,
-        tel_primary: user?.tel_primary,
-        tel_secondary: user?.tel_secondary,
-        address: user?.address,
-        role: user?.role,
-      });
-    } else {
-      form.resetFields();
-    }
-  }, [user, form]);
+  // useEffect(() => {
+  //   if (user) {
+  //     form.setFieldsValue({
+  //       f_name: user?.f_name,
+  //       l_name: user?.l_name,
+  //       username: user?.username,
+  //       tel_primary: user?.tel_primary,
+  //       tel_secondary: user?.tel_secondary,
+  //       address: user?.address,
+  //       role: user?.role,
+  //     });
+  //   } else {
+  //     form.resetFields();
+  //   }
+  // }, [user, form]);
 
   const handleSave = () => {
     form
@@ -309,12 +298,13 @@ const EditProfile: React.FC<EditProfileProps> = ({
       open={open}
       onCancel={onClose}
       footer={null}
-      centered
+      // centered
       className="max-w-[90vw] md:max-w-lg"
     >
       <Form
         form={form}
         layout="vertical"
+        initialValues={user}
         className="space-y-3 md:space-y-5 p-2 md:p-4"
       >
         <Form.Item
@@ -350,10 +340,10 @@ const EditProfile: React.FC<EditProfileProps> = ({
               name="tel_primary"
               rules={[
                 { required: true, message: "Telefon raqam kiritish shart!" },
-                {
-                  pattern: /^\+998 \d{2}\ \d{3} \d{2} \d{2}$/,
-                  message: "Telefon raqam noto‘g‘ri! (+998 90 123 45 67)",
-                },
+                // {
+                //   // pattern: /^\+998 \d{2}\ \d{3} \d{2} \d{2}$/,
+                //   message: "Telefon raqam noto‘g‘ri! (+998 90 123 45 67)",
+                // },
               ]}
             >
               <PatternFormat
@@ -369,10 +359,10 @@ const EditProfile: React.FC<EditProfileProps> = ({
               label="Qo‘shimcha telefon raqam"
               name="tel_secondary"
               rules={[
-                {
-                  pattern: /^\+998 \d{2}\ \d{3} \d{2} \d{2}$/,
-                  message: "Telefon raqam noto‘g‘ri! (+998 90 123 45 67)",
-                },
+                // { 
+                //   // pattern: /^\+998 \d{2}\ \d{3} \d{2} \d{2}$/,
+                //   message: "Telefon raqam noto‘g‘ri! (+998 90 123 45 67)",
+                // },
               ]}
             >
               <PatternFormat
@@ -421,26 +411,18 @@ const EditProfile: React.FC<EditProfileProps> = ({
           </Form.Item>
         )}
 
-        <div className="flex flex-col md:flex-row justify-end gap-2">
-          <Button
-            onClick={onClose}
-            disabled={updating || creating || creatingAdmin}
-            className="w-full md:w-auto"
-          >
-            Bekor qilish
-          </Button>
-          <Button
-            type="primary"
-            onClick={handleSave}
-            loading={updating || creating}
-            className="w-full md:w-auto"
-          >
-            {isEditing ? "Saqlash" : "Yaratish"}
-          </Button>
-        </div>
+        <Button
+          type="primary"
+          block
+          onClick={handleSave}
+          loading={updating || creating}
+          // className="w-full md:w-auto"
+        >
+          {isEditing ? "Saqlash" : "Yaratish"}
+        </Button>
       </Form>
     </Modal>
   );
 };
 
-export default React.memo(EditProfile);
+export default React.memo(UserPopup);

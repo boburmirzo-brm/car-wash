@@ -1,9 +1,10 @@
 import { EndpointBuilder } from "@reduxjs/toolkit/query";
 import { mainApi } from ".";
+import { ICustomer, ICustomerDetail, IDetailPayload, IPayload } from "@/types";
 
 const customerApi = mainApi.injectEndpoints({
   endpoints: (build: EndpointBuilder<any, any, any>) => ({
-    getCustomers: build.query<any, { filter?: string }>({
+    getCustomers: build.query<IPayload<ICustomer>, { filter?: string }>({
       query: ({ filter }) => ({
         url: "/customer",
         method: "GET",
@@ -11,7 +12,7 @@ const customerApi = mainApi.injectEndpoints({
       }),
       providesTags: ["CUSTOMER"],
     }),
-    getCustomerById: build.query<any, string>({
+    getCustomerById: build.query<IDetailPayload<ICustomerDetail>, string>({
       query: (id) => `/customer/${id}`,
       providesTags: ["CUSTOMER"],
     }),

@@ -7,14 +7,14 @@ import { RootState } from "@/redux";
 import Sidebar from "@/components/sidebar/Sidebar";
 import { useCheckTokenQuery } from "../../redux/api/auth";
 import { setRole } from "../../redux/features/role.slice";
-import { Role } from "../../components/edit-profile/EditProfile";
+import { Role } from "@/constant";
 
 const Layout = () => {
   const dispatch = useDispatch();
   const roleState = useSelector((state: RootState) => state.role.value);
   const token = useSelector((state: RootState) => state.auth.access_token);
   // const token = localStorage.getItem("access_token");
-  const { data, isLoading } = useCheckTokenQuery(undefined, {
+  const { data } = useCheckTokenQuery(undefined, {
     skip: !token,
   });
   useEffect(() => {
@@ -23,7 +23,6 @@ const Layout = () => {
     }
   }, [data]);
 
-  if (isLoading) return <div>Loading...</div>;
 
   const isAdminOrOwner = roleState === Role.ADMIN || roleState === Role.OWNER;
 

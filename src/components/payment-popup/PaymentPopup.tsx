@@ -2,6 +2,7 @@ import React, { FC, useRef, useEffect } from "react";
 import { Modal, Button, Form, Input, Checkbox, InputRef } from "antd";
 import type { FormProps } from "antd";
 import { NumericFormat } from "react-number-format";
+import { IPaymentAmount } from "@/types";
 
 type FieldType = {
   price?: string;
@@ -10,47 +11,54 @@ type FieldType = {
 };
 
 interface Props {
-  isModalOpen: boolean;
-  handleCancel: () => void;
+  open: boolean;
+  onClose: () => void;
   id: null | number;
-  data?: any;
+  prevData?: IPaymentAmount | undefined;
 }
 
-const Payment: FC<Props> = ({ isModalOpen, handleCancel, id, data }) => {
+const PaymentPopup: FC<Props> = ({ open, onClose, id, prevData }) => {
   const [form] = Form.useForm();
 
-  const nasiya = Form.useWatch("nasiya", form)
-
+  const nasiya = Form.useWatch("nasiya", form);
+  
   const priceInputRef = useRef<InputRef>(null);
-
+  
   useEffect(() => {
-    if (isModalOpen) {
+    if (open) {
       setTimeout(() => {
-        priceInputRef.current?.focus(); 
+        priceInputRef.current?.focus();
       }, 100);
     }
-  }, [isModalOpen]);
+  }, [open]);
 
   const onFinish: FormProps<FieldType>["onFinish"] = (values) => {
-    const price = Number(values.price?.split(" ").join(""))
-    const amount = Number(values.amount?.split(" ").join(""))
-    
+    console.log(values);
+    const price =
+      typeof values.price === "number"
+        ? values.price
+        : Number(values.price?.split(" ").join(""));
+    const amount =
+      typeof values.amount === "number"
+        ? values.amount
+        : Number(values.amount?.split(" ").join(""));
+
     let data = {
       price,
-      amount: values.nasiya ? amount : price
-    }
-    console.log("Success:", data);  
+      amount: values.nasiya ? amount : price,
+    };
+    console.log("Success:", data);
 
     form.resetFields();
-    handleCancel();
+    onClose();
   };
 
   return (
     <Modal
       title={`To'lov qilish ${id}`}
-      open={isModalOpen}
-      onCancel={()=> {
-        handleCancel()
+      open={open}
+      onCancel={() => {
+        onClose();
         form.resetFields();
       }}
       footer={null}
@@ -59,7 +67,7 @@ const Payment: FC<Props> = ({ isModalOpen, handleCancel, id, data }) => {
         form={form}
         // name="basic"
         layout="vertical"
-        initialValues={data}
+        initialValues={prevData}
         onFinish={onFinish}
         autoComplete="off"
       >
@@ -114,4 +122,4 @@ const Payment: FC<Props> = ({ isModalOpen, handleCancel, id, data }) => {
   );
 };
 
-export default React.memo(Payment);
+export default React.memo(PaymentPopup);

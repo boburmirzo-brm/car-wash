@@ -6,17 +6,16 @@ const { Text } = Typography;
 
 const TelPopUp: FC<{ phoneNumber: string }> = ({ phoneNumber }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-
   const handleClose = () => setIsModalOpen(false);
-
   return (
     <div>
       <Button
         type="text"
+        style={{padding: "0"}}
         onClick={() => setIsModalOpen(true)}
         className="flex items-center gap-2 text-gray-700 hover:text-gray-900 transition-all"
       >
-        <span>{phoneNumber}</span>
+        <span className="text-base">{phoneNumber.telFormat()}</span>
         <FiPhone className="text-lg" />
       </Button>
 
@@ -26,7 +25,7 @@ const TelPopUp: FC<{ phoneNumber: string }> = ({ phoneNumber }) => {
         footer={null}
       >
         <Text className="text-gray-600 text-center block">
-          <span className="text-xl font-bold">{phoneNumber}</span>
+          <span className="text-xl font-bold">{phoneNumber.telFormat()}</span>
         </Text>
 
         <div className="mt-5 space-y-3">
