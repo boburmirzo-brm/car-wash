@@ -239,7 +239,7 @@ const UserPopup: React.FC<Props> = ({ open, onClose, user, currentRole }) => {
   const [form] = Form.useForm();
   const [updateUser, { isLoading: updating }] = useUpdateUserMutation();
   const [createUser, { isLoading: creating }] = useCreateEmployerMutation();
-  const [createAdmin, { isLoading: creatingAdmin }] = useCreateAdminMutation();
+  const [createAdmin] = useCreateAdminMutation();
 
   // useEffect(() => {
   //   if (user) {
