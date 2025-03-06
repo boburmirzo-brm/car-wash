@@ -25,7 +25,7 @@ const { TextArea } = Input;
 const PaymentPopup: FC<Props> = ({
   open,
   onClose,
-  id,
+  // id,
   prevData,
   onlyPayment = false,
   name,

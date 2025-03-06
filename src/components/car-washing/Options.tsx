@@ -62,8 +62,8 @@ const Options = ({ id }: { id: number }) => {
           open={modalType === "edit"}
           onClose={handleClose}
           customer={{
-            name: "Abduhalilov Muhammadumar",
-            phone: "+998913431223",
+            full_name: "Abduhalilov Muhammadumar",
+            tel_primary: "+998913431223",
             id: `${id}`,
           }}
         />
