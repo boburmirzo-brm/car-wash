@@ -1,6 +1,6 @@
 import { EndpointBuilder } from "@reduxjs/toolkit/query";
 import { mainApi } from ".";
-import { ICustomer, ICustomerDetail, IDetailPayload, IPayload } from "@/types";
+import { ICustomer, ICustomerDetail, ICustomerUpdate, IDetailPayload, IPayload } from "@/types";
 
 const customerApi = mainApi.injectEndpoints({
   endpoints: (build: EndpointBuilder<any, any, any>) => ({
@@ -24,7 +24,7 @@ const customerApi = mainApi.injectEndpoints({
       }),
       invalidatesTags: ["CUSTOMER"],
     }),
-    updateCustomer: build.mutation<any, { id: string; data: any }>({
+    updateCustomer: build.mutation<any, { id: string; data: ICustomerUpdate }>({
       query: ({ id, data }) => ({
         url: `/customer/${id}`,
         method: "PATCH",

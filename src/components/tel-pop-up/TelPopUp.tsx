@@ -4,10 +4,10 @@ import { FiPhone } from "react-icons/fi";
 
 const { Text } = Typography;
 
-const TelPopUp: FC<{ phoneNumber: string }> = ({ phoneNumber }) => {
+const TelPopUp: FC<{ phoneNumber: string }> = ({ phoneNumber="" }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const handleClose = () => setIsModalOpen(false);
-  return (
+  return !!phoneNumber && (
     <div>
       <Button
         type="text"

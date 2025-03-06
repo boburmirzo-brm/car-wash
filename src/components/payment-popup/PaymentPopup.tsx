@@ -1,29 +1,42 @@
 import React, { FC, useRef, useEffect } from "react";
-import { Modal, Button, Form, Input, Checkbox, InputRef } from "antd";
+import { Modal, Button, Form, Input, Checkbox, InputRef, Select, message } from "antd";
 import type { FormProps } from "antd";
 import { NumericFormat } from "react-number-format";
-import { IPaymentAmount } from "@/types";
+import { IPaymentAmount, IPaymentCreate } from "@/types";
+import { useCreatePaymentMutation } from "@/redux/api/payment";
 
 type FieldType = {
   price?: string;
   amount?: string;
   nasiya?: string;
+  comment: string;
+  type: string;
 };
 
 interface Props {
   open: boolean;
   onClose: () => void;
-  id: null | number;
+  id: null | string;
+  name: string;
+  onlyPayment?: boolean;
   prevData?: IPaymentAmount | undefined;
 }
-
-const PaymentPopup: FC<Props> = ({ open, onClose, id, prevData }) => {
+const { TextArea } = Input;
+const PaymentPopup: FC<Props> = ({
+  open,
+  onClose,
+  id,
+  prevData,
+  onlyPayment = false,
+  name,
+}) => {
   const [form] = Form.useForm();
-
+  const [createPayment, { isLoading }] = useCreatePaymentMutation();
+  const [apiMessage, contextHolder] = message.useMessage();
   const nasiya = Form.useWatch("nasiya", form);
-  
+
   const priceInputRef = useRef<InputRef>(null);
-  
+
   useEffect(() => {
     if (open) {
       setTimeout(() => {
@@ -33,7 +46,6 @@ const PaymentPopup: FC<Props> = ({ open, onClose, id, prevData }) => {
   }, [open]);
 
   const onFinish: FormProps<FieldType>["onFinish"] = (values) => {
-    console.log(values);
     const price =
       typeof values.price === "number"
         ? values.price
@@ -43,19 +55,33 @@ const PaymentPopup: FC<Props> = ({ open, onClose, id, prevData }) => {
         ? values.amount
         : Number(values.amount?.split(" ").join(""));
 
-    let data = {
+    let data: IPaymentCreate = {
       price,
       amount: values.nasiya ? amount : price,
+      comment: values.comment,
+      type: values.type,
     };
-    console.log("Success:", data);
+    !data.comment && delete data.comment;
 
-    form.resetFields();
-    onClose();
+    console.log(data);
+
+    createPayment(data)
+      .unwrap()
+      .then((res) => {
+        console.log(res);
+        apiMessage.success("To'lov muvaffaqiyatli saqlandi!");
+        form.resetFields();
+        onClose();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
   };
 
   return (
     <Modal
-      title={`To'lov qilish ${id}`}
+      title={`To'lov: ${name}`}
       open={open}
       onCancel={() => {
         onClose();
@@ -67,12 +93,12 @@ const PaymentPopup: FC<Props> = ({ open, onClose, id, prevData }) => {
         form={form}
         // name="basic"
         layout="vertical"
-        initialValues={prevData}
+        initialValues={prevData ? prevData : { type: "CASH" }}
         onFinish={onFinish}
         autoComplete="off"
       >
         <Form.Item<FieldType>
-          label="Kelishilgan summa"
+          label={nasiya ? "Kelishilgan summa" : "Summa"}
           name="price"
           rules={[{ required: true, message: "Summani kiriting!" }]}
         >
@@ -104,20 +130,44 @@ const PaymentPopup: FC<Props> = ({ open, onClose, id, prevData }) => {
           </Form.Item>
         )}
 
-        <Form.Item<FieldType>
-          name="nasiya"
-          valuePropName="checked"
-          label={null}
-        >
-          <Checkbox>Nasiya</Checkbox>
+        <Form.Item<FieldType> label="Izoh" name="comment">
+          <TextArea rows={2} />
         </Form.Item>
 
+        <Form.Item<FieldType> label="To'lov turi" name="type">
+          <Select
+            style={{ width: "100%" }}
+            // defaultValue="CASH"
+            // onChange={handleChange}
+            options={[
+              { value: "CASH", label: "Naxt" },
+              { value: "CARD", label: "Karta" },
+            ]}
+          />
+        </Form.Item>
+
+        {!onlyPayment && (
+          <Form.Item<FieldType>
+            name="nasiya"
+            valuePropName="checked"
+            label={null}
+          >
+            <Checkbox>Nasiya</Checkbox>
+          </Form.Item>
+        )}
+
         <Form.Item style={{ margin: 0 }}>
-          <Button type="primary" htmlType="submit" className="w-full">
+          <Button
+            loading={isLoading}
+            type="primary"
+            htmlType="submit"
+            className="w-full"
+          >
             Submit
           </Button>
         </Form.Item>
       </Form>
+      {contextHolder}
     </Modal>
   );
 };

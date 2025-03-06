@@ -8,7 +8,9 @@ import { FaRegEdit } from "react-icons/fa";
 const CarDetail = () => {
   const { id } = useParams<{ id: string }>();
   const { data, isLoading } = useGetCarByIdQuery(id || "");
-  const car = data?.data.payload;
+  const car = data?.data.payload
+  console.log(data);
+  
   return (
     <div className="flex flex-col gap-4 my-4">
       <div className="shadow-md md:p-6 p-4 rounded-md border border-gray-100 w-full">

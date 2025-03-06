@@ -5,9 +5,9 @@ export interface IPaymentAmount {
 }
 
 export interface ICustomerUpdate {
-  id: string;
-  name: string;
-  phone: string;
+  id?: string;
+  full_name: string;
+  tel_primary?: string;
 }
 
 export interface IPayload<T> {
@@ -105,4 +105,11 @@ export interface IUpdateUserDto {
   budget?: number;
   salary?: string[];
   is_active?: boolean;
+}
+
+export interface IPaymentCreate {
+  price: number;
+  amount: number;
+  comment?: string;
+  type: string;
 }

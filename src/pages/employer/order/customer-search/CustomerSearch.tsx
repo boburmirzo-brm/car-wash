@@ -2,6 +2,7 @@ import TelPopUp from "@/components/tel-pop-up/TelPopUp";
 import { ICustomer, IPayload } from "@/types";
 import React from "react";
 import { Link, useOutletContext } from "react-router-dom";
+import { TbUserX } from "react-icons/tb";
 
 interface ContextType {
   data: IPayload<ICustomer>;
@@ -19,7 +20,11 @@ const CustomerSearch = () => {
             className="bg-white shadow-sm rounded-md p-4 max-[500px]:p-3 border border-gray-300"
           >
             <div className="flex items-center gap-4 justify-between max-[500px]:flex-col max-[500px]:items-start ">
-              <Link to={`/customer/${customer._id}`} className="max-[500px]:w-full flex-1 text-base font-semibold text-gray-800 hover:underline">
+              <Link
+                to={`/customer/${customer._id}`}
+                className={`max-[500px]:w-full flex-1 flex items-center gap-2 text-base font-semibold  hover:underline `}
+              >
+                {customer.full_name === "Noma'lum" && <TbUserX className="text-2xl text-yellow-500"/>}
                 {customer.full_name}
               </Link>
               <div className="flex max-[500px]:w-full max-[500px]:justify-end">

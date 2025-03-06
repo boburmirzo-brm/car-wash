@@ -1,8 +1,11 @@
 import React from "react";
-import { Modal, Form, Input, Button, message } from "antd";
+import { Modal, Form, Input, Button, message, Alert } from "antd";
 import { PatternFormat } from "react-number-format";
 import { ICustomerUpdate } from "@/types";
-import { useCreateCustomerMutation } from "@/redux/api/customer";
+import {
+  useCreateCustomerMutation,
+  useUpdateCustomerMutation,
+} from "@/redux/api/customer";
 import { useNavigate } from "react-router-dom";
 
 interface Props {
@@ -13,12 +16,13 @@ interface Props {
 
 const CustomerPopup: React.FC<Props> = ({ open, onClose, customer }) => {
   const [form] = Form.useForm();
-  const [createCustomer, {isLoading}] = useCreateCustomerMutation()
-  const navigate = useNavigate()
+  const [createCustomer, { isLoading, isError }] = useCreateCustomerMutation();
+  const [updateCustomer, { isLoading: updateLoading }] =
+    useUpdateCustomerMutation();
+  const navigate = useNavigate();
   // const [name, setName] = useState("");
   const [apiMessage, contextHolder] = message.useMessage();
-  const full_name = Form.useWatch("full_name", form) || ""
-  
+  const full_name = Form.useWatch("full_name", form) || "";
 
   // useEffect(() => {
   //   if (open && form) {
@@ -37,23 +41,31 @@ const CustomerPopup: React.FC<Props> = ({ open, onClose, customer }) => {
 
   const handleSave = (values: { full_name: string; tel_primary?: string }) => {
     // message.destroy();
-
+    values.tel_primary =
+      values.tel_primary && values.tel_primary.replace(/\s/gi, "");
+    !values.tel_primary && delete values.tel_primary;
     if (customer) {
-      console.log("Mijoz yangilandi:", values);
-      apiMessage.success("Mijoz ma'lumoti yangilandi!");
+      updateCustomer({ id: customer.id || "", data: values })
+        .unwrap()
+        .then((res) => {
+          console.log(res);
+          apiMessage.success("Mijoz ma'lumoti yangilandi!");
+          onClose();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     } else {
-      values.tel_primary =  values.tel_primary && values.tel_primary.replace(/\s/gi, "")
-      !values.tel_primary && delete values.tel_primary
-      
       createCustomer(values)
         .unwrap()
-        .then(res => {
+        .then((res) => {
           console.log(res.data._id);
-          navigate(`/customer/${res.data._id}`)
+          navigate(`/customer/${res.data._id}`);
           apiMessage.success("Yangi mijoz qo'shildi!");
           form.resetFields();
           onClose();
-        })
+        });
+
       // setName("");
     }
   };
@@ -67,17 +79,20 @@ const CustomerPopup: React.FC<Props> = ({ open, onClose, customer }) => {
   return (
     <Modal
       title={
-        customer ? `Mijozni tahrirlash ${customer.id}` : "Yangi mijoz qo'shish"
+        customer
+          ? `Mijozni tahrirlash ${customer.full_name}`
+          : "Yangi mijoz qo'shish"
       }
       open={open}
       onCancel={handleClose}
       footer={null}
     >
-      <Form 
-        form={form} 
+      <Form
+        form={form}
         initialValues={customer}
-        layout="vertical" 
-        onFinish={handleSave}>
+        layout="vertical"
+        onFinish={handleSave}
+      >
         <div className="flex gap-2">
           <Form.Item
             label="Ism"
@@ -118,10 +133,19 @@ const CustomerPopup: React.FC<Props> = ({ open, onClose, customer }) => {
             customInput={Input}
           />
         </Form.Item>
+        {isError && (
+          <div className="mb-3 mt-[-12px]">
+            <Alert message="Telefon raqam noto'g'ri" type="error" />
+          </div>
+        )}
 
         <Form.Item style={{ margin: 0 }}>
           <Button type="primary" loading={isLoading} block htmlType="submit">
-            {isLoading ? "Kuting" : customer ? "Saqlash" : "Qo'shish"}
+            {isLoading || updateLoading
+              ? "Kuting"
+              : customer
+              ? "Saqlash"
+              : "Qo'shish"}
           </Button>
         </Form.Item>
       </Form>

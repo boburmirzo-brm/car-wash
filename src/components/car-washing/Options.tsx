@@ -51,7 +51,8 @@ const Options = ({ id }: { id: number }) => {
         <PaymentPopup
           open={modalType === "payment"}
           onClose={handleClose}
-          id={selectedId}
+          id={selectedId?.toString() || ""}
+          name="John Doe"
           // prevData={{price: 5000, amount: 60000, _id: "asdsadsad"}}
         />
       {/* )} */}
