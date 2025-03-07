@@ -18,8 +18,8 @@ const CarsView: FC<{ data: ICar[] }> = ({ data }) => {
               {car.name}
             </h3>
             <div className="flex max-[500px]:w-full max-[500px]:justify-end">
-              <b className="border border-gray-500 px-2 py-1 rounded-md text-xs uppercase text-gray-700">
-                {car.plateNumber.plateNumberFormat()}
+              <b className="border border-gray-500 px-2 py-1 rounded-md text-base uppercase text-gray-700">
+                {car.plateNumber?.plateNumberFormat()}
               </b>
             </div>
           </div>

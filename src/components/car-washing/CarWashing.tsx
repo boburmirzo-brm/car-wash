@@ -31,7 +31,7 @@ const CarWashing: FC<Props> = ({ role }) => {
               <IoCarOutline className="text-lg text-gray-600" />
               <span>Chevrolet Trecker</span>
             </p>
-            <b className="border border-gray-500 px-2 py-1 rounded-md text-xs uppercase text-gray-700">
+            <b className="border border-gray-500 px-2 py-1 rounded-md uppercase text-gray-700 text-base">
               01 A 000 AA
             </b>
           </div>

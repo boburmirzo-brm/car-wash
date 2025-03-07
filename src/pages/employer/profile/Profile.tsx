@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from "react";
-import {  Typography, Tag, Button, Popconfirm, Skeleton } from "antd";
+import { Typography, Tag, Button, Popconfirm, Skeleton } from "antd";
 // import { UserOutlined } from "@ant-design/icons";
 import { useCheckTokenQuery } from "@/redux/api/auth";
 import UserPopup from "@/components/user-popup/UserPopup";
@@ -17,8 +17,15 @@ const Profile = () => {
   const [isEditing, setIsEditing] = useState(false);
   const dispatch = useDispatch();
 
-  const handleClose = useCallback(() => {
+  const handleClose = useCallback((isBack?: boolean | undefined) => {
     setIsEditing(false);
+    console.log(isBack);
+
+    if (!isBack) {
+      console.log("asdsad");
+      
+      window.history.back();
+    }
   }, []);
 
   const user = data?.user || {};
@@ -63,9 +70,9 @@ const Profile = () => {
               </Title>
               <TelPopUp phoneNumber={user.tel_primary} />
               <div className="flex gap-1.5">
-                <Button onClick={() => setIsEditing(true)} type="primary">
+                <Button onClick={() => setIsEditing(true)} type="default">
                   <FaRegEdit className="text-lg" />
-                  <span>Tahrirlash</span>
+                  {/* <span>Tahrirlash</span> */}
                 </Button>
                 <Popconfirm
                   title="Tizimdan chiqish"
@@ -74,7 +81,7 @@ const Profile = () => {
                   okText="Ha"
                   cancelText="Yo'q"
                 >
-                  <Button type="primary">
+                  <Button type="default">
                     <MdLogout className="text-lg" />
                     <span>Log out</span>
                   </Button>

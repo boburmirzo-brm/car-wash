@@ -10,6 +10,12 @@ export interface ICustomerUpdate {
   tel_primary?: string;
 }
 
+export interface ICarUpdate {
+  id?: string;
+  plateNumber: string;
+  name: string;
+}
+
 export interface IPayload<T> {
   statusCode: number;
   message: string;

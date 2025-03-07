@@ -1,4 +1,4 @@
-import React, { FC, useRef, useEffect } from "react";
+import React, { FC, useRef, useEffect, useCallback } from "react";
 import {
   Modal,
   Button,
@@ -13,6 +13,7 @@ import type { FormProps } from "antd";
 import { NumericFormat } from "react-number-format";
 import { IPaymentAmount, IPaymentCreate } from "@/types";
 import { useCreatePaymentMutation } from "@/redux/api/payment";
+import { useModalNavigation } from "@/hooks/useModalNavigation";
 
 type FieldType = {
   price?: string;
@@ -25,16 +26,18 @@ type FieldType = {
 interface Props {
   open: boolean;
   onClose: () => void;
-  id: null | string;
+  customerId: null | string;
   name: string;
   onlyPayment?: boolean;
   prevData?: IPaymentAmount | undefined;
 }
+
 const { TextArea } = Input;
+
 const PaymentPopup: FC<Props> = ({
   open,
   onClose,
-  id,
+  customerId,
   prevData,
   onlyPayment = false,
   name,
@@ -43,8 +46,8 @@ const PaymentPopup: FC<Props> = ({
   const [createPayment, { isLoading }] = useCreatePaymentMutation();
   const [apiMessage, contextHolder] = message.useMessage();
   const nasiya = Form.useWatch("nasiya", form);
-
   const priceInputRef = useRef<InputRef>(null);
+  useModalNavigation(open, onClose);
 
   useEffect(() => {
     if (open) {
@@ -53,6 +56,7 @@ const PaymentPopup: FC<Props> = ({
       }, 100);
     }
   }, [open]);
+
 
   const onFinish: FormProps<FieldType>["onFinish"] = (values) => {
     const price =
@@ -69,22 +73,19 @@ const PaymentPopup: FC<Props> = ({
       amount: values.nasiya ? amount : price,
       comment: values.comment,
       type: values.type,
-      customerId: id || "",
+      customerId: customerId || "",
     };
     !data.comment && delete data.comment;
 
-    console.log(data);
-
     createPayment(data)
       .unwrap()
-      .then((res) => {
-        console.log(res);
+      .then(() => {
         apiMessage.success("To'lov muvaffaqiyatli saqlandi!");
         form.resetFields();
         onClose();
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err);
       });
   };
 
@@ -100,7 +101,6 @@ const PaymentPopup: FC<Props> = ({
     >
       <Form
         form={form}
-        // name="basic"
         layout="vertical"
         initialValues={prevData ? prevData : { type: "CASH" }}
         onFinish={onFinish}
@@ -146,8 +146,6 @@ const PaymentPopup: FC<Props> = ({
         <Form.Item<FieldType> label="To'lov turi" name="type">
           <Select
             style={{ width: "100%" }}
-            // defaultValue="CASH"
-            // onChange={handleChange}
             options={[
               { value: "CASH", label: "Naxt" },
               { value: "CARD", label: "Karta" },
@@ -156,11 +154,7 @@ const PaymentPopup: FC<Props> = ({
         </Form.Item>
 
         {!onlyPayment && (
-          <Form.Item<FieldType>
-            name="nasiya"
-            valuePropName="checked"
-            label={null}
-          >
+          <Form.Item<FieldType> name="nasiya" valuePropName="checked">
             <Checkbox>Nasiya</Checkbox>
           </Form.Item>
         )}

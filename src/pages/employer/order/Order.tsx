@@ -8,41 +8,54 @@ import React from "react";
 import { Outlet, useLocation } from "react-router-dom";
 
 const Order = () => {
-  // const [searchTerm, setSearchTerm] = useState("");
   const { getParam } = useParamsHook();
   let value = getParam("q") || "";
   const searchValue = useDebounce(value);
   const { pathname } = useLocation();
   const currentPathname = pathname.endsWith("/customer") ? "customer" : "";
 
-  const { data: carData, isFetching: isCarFatching } = useGetCarsQuery(
+  const {
+    data: carData,
+    isFetching: isCarFatching,
+    isError: carIsError,
+  } = useGetCarsQuery(
     { filter: searchValue },
     { skip: !searchValue || !value || currentPathname === "customer" }
   );
 
-  const { data: customerData, isFetching: isCustomerFatching } =
-    useGetCustomersQuery(
-      { filter: searchValue },
-      { skip: !searchValue || !value || currentPathname !== "customer" }
-    );
+  const {
+    data: customerData,
+    isFetching: isCustomerFatching,
+    isError: customerIsError,
+  } = useGetCustomersQuery(
+    { filter: searchValue },
+    { skip: !searchValue || !value || currentPathname !== "customer" }
+  );
 
   return (
     <div className="mt-4">
-      <Search
-      // searchTerm={searchTerm} setSearchTerm={setSearchTerm}
-      />
-      {(isCarFatching || isCustomerFatching) && (
+      <Search />
+
+      {isCarFatching || isCustomerFatching ? (
         <div className="mt-4">
           <Skeleton active />
         </div>
+      ) : (
+        (carIsError || customerIsError || !value) && (
+          <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
+        )
       )}
-      {((!carData?.data?.total && !customerData?.data.total) || !value) &&
-        !isCarFatching &&
-        !isCustomerFatching && <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />}
+
       <Outlet
         context={{
           data: currentPathname === "customer" ? customerData : carData,
-          show: !isCarFatching && !isCustomerFatching && value,
+          show: Boolean(
+            value &&
+              !isCarFatching &&
+              !isCustomerFatching &&
+              (!carIsError || customerIsError) &&
+              (carIsError || !customerIsError)
+          ),
         }}
       />
     </div>

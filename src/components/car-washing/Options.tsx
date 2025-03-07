@@ -17,9 +17,10 @@ const Options = ({ id }: { id: number }) => {
     setOpen(false);
   };
 
-  const handleClose = useCallback(()=> {
-    setModalType(null)
-  }, []) 
+  const handleClose = useCallback((isBack?: boolean | undefined) => {
+    setModalType(null);
+    if (!isBack) window.history.back();
+  }, []);
 
   const content = (
     <div className="flex flex-col">
@@ -48,25 +49,25 @@ const Options = ({ id }: { id: number }) => {
       </Popover>
 
       {/* {modalType === "payment" && ( */}
-        <PaymentPopup
-          open={modalType === "payment"}
-          onClose={handleClose}
-          id={selectedId?.toString() || ""}
-          name="John Doe"
-          // prevData={{price: 5000, amount: 60000, _id: "asdsadsad"}}
-        />
+      <PaymentPopup
+        open={modalType === "payment"}
+        onClose={handleClose}
+        customerId={selectedId?.toString() || ""}
+        name="John Doe"
+        // prevData={{price: 5000, amount: 60000, _id: "asdsadsad"}}
+      />
       {/* )} */}
 
       {/* {modalType === "edit" && ( */}
-        <CustomerPopup
-          open={modalType === "edit"}
-          onClose={handleClose}
-          customer={{
-            full_name: "Abduhalilov Muhammadumar",
-            tel_primary: "+998913431223",
-            id: `${id}`,
-          }}
-        />
+      <CustomerPopup
+        open={modalType === "edit"}
+        onClose={handleClose}
+        customer={{
+          full_name: "Abduhalilov Muhammadumar",
+          tel_primary: "+998913431223",
+          id: `${id}`,
+        }}
+      />
       {/* )} */}
     </>
   );

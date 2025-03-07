@@ -37,7 +37,10 @@ const Search:FC = () => {
   const currentPathname = pathname.endsWith("/customer") ? "customer" : "";
 
   const handleOpen = useCallback(() => setIsModalOpen(true), []);
-  const handleClose = useCallback(() => setIsModalOpen(false), []);
+  const handleClose = useCallback((isBack?: boolean | undefined) => {
+    setIsModalOpen(false)
+    if (!isBack) window.history.back();
+  }, []);
 
   const handleChange = (value:string)=>{
     removeParam("q")
@@ -122,7 +125,7 @@ const Search:FC = () => {
                 </h3>
                 <div className="flex max-[500px]:w-full max-[500px]:justify-end">
                   <b className="border border-gray-500 px-2 py-1 rounded-md text-xs uppercase text-gray-700">
-                    {car.plateNumber.plateNumberFormat()}
+                    {car.plateNumber?.plateNumberFormat()}
                   </b>
                 </div>
               </div>

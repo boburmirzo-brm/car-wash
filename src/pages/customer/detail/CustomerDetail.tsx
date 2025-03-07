@@ -1,7 +1,7 @@
 import TelPopUp from "@/components/tel-pop-up/TelPopUp";
 import { useGetCustomerByIdQuery } from "@/redux/api/customer";
 import { Button, Empty, Skeleton, Typography, Tooltip } from "antd";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useState } from "react";
 import { FaRegEdit } from "react-icons/fa";
 import { MdAttachMoney } from "react-icons/md";
 import { PlusOutlined } from "@ant-design/icons";
@@ -10,36 +10,23 @@ import { TbUser, TbUserX } from "react-icons/tb";
 import CarsView from "@/components/cars-view/CarsView";
 import PaymentPopup from "@/components/payment-popup/PaymentPopup";
 import CustomerPopup from "@/components/customer-popup/CustomerPopup";
+import CarPopup from "@/components/car-popup/CarPopup";
 
 const { Title } = Typography;
-type ModalType = "payment" | "edit" | null;
+type ModalType = "payment" | "edit" | "car" | null;
 
 const CustomerDetail = () => {
   const { id } = useParams<{ id: string }>();
   const { data, isLoading } = useGetCustomerByIdQuery(id || "");
   const [modalType, setModalType] = useState<ModalType>(null);
 
-  useEffect(() => {
-    const handleBackButton = (event: PopStateEvent) => {
-      if (modalType) {
-        event.preventDefault();
-        setModalType(null);
-      }
-    };
-    window.addEventListener("popstate", handleBackButton);
-    return () => {
-      window.removeEventListener("popstate", handleBackButton);
-    };
-  }, [modalType]);
-
   const handleOpenModal = (type: ModalType) => {
     setModalType(type);
-    window.history.pushState(null, "", window.location.pathname); 
   };
 
-  const handleClose = useCallback(() => {
+  const handleClose = useCallback((isBack?: boolean | undefined) => {
     setModalType(null);
-    window.history.back();
+    if (!isBack) window.history.back();
   }, []);
 
   const customer = data?.data.payload.customer;
@@ -88,14 +75,14 @@ const CustomerDetail = () => {
                 <div className="flex gap-1.5">
                   <Button
                     onClick={() => handleOpenModal("edit")}
-                    type="primary"
+                    type="default"
                   >
                     <FaRegEdit className="text-lg" />
-                    <span>Tahrirlash</span>
+                    {/* <span>Tahrirlash</span> */}
                   </Button>
                   <Button
                     onClick={() => handleOpenModal("payment")}
-                    type="primary"
+                    type="default"
                   >
                     <MdAttachMoney className="text-lg" />
                     <span>To'lov</span>
@@ -108,11 +95,17 @@ const CustomerDetail = () => {
         <div className="shadow-md md:p-6 p-4 rounded-md border border-gray-100 w-full">
           <div className="flex justify-between">
             <Title level={4}>Mijoz mashinalari</Title>
-            <Button type="primary">
+            <Button
+              onClick={() => handleOpenModal("car")}
+              loading={isLoading}
+              type="primary"
+            >
               <PlusOutlined />
             </Button>
           </div>
-          {cars?.length ? (
+          {isLoading ? (
+            <Skeleton active />
+          ) : cars?.length ? (
             <CarsView data={cars || []} />
           ) : (
             <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
@@ -122,7 +115,7 @@ const CustomerDetail = () => {
       <PaymentPopup
         open={modalType === "payment"}
         onClose={handleClose}
-        id={customer?._id || ""}
+        customerId={customer?._id || ""}
         name={customer?.full_name || ""}
         onlyPayment={true}
         // prevData={{price: 5000, amount: 60000, _id: "asdsadsad"}}
@@ -132,9 +125,19 @@ const CustomerDetail = () => {
         onClose={handleClose}
         customer={{
           full_name: customer?.full_name || "",
-          tel_primary: customer?.tel_primary || "",
+          tel_primary: customer?.tel_primary.slice(4) || "",
           id: customer?._id || "",
         }}
+      />
+      <CarPopup
+        open={modalType === "car"}
+        onClose={handleClose}
+        customerId={customer?._id}
+        // car={{
+        //   name: car?.name || "",
+        //   plateNumber: car?.plateNumber || "",
+        //   id: car?._id || "",
+        // }}
       />
     </>
   );

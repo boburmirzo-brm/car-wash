@@ -1,14 +1,13 @@
-import OnlineStatus from "./components/online-status/OnlineStatus"
-import AppRouter from "./pages"
+import OnlineStatus from "./components/online-status/OnlineStatus";
+import AppRouter from "./pages";
 
 const App = () => {
-  
   return (
     <>
-      <OnlineStatus/>
-      <AppRouter/>
+      <OnlineStatus />
+      <AppRouter />
     </>
-  )
-}
+  );
+};
 
-export default App
+export default App;

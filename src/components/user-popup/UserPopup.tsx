@@ -225,6 +225,7 @@ import {
 } from "@/redux/api/user";
 import { PatternFormat } from "react-number-format";
 import { Role } from "@/constant";
+import { useModalNavigation } from "@/hooks/useModalNavigation";
 
 interface Props {
   open: boolean;
@@ -240,6 +241,7 @@ const UserPopup: React.FC<Props> = ({ open, onClose, user, currentRole }) => {
   const [updateUser, { isLoading: updating }] = useUpdateUserMutation();
   const [createUser, { isLoading: creating }] = useCreateEmployerMutation();
   const [createAdmin] = useCreateAdminMutation();
+  useModalNavigation(open, onClose);
 
   // useEffect(() => {
   //   if (user) {
@@ -296,7 +298,7 @@ const UserPopup: React.FC<Props> = ({ open, onClose, user, currentRole }) => {
     <Modal
       title={isEditing ? "Profilni tahrirlash" : "Yangi foydalanuvchi yaratish"}
       open={open}
-      onCancel={onClose}
+      onCancel={()=>onClose()}
       footer={null}
       // centered
       className="max-w-[90vw] md:max-w-lg"
@@ -358,12 +360,14 @@ const UserPopup: React.FC<Props> = ({ open, onClose, user, currentRole }) => {
             <Form.Item
               label="Qo‘shimcha telefon raqam"
               name="tel_secondary"
-              rules={[
-                // { 
-                //   // pattern: /^\+998 \d{2}\ \d{3} \d{2} \d{2}$/,
-                //   message: "Telefon raqam noto‘g‘ri! (+998 90 123 45 67)",
-                // },
-              ]}
+              rules={
+                [
+                  // {
+                  //   // pattern: /^\+998 \d{2}\ \d{3} \d{2} \d{2}$/,
+                  //   message: "Telefon raqam noto‘g‘ri! (+998 90 123 45 67)",
+                  // },
+                ]
+              }
             >
               <PatternFormat
                 format="+998 ## ### ## ##"

@@ -7,6 +7,7 @@ import {
   useUpdateCustomerMutation,
 } from "@/redux/api/customer";
 import { useNavigate } from "react-router-dom";
+import { useModalNavigation } from "@/hooks/useModalNavigation";
 
 interface Props {
   open: boolean;
@@ -24,6 +25,8 @@ const CustomerPopup: React.FC<Props> = ({ open, onClose, customer }) => {
   // const [name, setName] = useState("");
   const [apiMessage, contextHolder] = message.useMessage();
   const full_name = Form.useWatch("full_name", form) || "";
+
+  useModalNavigation(open, onClose);
 
   // useEffect(() => {
   //   if (open && form) {
@@ -48,8 +51,7 @@ const CustomerPopup: React.FC<Props> = ({ open, onClose, customer }) => {
     if (customer) {
       updateCustomer({ id: customer.id || "", data: values })
         .unwrap()
-        .then((res) => {
-          console.log(res);
+        .then(() => {
           apiMessage.success("Mijoz ma'lumoti yangilandi!");
           setError(null);
           onClose();
@@ -86,7 +88,7 @@ const CustomerPopup: React.FC<Props> = ({ open, onClose, customer }) => {
     <Modal
       title={
         customer
-          ? `Mijozni tahrirlash ${customer.full_name}`
+          ? `Mijozni tahrirlash`
           : "Yangi mijoz qo'shish"
       }
       open={open}

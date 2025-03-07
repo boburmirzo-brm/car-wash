@@ -2,6 +2,18 @@ import { EndpointBuilder } from "@reduxjs/toolkit/query";
 import { mainApi } from ".";
 import { ICar, IDetailCar, IDetailPayload, IPayload } from "@/types";
 
+const invalidateCustomerTag = async (
+  queryFulfilled: Promise<any>,
+  dispatch: any
+) => {
+  try {
+    await queryFulfilled;
+    dispatch(carApi.util.invalidateTags(["CAR", "CUSTOMER"]));
+  } catch (error) {
+    console.error("Error:", error);
+  }
+};
+
 const carApi = mainApi.injectEndpoints({
   endpoints: (build: EndpointBuilder<any, any, any>) => ({
     getCars: build.query<IPayload<ICar>, { filter?: string } | void>({
@@ -22,7 +34,9 @@ const carApi = mainApi.injectEndpoints({
         method: "POST",
         body,
       }),
-      invalidatesTags: ["CAR"],
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+        await invalidateCustomerTag(queryFulfilled, dispatch);
+      },
     }),
     updateCar: build.mutation<any, { id: string; data: any }>({
       query: ({ id, data }) => ({
@@ -30,14 +44,18 @@ const carApi = mainApi.injectEndpoints({
         method: "PATCH",
         body: data,
       }),
-      invalidatesTags: ["CAR"],
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+        await invalidateCustomerTag(queryFulfilled, dispatch);
+      },
     }),
     deleteCar: build.mutation<any, string>({
       query: (id) => ({
         url: `/cars/${id}`,
         method: "DELETE",
       }),
-      invalidatesTags: ["CAR"],
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+        await invalidateCustomerTag(queryFulfilled, dispatch);
+      },
     }),
   }),
   overrideExisting: false,
