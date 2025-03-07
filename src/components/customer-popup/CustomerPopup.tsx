@@ -11,7 +11,7 @@ import { useModalNavigation } from "@/hooks/useModalNavigation";
 
 interface Props {
   open: boolean;
-  onClose: () => void;
+  onClose: (isBack: boolean) => void;
   customer?: ICustomerUpdate | undefined;
 }
 
@@ -54,7 +54,7 @@ const CustomerPopup: React.FC<Props> = ({ open, onClose, customer }) => {
         .then(() => {
           apiMessage.success("Mijoz ma'lumoti yangilandi!");
           setError(null);
-          onClose();
+          onClose(false);
         })
         .catch((err) => {
           setError(err.data.message[0]);
@@ -68,7 +68,7 @@ const CustomerPopup: React.FC<Props> = ({ open, onClose, customer }) => {
           apiMessage.success("Yangi mijoz qo'shildi!");
           form.resetFields();
           setError(null);
-          onClose();
+          onClose(true);
         })
         .catch((err) => {
           setError(err.data.message[0]);
@@ -80,7 +80,7 @@ const CustomerPopup: React.FC<Props> = ({ open, onClose, customer }) => {
   const handleClose = () => {
     form.resetFields();
     // setName("");
-    onClose();
+    onClose(false);
     setError(null);
   };
 

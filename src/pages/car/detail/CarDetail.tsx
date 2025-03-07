@@ -16,8 +16,9 @@ const CarDetail = () => {
   const handleOpenModal = (type: ModalType) => {
     setModalType(type);
   };
-  const handleClose = useCallback(() => {
+  const handleClose = useCallback((isBack?: boolean | undefined)=> {
     setModalType(null);
+    if (!isBack) window.history.back();
   }, []);
   const car = data?.data.payload;
 
@@ -71,7 +72,7 @@ const CarDetail = () => {
       </div>
       <CarPopup
         open={modalType === "edit"}
-        onClose={handleClose}
+        onClose={()=>handleClose()}
         car={{
           name: car?.name || "",
           plateNumber: car?.plateNumber || "",

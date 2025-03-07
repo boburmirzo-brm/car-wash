@@ -1,14 +1,16 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 import "./style.css";
-import { ACTIVE_ROUTES_EMPLOYEE, EMPLOYEE_NAVIGATION } from "@/static";
-import { useActiveRoute } from "@/hooks/useActiveRoute";
-import { useSelector } from "react-redux";
-import { RootState } from "@/redux";
+import { 
+  // ACTIVE_ROUTES_EMPLOYEE, 
+  EMPLOYEE_NAVIGATION } from "@/static";
+// import { useActiveRoute } from "@/hooks/useActiveRoute";
+// import { useSelector } from "react-redux";
+// import { RootState } from "@/redux";
 
 const BottomNavigation = () => {
-  useActiveRoute(ACTIVE_ROUTES_EMPLOYEE);
-  const { activePath } = useSelector((state: RootState) => state.activeRoute);
+  // useActiveRoute(ACTIVE_ROUTES_EMPLOYEE);
+  // const { activePath } = useSelector((state: RootState) => state.activeRoute);
 
   return (
     <>
@@ -17,9 +19,7 @@ const BottomNavigation = () => {
           <NavLink
             key={link.id}
             end={link.path === "/employee"}
-            className={`bottom-navigation ${
-              activePath === link.path ? "active" : ""
-            } text-gray-700 flex-1 flex items-center justify-center text-[20px]`}
+            className={`bottom-navigation text-gray-700 flex-1 flex items-center justify-center text-[20px]`}
             to={link.path}
           >
             {link.icon}
