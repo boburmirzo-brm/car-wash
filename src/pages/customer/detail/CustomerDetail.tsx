@@ -125,7 +125,7 @@ const CustomerDetail = () => {
         onClose={handleClose}
         customer={{
           full_name: customer?.full_name || "",
-          tel_primary: customer?.tel_primary.slice(4) || "",
+          tel_primary: customer?.tel_primary?.slice(4) || "",
           id: customer?._id || "",
         }}
       />

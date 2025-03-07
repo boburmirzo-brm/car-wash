@@ -72,7 +72,7 @@ const CarDetail = () => {
       </div>
       <CarPopup
         open={modalType === "edit"}
-        onClose={()=>handleClose()}
+        onClose={handleClose}
         car={{
           name: car?.name || "",
           plateNumber: car?.plateNumber || "",
