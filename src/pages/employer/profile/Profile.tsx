@@ -95,7 +95,7 @@ const Profile = () => {
       <UserPopup
         open={isEditing}
         onClose={handleClose}
-        user={user}
+        prevData={user}
         currentRole={user?.role}
       />
     </div>

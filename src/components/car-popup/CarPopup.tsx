@@ -7,11 +7,11 @@ import { useCreateCarMutation, useUpdateCarMutation } from "@/redux/api/car";
 interface Props {
   open: boolean;
   onClose: () => void;
-  car?: ICarUpdate | undefined;
+  prevData?: ICarUpdate | undefined;
   customerId?: string;
 }
 
-const CarPopup: React.FC<Props> = ({ open, onClose, car, customerId }) => {
+const CarPopup: React.FC<Props> = ({ open, onClose, prevData, customerId }) => {
   const [form] = Form.useForm();
   const [createCar, { isLoading }] = useCreateCarMutation();
   const [updateCar, { isLoading: updateLoading }] = useUpdateCarMutation();
@@ -25,8 +25,9 @@ const CarPopup: React.FC<Props> = ({ open, onClose, car, customerId }) => {
     name: string;
     customerId?: string;
   }) => {
-    if (car) {
-      updateCar({ id: car.id || "", data: values })
+    if (prevData) {
+      values.plateNumber = values?.plateNumber?.toUpperCase();
+      updateCar({ id: prevData.id || "", data: values })
         .unwrap()
         .then(() => {
           apiMessage.success("Mashina ma'lumoti yangilandi!");
@@ -34,10 +35,15 @@ const CarPopup: React.FC<Props> = ({ open, onClose, car, customerId }) => {
           onClose();
         })
         .catch((err) => {
-          setError(err.data.message);
+          let error =
+            typeof err.data.message === "string"
+              ? err.data.message
+              : err.data.message[0];
+          setError(error);
         });
     } else {
       values.customerId = customerId;
+      values.plateNumber = values?.plateNumber?.toUpperCase();
       !values.plateNumber && delete values.plateNumber;
       createCar(values)
         .unwrap()
@@ -48,7 +54,12 @@ const CarPopup: React.FC<Props> = ({ open, onClose, car, customerId }) => {
           onClose();
         })
         .catch((err) => {
-          setError(err.data.message);
+          let error =
+            typeof err.data.message === "string"
+              ? err.data.message
+              : err.data.message[0];
+
+          setError(error);
         });
     }
   };
@@ -61,14 +72,14 @@ const CarPopup: React.FC<Props> = ({ open, onClose, car, customerId }) => {
 
   return (
     <Modal
-      title={car ? `Mashina tahrirlash` : "Yangi mashina qo'shish"}
+      title={prevData ? `Mashina tahrirlash` : "Yangi mashina qo'shish"}
       open={open}
       onCancel={handleClose}
       footer={null}
     >
       <Form
         form={form}
-        initialValues={car}
+        initialValues={prevData}
         layout="vertical"
         onFinish={handleSave}
       >
@@ -97,7 +108,7 @@ const CarPopup: React.FC<Props> = ({ open, onClose, car, customerId }) => {
           <Button type="primary" loading={isLoading} block htmlType="submit">
             {isLoading || updateLoading
               ? "Kuting"
-              : car
+              : prevData
               ? "Saqlash"
               : "Qo'shish"}
           </Button>

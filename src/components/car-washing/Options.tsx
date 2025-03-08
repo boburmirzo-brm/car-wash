@@ -62,7 +62,7 @@ const Options = ({ id }: { id: number }) => {
       <CustomerPopup
         open={modalType === "edit"}
         onClose={handleClose}
-        customer={{
+        prevData={{
           full_name: "Abduhalilov Muhammadumar",
           tel_primary: "+998913431223",
           id: `${id}`,

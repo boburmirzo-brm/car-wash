@@ -6,14 +6,16 @@ import {
   Input,
   Checkbox,
   InputRef,
-  Select,
+  // Select,
   message,
+  Radio,
 } from "antd";
 import type { FormProps } from "antd";
 import { NumericFormat } from "react-number-format";
 import { IPaymentAmount, IPaymentCreate } from "@/types";
 import { useCreatePaymentMutation } from "@/redux/api/payment";
 import { useModalNavigation } from "@/hooks/useModalNavigation";
+import { PaymentType } from "@/constant";
 
 type FieldType = {
   price?: string;
@@ -56,7 +58,6 @@ const PaymentPopup: FC<Props> = ({
       }, 100);
     }
   }, [open]);
-
 
   const onFinish: FormProps<FieldType>["onFinish"] = (values) => {
     const price =
@@ -144,13 +145,20 @@ const PaymentPopup: FC<Props> = ({
         </Form.Item>
 
         <Form.Item<FieldType> label="To'lov turi" name="type">
-          <Select
+          <Radio.Group
+            // value={value}
+            options={[
+              { value: PaymentType.CASH, label: "Naxt" },
+              { value: PaymentType.CARD, label: "Karta" },
+            ]}
+          />
+          {/* <Select
             style={{ width: "100%" }}
             options={[
               { value: "CASH", label: "Naxt" },
               { value: "CARD", label: "Karta" },
             ]}
-          />
+          /> */}
         </Form.Item>
 
         {!onlyPayment && (

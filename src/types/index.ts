@@ -16,6 +16,13 @@ export interface ICarUpdate {
   name: string;
 }
 
+export interface ICarWashingUpdate {
+  id?: string;
+  washAmount: number;
+  status: string;
+  comment: string;
+}
+
 export interface IPayload<T> {
   statusCode: number;
   message: string;

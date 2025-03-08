@@ -230,13 +230,13 @@ import { useModalNavigation } from "@/hooks/useModalNavigation";
 interface Props {
   open: boolean;
   onClose: () => void;
-  user?: any;
+  prevData?: any;
   currentRole: Role;
 }
 
 const { Option } = Select;
 
-const UserPopup: React.FC<Props> = ({ open, onClose, user, currentRole }) => {
+const UserPopup: React.FC<Props> = ({ open, onClose, prevData, currentRole }) => {
   const [form] = Form.useForm();
   const [updateUser, { isLoading: updating }] = useUpdateUserMutation();
   const [createUser, { isLoading: creating }] = useCreateEmployerMutation();
@@ -263,8 +263,8 @@ const UserPopup: React.FC<Props> = ({ open, onClose, user, currentRole }) => {
     form
       .validateFields()
       .then((values) => {
-        if (user) {
-          const userId = user?.id || user?._id;
+        if (prevData) {
+          const userId = prevData?.id || prevData?._id;
           return updateUser({ id: userId, data: values }).unwrap();
         } else {
           if (values.role === Role.ADMIN && currentRole !== Role.OWNER) {
@@ -291,7 +291,7 @@ const UserPopup: React.FC<Props> = ({ open, onClose, user, currentRole }) => {
       });
   };
 
-  const isEditing = Boolean(user);
+  const isEditing = Boolean(prevData);
   const isEmployee = currentRole === Role.EMPLOYEE;
 
   return (
@@ -306,7 +306,7 @@ const UserPopup: React.FC<Props> = ({ open, onClose, user, currentRole }) => {
       <Form
         form={form}
         layout="vertical"
-        initialValues={user}
+        initialValues={prevData}
         className="space-y-3 md:space-y-5 p-2 md:p-4"
       >
         <Form.Item

@@ -34,7 +34,7 @@ const Sidebar: React.FC<{ role: Role }> = ({ role }) => {
         <UserPopup
           open={isEditing}
           onClose={() => setIsEditing(false)}
-          user={selectedUser}
+          prevData={selectedUser}
           currentRole={role}
         />
       )}

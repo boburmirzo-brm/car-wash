@@ -58,7 +58,7 @@ const Search:FC = () => {
     <div>
       <div className="flex gap-2">
         <Input
-          autoFocus
+          // autoFocus
           placeholder="Qidirish..."
           value={value}
           onChange={handleChangeInput}

@@ -12,10 +12,10 @@ import { useModalNavigation } from "@/hooks/useModalNavigation";
 interface Props {
   open: boolean;
   onClose: (isBack: boolean) => void;
-  customer?: ICustomerUpdate | undefined;
+  prevData?: ICustomerUpdate | undefined;
 }
 
-const CustomerPopup: React.FC<Props> = ({ open, onClose, customer }) => {
+const CustomerPopup: React.FC<Props> = ({ open, onClose, prevData }) => {
   const [form] = Form.useForm();
   const [error, setError] = useState<null | string>(null);
   const [createCustomer, { isLoading }] = useCreateCustomerMutation();
@@ -48,8 +48,8 @@ const CustomerPopup: React.FC<Props> = ({ open, onClose, customer }) => {
     values.tel_primary =
       values.tel_primary && values.tel_primary.replace(/\s/gi, "");
     !values.tel_primary && delete values.tel_primary;
-    if (customer) {
-      updateCustomer({ id: customer.id || "", data: values })
+    if (prevData) {
+      updateCustomer({ id: prevData.id || "", data: values })
         .unwrap()
         .then(() => {
           apiMessage.success("Mijoz ma'lumoti yangilandi!");
@@ -57,7 +57,11 @@ const CustomerPopup: React.FC<Props> = ({ open, onClose, customer }) => {
           onClose(false);
         })
         .catch((err) => {
-          setError(err.data.message[0]);
+          let error =
+            typeof err.data.message === "string"
+              ? err.data.message
+              : err.data.message[0];
+          setError(error);
         });
     } else {
       createCustomer(values)
@@ -71,7 +75,12 @@ const CustomerPopup: React.FC<Props> = ({ open, onClose, customer }) => {
           onClose(true);
         })
         .catch((err) => {
-          setError(err.data.message[0]);
+          let error =
+            typeof err.data.message === "string"
+              ? err.data.message
+              : err.data.message[0];
+
+          setError(error);
         });
       // setName("");
     }
@@ -86,18 +95,14 @@ const CustomerPopup: React.FC<Props> = ({ open, onClose, customer }) => {
 
   return (
     <Modal
-      title={
-        customer
-          ? `Mijozni tahrirlash`
-          : "Yangi mijoz qo'shish"
-      }
+      title={prevData ? `Mijozni tahrirlash` : "Yangi mijoz qo'shish"}
       open={open}
       onCancel={handleClose}
       footer={null}
     >
       <Form
         form={form}
-        initialValues={customer}
+        initialValues={prevData}
         layout="vertical"
         onFinish={handleSave}
       >
@@ -151,7 +156,7 @@ const CustomerPopup: React.FC<Props> = ({ open, onClose, customer }) => {
           <Button type="primary" loading={isLoading} block htmlType="submit">
             {isLoading || updateLoading
               ? "Kuting"
-              : customer
+              : prevData
               ? "Saqlash"
               : "Qo'shish"}
           </Button>

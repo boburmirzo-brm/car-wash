@@ -123,7 +123,7 @@ const CustomerDetail = () => {
       <CustomerPopup
         open={modalType === "edit"}
         onClose={handleClose}
-        customer={{
+        prevData={{
           full_name: customer?.full_name || "",
           tel_primary: customer?.tel_primary?.slice(4) || "",
           id: customer?._id || "",
@@ -133,7 +133,7 @@ const CustomerDetail = () => {
         open={modalType === "car"}
         onClose={handleClose}
         customerId={customer?._id}
-        // car={{
+        // prevData={{
         //   name: car?.name || "",
         //   plateNumber: car?.plateNumber || "",
         //   id: car?._id || "",

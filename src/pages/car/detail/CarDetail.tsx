@@ -5,6 +5,7 @@ import { Link, useParams } from "react-router-dom";
 import { IoCarOutline, IoPlayOutline } from "react-icons/io5";
 import { FaRegEdit } from "react-icons/fa";
 import CarPopup from "@/components/car-popup/CarPopup";
+import CarWashingPopup from "@/components/car-washing-popup/CarWashingPopup";
 
 type ModalType = "start" | "edit" | null;
 
@@ -59,7 +60,7 @@ const CarDetail = () => {
                   </Button>
                   <Button
                     onClick={() => handleOpenModal("start")}
-                    type="default"
+                    type="primary"
                   >
                     <IoPlayOutline className="text-lg" />
                     <span>Start</span>
@@ -73,11 +74,20 @@ const CarDetail = () => {
       <CarPopup
         open={modalType === "edit"}
         onClose={handleClose}
-        car={{
+        prevData={{
           name: car?.name || "",
           plateNumber: car?.plateNumber || "",
           id: car?._id || "",
         }}
+      />
+      <CarWashingPopup
+        open={modalType === "start"}
+        onClose={handleClose}
+        customerId={car?.customerId._id}
+        carId={car?._id}
+        // prevData={{
+        //   status: CarWashingStatus.PENDING,
+        // }}
       />
     </>
   );
