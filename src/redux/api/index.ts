@@ -16,7 +16,7 @@ const baseQuery = async (args: any, api: any, extraOptions: any) => {
   const response = await rawBaseQuery(args, api, extraOptions);
   if (response.error) {
     const { status } = response.error;
-    if (status === 401 || status === 403) {
+    if (status === 401) {
       dispatch(logout());
     }
   }

@@ -1,10 +1,13 @@
 import CarWashing from "@/components/car-washing/CarWashing"
+import { useGetMyWashingsQuery } from "@/redux/api/car-washing"
 import React from "react"
 
 const Employer = () => {
+  const {data} = useGetMyWashingsQuery()
+  
   return (
     <>
-      <CarWashing role={"ADMIN"}/>
+      <CarWashing data={data?.data}/>
     </>
   )
 }

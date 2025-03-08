@@ -1,11 +1,30 @@
 import { EndpointBuilder } from "@reduxjs/toolkit/query/react";
 import { mainApi } from ".";
 
+const invalidateCustomerTag = async (
+  queryFulfilled: Promise<any>,
+  dispatch: any
+) => {
+  try {
+    await queryFulfilled;
+    dispatch(carWashingApi.util.invalidateTags(["CAR_WASHING"]));
+  } catch (error) {
+    console.error("Error:", error);
+  }
+};
+
 const carWashingApi = mainApi.injectEndpoints({
   endpoints: (build: EndpointBuilder<any, any, any>) => ({
     getCarWashings: build.query<any, void>({
       query: () => ({
         url: "car-washing",
+        method: "GET",
+      }),
+      providesTags: ["CAR_WASHING"],
+    }),
+    getMyWashings: build.query<any, void>({
+      query: () => ({
+        url: "car-washing/my",
         method: "GET",
       }),
       providesTags: ["CAR_WASHING"],
@@ -23,7 +42,9 @@ const carWashingApi = mainApi.injectEndpoints({
         method: "POST",
         body,
       }),
-      invalidatesTags: ["CAR_WASHING"],
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+        await invalidateCustomerTag(queryFulfilled, dispatch);
+      },
     }),
     updateCarWashing: build.mutation<any, { id: string; data: any }>({
       query: ({ id, data }) => ({
@@ -31,21 +52,18 @@ const carWashingApi = mainApi.injectEndpoints({
         method: "PUT",
         body: data,
       }),
-      invalidatesTags: ({ id }) => [{ type: "CAR_WASHING", id }],
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+        await invalidateCustomerTag(queryFulfilled, dispatch);
+      },
     }),
     deleteCarWashing: build.mutation<any, string>({
       query: (id) => ({
         url: `car-washing/${id}`,
         method: "DELETE",
       }),
-      invalidatesTags: (id) => [{ type: "CAR_WASHING", id }],
-    }),
-    getMyWashings: build.query<any, void>({
-      query: () => ({
-        url: "car-washing/my",
-        method: "GET",
-      }),
-      providesTags: ["CAR_WASHING"],
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+        await invalidateCustomerTag(queryFulfilled, dispatch);
+      },
     }),
   }),
   overrideExisting: false,

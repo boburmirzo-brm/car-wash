@@ -8,6 +8,7 @@ import {
 } from "@/redux/api/customer";
 import { useNavigate } from "react-router-dom";
 import { useModalNavigation } from "@/hooks/useModalNavigation";
+import { checkErrorMessage } from "@/helper";
 
 interface Props {
   open: boolean;
@@ -49,6 +50,11 @@ const CustomerPopup: React.FC<Props> = ({ open, onClose, prevData }) => {
       values.tel_primary && values.tel_primary.replace(/\s/gi, "");
     !values.tel_primary && delete values.tel_primary;
     if (prevData) {
+      if(values.tel_primary){
+        values.tel_primary =  values?.tel_primary[0] === "+" ? values?.tel_primary : `+998${values?.tel_primary}`
+      }
+      console.log(values);
+      
       updateCustomer({ id: prevData.id || "", data: values })
         .unwrap()
         .then(() => {
@@ -57,11 +63,7 @@ const CustomerPopup: React.FC<Props> = ({ open, onClose, prevData }) => {
           onClose(false);
         })
         .catch((err) => {
-          let error =
-            typeof err.data.message === "string"
-              ? err.data.message
-              : err.data.message[0];
-          setError(error);
+          setError(checkErrorMessage(err.data.message));
         });
     } else {
       createCustomer(values)
@@ -75,12 +77,7 @@ const CustomerPopup: React.FC<Props> = ({ open, onClose, prevData }) => {
           onClose(true);
         })
         .catch((err) => {
-          let error =
-            typeof err.data.message === "string"
-              ? err.data.message
-              : err.data.message[0];
-
-          setError(error);
+          setError(checkErrorMessage(err.data.message));
         });
       // setName("");
     }

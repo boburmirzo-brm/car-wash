@@ -3,6 +3,7 @@ import { Modal, Form, Input, Button, message, Alert } from "antd";
 import { ICarUpdate } from "@/types";
 import { useModalNavigation } from "@/hooks/useModalNavigation";
 import { useCreateCarMutation, useUpdateCarMutation } from "@/redux/api/car";
+import { checkErrorMessage } from "@/helper";
 
 interface Props {
   open: boolean;
@@ -26,7 +27,7 @@ const CarPopup: React.FC<Props> = ({ open, onClose, prevData, customerId }) => {
     customerId?: string;
   }) => {
     if (prevData) {
-      values.plateNumber = values?.plateNumber?.toUpperCase();
+      values.plateNumber = values?.plateNumber?.replace(/\s/gi, "")?.toUpperCase();
       updateCar({ id: prevData.id || "", data: values })
         .unwrap()
         .then(() => {
@@ -35,16 +36,13 @@ const CarPopup: React.FC<Props> = ({ open, onClose, prevData, customerId }) => {
           onClose();
         })
         .catch((err) => {
-          let error =
-            typeof err.data.message === "string"
-              ? err.data.message
-              : err.data.message[0];
-          setError(error);
+          setError(checkErrorMessage(err.data.message));
         });
     } else {
       values.customerId = customerId;
-      values.plateNumber = values?.plateNumber?.toUpperCase();
+      values.plateNumber = values?.plateNumber?.replace(/\s/gi, "")?.toUpperCase();
       !values.plateNumber && delete values.plateNumber;
+
       createCar(values)
         .unwrap()
         .then(() => {
@@ -54,12 +52,7 @@ const CarPopup: React.FC<Props> = ({ open, onClose, prevData, customerId }) => {
           onClose();
         })
         .catch((err) => {
-          let error =
-            typeof err.data.message === "string"
-              ? err.data.message
-              : err.data.message[0];
-
-          setError(error);
+          setError(checkErrorMessage(err.data.message));
         });
     }
   };
@@ -79,7 +72,7 @@ const CarPopup: React.FC<Props> = ({ open, onClose, prevData, customerId }) => {
     >
       <Form
         form={form}
-        initialValues={prevData}
+        initialValues={{...prevData, plateNumber: prevData?.plateNumber?.plateNumberFormat()}}
         layout="vertical"
         onFinish={handleSave}
       >

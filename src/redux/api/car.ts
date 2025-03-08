@@ -8,7 +8,7 @@ const invalidateCustomerTag = async (
 ) => {
   try {
     await queryFulfilled;
-    dispatch(carApi.util.invalidateTags(["CAR", "CUSTOMER"]));
+    dispatch(carApi.util.invalidateTags(["CAR", "CUSTOMER", "CAR_WASHING"]));
   } catch (error) {
     console.error("Error:", error);
   }
