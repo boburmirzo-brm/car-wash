@@ -9,6 +9,10 @@
   font-family: Roboto, sans-serif;
 }
 
+:root{
+  --color-primary: #314158;
+}
+
 @theme {
   --font-roboto: Roboto, sans-serif;
   --color-primary: #314158;

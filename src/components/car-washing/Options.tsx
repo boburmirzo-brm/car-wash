@@ -1,21 +1,22 @@
 import React, { useCallback, useState } from "react";
 import { MoreOutlined } from "@ant-design/icons";
 import { Popover, Button } from "antd";
-import PaymentPopup from "../payment-popup/PaymentPopup";
-import CustomerPopup from "../customer-popup/CustomerPopup";
+import CarWashingPopup from "../car-washing-popup/CarWashingPopup";
 
-type ModalType = "payment" | "edit" | null;
+type ModalType = "car-washing" | "edit" | null;
 
-const Options = ({ id }: { id: number }) => {
-  const [selectedId, setSelectedId] = useState<number | null>(null);
+const Options = ({ data }: { data: any }) => {
+  const [selected, setSelected] = useState<any>(null);
   const [open, setOpen] = useState(false);
   const [modalType, setModalType] = useState<ModalType>(null);
 
   const showModal = (type: ModalType) => {
-    setSelectedId(id);
+    setSelected(data);
     setModalType(type);
     setOpen(false);
   };
+  console.log(selected);
+  
 
   const handleClose = useCallback((isBack?: boolean | undefined) => {
     setModalType(null);
@@ -24,7 +25,7 @@ const Options = ({ id }: { id: number }) => {
 
   const content = (
     <div className="flex flex-col">
-      <Button onClick={() => showModal("payment")} type="text">
+      <Button onClick={() => showModal("car-washing")} type="text">
         To'lov
       </Button>
       <Button onClick={() => showModal("edit")} type="text">
@@ -49,26 +50,15 @@ const Options = ({ id }: { id: number }) => {
       </Popover>
 
       {/* {modalType === "payment" && ( */}
-      <PaymentPopup
-        open={modalType === "payment"}
+      <CarWashingPopup
+        open={modalType === "car-washing"}
         onClose={handleClose}
-        customerId={selectedId?.toString() || ""}
-        name="John Doe"
-        // prevData={{price: 5000, amount: 60000, _id: "asdsadsad"}}
+        customerId={selected?.customerId?._id}
+        carId={selected?.carId?._id}
+        prevData={data}
       />
       {/* )} */}
 
-      {/* {modalType === "edit" && ( */}
-      <CustomerPopup
-        open={modalType === "edit"}
-        onClose={handleClose}
-        prevData={{
-          full_name: "Abduhalilov Muhammadumar",
-          tel_primary: "+998913431223",
-          id: `${id}`,
-        }}
-      />
-      {/* )} */}
     </>
   );
 };

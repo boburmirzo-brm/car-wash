@@ -7,7 +7,7 @@ const invalidateCustomerTag = async (
 ) => {
   try {
     await queryFulfilled;
-    dispatch(extendedApi.util.invalidateTags(["PAYMENT", "CUSTOMER"]));
+    dispatch(extendedApi.util.invalidateTags(["SALARY", "USER"]));
   } catch (error) {
     console.error("Error:", error);
   }
@@ -15,11 +15,10 @@ const invalidateCustomerTag = async (
 
 const extendedApi = mainApi.injectEndpoints({
   endpoints: (build: EndpointBuilder<any, any, any>) => ({
-    createPayment: build.mutation<any, any>({
-      query: (body) => ({
-        url: `/payments`,
-        method: "POST",
-        body,
+    getSalaryById: build.query<any, any>({
+      query: (id) => ({
+        url: `/salary/${id}`,
+        method: "GET",
       }),
       async onQueryStarted(_, { dispatch, queryFulfilled }) {
         await invalidateCustomerTag(queryFulfilled, dispatch);
@@ -29,6 +28,6 @@ const extendedApi = mainApi.injectEndpoints({
   overrideExisting: false,
 });
 
-export const { useCreatePaymentMutation } = extendedApi;
+export const { useGetSalaryByIdQuery } = extendedApi;
 
 export default extendedApi;

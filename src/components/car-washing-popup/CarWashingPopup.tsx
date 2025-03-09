@@ -1,18 +1,38 @@
-import React, { useState } from "react";
-import { Modal, Form, Input, Button, message, Alert } from "antd";
-import { ICarWashingUpdate } from "@/types";
+import React, { useEffect, useRef, useState } from "react";
+import {
+  Modal,
+  Form,
+  Input,
+  Button,
+  message,
+  Alert,
+  Checkbox,
+  Radio,
+  InputRef,
+} from "antd";
 import { useModalNavigation } from "@/hooks/useModalNavigation";
 import { MdOutlineLocalCarWash } from "react-icons/md";
 import {
   useCreateCarWashingMutation,
   useUpdateCarWashingMutation,
 } from "@/redux/api/car-washing";
-import { CarWashingStatus } from "@/constant";
+import { CarWashingStatus, PaymentType } from "@/constant";
+import { NumericFormat } from "react-number-format";
+import TextArea from "antd/es/input/TextArea";
+import { toNumber } from "@/helper";
+
+type FieldType = {
+  washAmount?: string;
+  paidAmount?: string;
+  nasiya?: string;
+  comment: string;
+  type: string;
+};
 
 interface Props {
   open: boolean;
   onClose: () => void;
-  prevData?: ICarWashingUpdate | undefined;
+  prevData?: any;
   customerId?: string;
   carId?: string;
 }
@@ -30,27 +50,56 @@ const CarWashingPopup: React.FC<Props> = ({
     useUpdateCarWashingMutation();
   const [error, setError] = useState<null | string>(null);
   const [apiMessage, contextHolder] = message.useMessage();
-
+  const nasiya = Form.useWatch("nasiya", form);
+  const priceInputRef = useRef<InputRef>(null);
   useModalNavigation(open, onClose);
+
+  useEffect(() => {
+    if (open) {
+      setTimeout(() => {
+        priceInputRef.current?.focus();
+      }, 100);
+    }
+  }, [open]);
 
   const handleSave = (values: {
     washAmount: number;
+    paidAmount?: number;
     status: string;
     comment: string;
+    nasiya?: boolean;
+    type: string;
   }) => {
-    console.log(customerId);
-    console.log(values);
-
     if (prevData) {
+      const washAmount = toNumber(values.washAmount);
+      const paidAmount = toNumber(values.paidAmount);
+
+      let data: {
+        washAmount: number;
+        paidAmount: number;
+        comment?: string;
+        type: string;
+        status: string;
+        // customerId: string;
+        // carId: string;
+      } = {
+        washAmount,
+        paidAmount: values.nasiya ? paidAmount : washAmount,
+        comment: values.comment,
+        type: values.type,
+        status: CarWashingStatus.COMPLETED
+        // customerId: customerId || "",
+        // carId: carId || "",
+      };
+      if (!data.comment) {
+        delete data.comment;
+      }
+      console.log(data);
+      console.log(prevData);
+      
       updateCarWashing({
-        id: prevData.id || "",
-        data: {
-          carId: carId || "",
-          customerId: customerId || "",
-          status: CarWashingStatus.COMPLETED,
-          washAmount: 75000,
-          comment: "Lorem ipsum", // optional
-        },
+        id: prevData._id,
+        data,
       })
         .unwrap()
         .then(() => {
@@ -96,37 +145,77 @@ const CarWashingPopup: React.FC<Props> = ({
 
   return (
     <Modal
-      title={
-        prevData ? `Mashina yuvishni tahrirlash` : "Mashina yuvishni boshlash"
-      }
+      title={prevData ? `Mashina yuvish` : "Mashina yuvishni boshlash"}
       open={open}
       onCancel={handleClose}
       footer={null}
     >
       <Form
         form={form}
-        initialValues={prevData}
+        initialValues={{ type: "CASH" }}
         layout="vertical"
         onFinish={handleSave}
       >
         {prevData ? (
           <>
-            <Form.Item
-              label="Mashina nomi"
-              name="name"
-              rules={[
-                {
-                  required: true,
-                  message: "Iltimos, mashina nomini kiriting!",
-                },
-              ]}
-              className="flex-1"
+            <Form.Item<FieldType>
+              label={nasiya ? "Kelishilgan summa" : "Summa"}
+              name="washAmount"
+              rules={[{ required: true, message: "Summani kiriting!" }]}
             >
-              <Input placeholder="nomi" />
+              <NumericFormat
+                className="w-full p-2 border border-gray-300 rounded-md"
+                customInput={Input}
+                thousandSeparator=" "
+                fixedDecimalScale
+                allowNegative={false}
+                placeholder="Summani kiriting"
+                getInputRef={priceInputRef}
+              />
             </Form.Item>
 
-            <Form.Item label="Mashina raqami" name="plateNumber">
-              <Input placeholder="raqami" />
+            {nasiya && (
+              <Form.Item<FieldType>
+                label="To'langan summa"
+                name="paidAmount"
+                rules={[
+                  { required: true, message: "To'lov summasini kiriting!" },
+                ]}
+              >
+                <NumericFormat
+                  className="w-full p-2 border border-gray-300 rounded-md"
+                  customInput={Input}
+                  thousandSeparator=" "
+                  fixedDecimalScale
+                  allowNegative={false}
+                  placeholder="Summani kiriting"
+                />
+              </Form.Item>
+            )}
+
+            <Form.Item<FieldType> label="Izoh" name="comment">
+              <TextArea rows={2} />
+            </Form.Item>
+
+            <Form.Item<FieldType> label="To'lov turi" name="type">
+              <Radio.Group
+                // value={value}
+                options={[
+                  { value: PaymentType.CASH, label: "Naxt" },
+                  { value: PaymentType.CARD, label: "Karta" },
+                ]}
+              />
+              {/* <Select
+            style={{ width: "100%" }}
+            options={[
+              { value: "CASH", label: "Naxt" },
+              { value: "CARD", label: "Karta" },
+            ]}
+          /> */}
+            </Form.Item>
+
+            <Form.Item<FieldType> name="nasiya" valuePropName="checked">
+              <Checkbox>Nasiya</Checkbox>
             </Form.Item>
           </>
         ) : (

@@ -1,11 +1,14 @@
 import { useGetCarByIdQuery } from "@/redux/api/car";
-import { Button, Skeleton } from "antd";
+import { Button, Skeleton, Tooltip } from "antd";
 import React, { useCallback, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { IoCarOutline, IoPlayOutline } from "react-icons/io5";
 import { FaRegEdit } from "react-icons/fa";
 import CarPopup from "@/components/car-popup/CarPopup";
 import CarWashingPopup from "@/components/car-washing-popup/CarWashingPopup";
+import Title from "antd/es/typography/Title";
+import { PlusOutlined } from "@ant-design/icons";
+import { CustomEmpty } from "@/utils";
 
 type ModalType = "start" | "edit" | null;
 
@@ -17,7 +20,7 @@ const CarDetail = () => {
   const handleOpenModal = (type: ModalType) => {
     setModalType(type);
   };
-  const handleClose = useCallback((isBack?: boolean | undefined)=> {
+  const handleClose = useCallback((isBack?: boolean | undefined) => {
     setModalType(null);
     if (!isBack) window.history.back();
   }, []);
@@ -43,6 +46,21 @@ const CarDetail = () => {
                   >
                     {car?.customerId.full_name}
                   </Link>
+                  <p className="text-gray-600 text-sm mt-3">
+                    Ro'yhatdan o'tkazgan{" "}
+                    <span className="text-black">
+                      {car?.employerId?.l_name?.charAt(0)}.{" "}
+                      {car?.employerId?.f_name}
+                    </span>
+                  </p>
+                  <Tooltip
+                    placement="bottom"
+                    title={car?.createdAt.timeFormat()}
+                  >
+                    <span className="text-gray-600">
+                      {car?.createdAt.dateFormat()}
+                    </span>
+                  </Tooltip>
                 </div>
               </div>
 
@@ -70,6 +88,12 @@ const CarDetail = () => {
             </div>
           )}
         </div>
+        <div className="shadow-md md:p-6 p-4 rounded-md border border-gray-100 w-full">
+          <div className="flex justify-between">
+            <Title level={4}>Tarix</Title>
+          </div>
+          <CustomEmpty />
+        </div>
       </div>
       <CarPopup
         open={modalType === "edit"}
@@ -86,7 +110,7 @@ const CarDetail = () => {
         customerId={car?.customerId._id}
         carId={car?._id}
         // prevData={{
-        //   status: CarWashingStatus.PENDING,
+        //   id:"asdasd"
         // }}
       />
     </>

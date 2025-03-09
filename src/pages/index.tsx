@@ -3,6 +3,9 @@ import { Suspense } from "@/utils";
 import React, { lazy } from "react";
 import { useRoutes } from "react-router-dom";
 const Dashboard = lazy(() => import("./dashboard/Dashboard"));
+const Admins = lazy(() => import("./admins/Admins"));
+const Employees = lazy(() => import("./employees/Employees"));
+const UserDetail = lazy(() => import("./user/detail/UserDetail"));
 const Login = lazy(() => import("./login/Login"));
 const Auth = lazy(() => import("./auth/Auth"));
 const CustomAuth = lazy(() => import("./custom-auth/CustomAuth"));
@@ -49,6 +52,30 @@ const AppRouter = () => {
                       element: (
                         <Suspense>
                           <Dashboard />
+                        </Suspense>
+                      ),
+                    },
+                    {
+                      path: "/admins",
+                      element: (
+                        <Suspense>
+                          <Admins />
+                        </Suspense>
+                      ),
+                    },
+                    {
+                      path: "/employees",
+                      element: (
+                        <Suspense>
+                          <Employees />
+                        </Suspense>
+                      ),
+                    },
+                    {
+                      path: "/:dynamic/user/:id",
+                      element: (
+                        <Suspense>
+                          <UserDetail />
                         </Suspense>
                       ),
                     },

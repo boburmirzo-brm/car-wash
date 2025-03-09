@@ -1,5 +1,5 @@
 import React, { ReactNode } from "react";
-import { Spin } from 'antd';
+import { Empty, Spin } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
 
 export const Loading = () => {
@@ -14,7 +14,10 @@ export const MiniLoading = () => {
     </div>
 }
 
-
 export const Suspense = ({children}:{children: ReactNode}) => {
     return <React.Suspense fallback={<Loading/>}>{children}</React.Suspense>
+}
+
+export const CustomEmpty = ({title="Ma'lumotlar topilmadi"}:{title?:string }) => {
+    return <Empty description={title} image={Empty.PRESENTED_IMAGE_SIMPLE} />
 }

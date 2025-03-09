@@ -9,11 +9,14 @@ import { MdLogout } from "react-icons/md";
 import { useDispatch } from "react-redux";
 import { logout } from "@/redux/features/auth.slice";
 import { TbUserShield } from "react-icons/tb";
+import { useGetSalaryByIdQuery } from "@/redux/api/salary";
 
 const { Title } = Typography;
 
 const Profile = () => {
   const { data, isLoading } = useCheckTokenQuery();
+  const { data: salary } = useGetSalaryByIdQuery( data?.user?.id , {skip: !data?.user?.id});
+  console.log(salary);
   const [isEditing, setIsEditing] = useState(false);
   const dispatch = useDispatch();
 
@@ -63,7 +66,7 @@ const Profile = () => {
             <div className="flex w-full flex-col items-end gap-1.5">
               <Title
                 level={3}
-                type={user.budget >= 0 ? "success" : "danger"}
+                type={user.budget === 0 ? "secondary" : user.budget > 0 ? "success" : "danger"}
                 style={{ marginBottom: 0 }}
               >
                 {user.budget?.toLocaleString() || "0"} UZS

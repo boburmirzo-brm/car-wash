@@ -8,13 +8,13 @@ const invalidateCustomerTag = async (
 ) => {
   try {
     await queryFulfilled;
-    dispatch(carApi.util.invalidateTags(["CAR", "CUSTOMER", "CAR_WASHING"]));
+    dispatch(extendedApi.util.invalidateTags(["CAR", "CUSTOMER", "CAR_WASHING"]));
   } catch (error) {
     console.error("Error:", error);
   }
 };
 
-const carApi = mainApi.injectEndpoints({
+const extendedApi = mainApi.injectEndpoints({
   endpoints: (build: EndpointBuilder<any, any, any>) => ({
     getCars: build.query<IPayload<ICar>, { filter?: string } | void>({
       query: (params) => ({
@@ -67,6 +67,6 @@ export const {
   useCreateCarMutation,
   useUpdateCarMutation,
   useDeleteCarMutation,
-} = carApi;
+} = extendedApi;
 
-export default carApi;
+export default extendedApi;

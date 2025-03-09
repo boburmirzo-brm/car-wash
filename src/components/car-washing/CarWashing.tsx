@@ -31,7 +31,7 @@ const CarWashing: FC<Props> = ({ data }) => {
               )}
               {item?.customerId?.full_name}
             </Link>
-            <Options id={item._id} />
+            <Options data={item} />
           </div>
 
           <div className="flex items-center justify-between mt-2">

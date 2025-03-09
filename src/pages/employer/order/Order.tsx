@@ -3,9 +3,11 @@ import { useDebounce } from "@/hooks/useDebounce";
 import { useParamsHook } from "@/hooks/useParamsHook";
 import { useGetCarsQuery } from "@/redux/api/car";
 import { useGetCustomersQuery } from "@/redux/api/customer";
-import { Empty, Skeleton } from "antd";
+import { CustomEmpty } from "@/utils";
+import { Skeleton } from "antd";
 import React from "react";
 import { Outlet, useLocation } from "react-router-dom";
+import { FileTextOutlined } from "@ant-design/icons";
 
 const Order = () => {
   const { getParam } = useParamsHook();
@@ -32,6 +34,12 @@ const Order = () => {
     { skip: !searchValue || !value || currentPathname !== "customer" }
   );
 
+  let startedView = (
+    <div className="text-center my-8 text-gray-300">
+      <FileTextOutlined className="text-4xl " />
+      <p className="text-sm mt-2 text-gray-400">Biror nima yozing</p>
+    </div>
+  );
   return (
     <div className="mt-4">
       <Search />
@@ -40,10 +48,10 @@ const Order = () => {
         <div className="mt-4">
           <Skeleton active />
         </div>
+      ) : !value ? (
+        startedView
       ) : (
-        (carIsError || customerIsError || !value) && (
-          <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
-        )
+        (carIsError || customerIsError || !value) && <CustomEmpty />
       )}
 
       <Outlet

@@ -4,9 +4,7 @@ import {
   Button,
   Form,
   Input,
-  Checkbox,
   InputRef,
-  // Select,
   message,
   Radio,
 } from "antd";
@@ -16,9 +14,9 @@ import { IPaymentAmount, IPaymentCreate } from "@/types";
 import { useCreatePaymentMutation } from "@/redux/api/payment";
 import { useModalNavigation } from "@/hooks/useModalNavigation";
 import { PaymentType } from "@/constant";
+import { toNumber } from "@/helper";
 
 type FieldType = {
-  price?: string;
   amount?: string;
   nasiya?: string;
   comment: string;
@@ -41,13 +39,11 @@ const PaymentPopup: FC<Props> = ({
   onClose,
   customerId,
   prevData,
-  onlyPayment = false,
   name,
 }) => {
   const [form] = Form.useForm();
   const [createPayment, { isLoading }] = useCreatePaymentMutation();
   const [apiMessage, contextHolder] = message.useMessage();
-  const nasiya = Form.useWatch("nasiya", form);
   const priceInputRef = useRef<InputRef>(null);
   useModalNavigation(open, onClose);
 
@@ -60,18 +56,10 @@ const PaymentPopup: FC<Props> = ({
   }, [open]);
 
   const onFinish: FormProps<FieldType>["onFinish"] = (values) => {
-    const price =
-      typeof values.price === "number"
-        ? values.price
-        : Number(values.price?.split(" ").join(""));
-    const amount =
-      typeof values.amount === "number"
-        ? values.amount
-        : Number(values.amount?.split(" ").join(""));
+    const amount = toNumber(values.amount);
 
     let data: IPaymentCreate = {
-      price,
-      amount: values.nasiya ? amount : price,
+      amount: amount,
       comment: values.comment,
       type: values.type,
       customerId: customerId || "",
@@ -108,9 +96,9 @@ const PaymentPopup: FC<Props> = ({
         autoComplete="off"
       >
         <Form.Item<FieldType>
-          label={nasiya ? "Kelishilgan summa" : "Summa"}
-          name="price"
-          rules={[{ required: true, message: "Summani kiriting!" }]}
+          label="To'langan summa"
+          name="amount"
+          rules={[{ required: true, message: "To'lov summasini kiriting!" }]}
         >
           <NumericFormat
             className="w-full p-2 border border-gray-300 rounded-md"
@@ -119,26 +107,8 @@ const PaymentPopup: FC<Props> = ({
             fixedDecimalScale
             allowNegative={false}
             placeholder="Summani kiriting"
-            getInputRef={priceInputRef}
           />
         </Form.Item>
-
-        {nasiya && (
-          <Form.Item<FieldType>
-            label="To'langan summa"
-            name="amount"
-            rules={[{ required: true, message: "To'lov summasini kiriting!" }]}
-          >
-            <NumericFormat
-              className="w-full p-2 border border-gray-300 rounded-md"
-              customInput={Input}
-              thousandSeparator=" "
-              fixedDecimalScale
-              allowNegative={false}
-              placeholder="Summani kiriting"
-            />
-          </Form.Item>
-        )}
 
         <Form.Item<FieldType> label="Izoh" name="comment">
           <TextArea rows={2} />
@@ -146,26 +116,12 @@ const PaymentPopup: FC<Props> = ({
 
         <Form.Item<FieldType> label="To'lov turi" name="type">
           <Radio.Group
-            // value={value}
             options={[
               { value: PaymentType.CASH, label: "Naxt" },
               { value: PaymentType.CARD, label: "Karta" },
             ]}
           />
-          {/* <Select
-            style={{ width: "100%" }}
-            options={[
-              { value: "CASH", label: "Naxt" },
-              { value: "CARD", label: "Karta" },
-            ]}
-          /> */}
         </Form.Item>
-
-        {!onlyPayment && (
-          <Form.Item<FieldType> name="nasiya" valuePropName="checked">
-            <Checkbox>Nasiya</Checkbox>
-          </Form.Item>
-        )}
 
         <Form.Item style={{ margin: 0 }}>
           <Button
@@ -174,7 +130,7 @@ const PaymentPopup: FC<Props> = ({
             htmlType="submit"
             className="w-full"
           >
-            Submit
+            {isLoading ? "Kuting" : prevData ? "Saqlash" : "Qo'shish"}
           </Button>
         </Form.Item>
       </Form>

@@ -1,6 +1,6 @@
 import TelPopUp from "@/components/tel-pop-up/TelPopUp";
 import { useGetCustomerByIdQuery } from "@/redux/api/customer";
-import { Button, Empty, Skeleton, Typography, Tooltip } from "antd";
+import { Button, Skeleton, Typography, Tooltip } from "antd";
 import React, { useCallback, useState } from "react";
 import { FaRegEdit } from "react-icons/fa";
 import { MdAttachMoney } from "react-icons/md";
@@ -11,6 +11,7 @@ import CarsView from "@/components/cars-view/CarsView";
 import PaymentPopup from "@/components/payment-popup/PaymentPopup";
 import CustomerPopup from "@/components/customer-popup/CustomerPopup";
 import CarPopup from "@/components/car-popup/CarPopup";
+import { CustomEmpty } from "@/utils";
 
 const { Title } = Typography;
 type ModalType = "payment" | "edit" | "car" | null;
@@ -52,6 +53,13 @@ const CustomerDetail = () => {
                   <h3 className="text-2xl font-medium">
                     {customer?.full_name}
                   </h3>
+                  <p className="text-gray-600 mt-3">
+                    Ro'yhatdan o'tkazgan{" "}
+                    <span className="text-black">
+                      {customer?.employerId?.l_name?.charAt(0)}.{" "}
+                      {customer?.employerId?.f_name}
+                    </span>
+                  </p>
                   <Tooltip
                     placement="bottom"
                     title={customer?.createdAt.timeFormat()}
@@ -66,7 +74,7 @@ const CustomerDetail = () => {
               <div className="flex w-full flex-col items-end gap-1.5">
                 <Title
                   level={3}
-                  type={(customer?.budget || 0) >= 0 ? "success" : "danger"}
+                  type={customer?.budget === 0 ? "secondary" : (customer?.budget || 0) > 0 ? "success" : "danger"}
                   style={{ marginBottom: 0 }}
                 >
                   {(customer?.budget || 0)?.toLocaleString() || "0"} UZS
@@ -108,7 +116,7 @@ const CustomerDetail = () => {
           ) : cars?.length ? (
             <CarsView data={cars || []} />
           ) : (
-            <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
+            <CustomEmpty />
           )}
         </div>
       </div>

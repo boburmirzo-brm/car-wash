@@ -2,7 +2,7 @@ import React from "react";
 import { Avatar } from "antd";
 // import logo from "@/assets/images/pwa-192x192.png"
 import { Link } from "react-router-dom";
-import { UserOutlined } from "@ant-design/icons";
+import { ReloadOutlined } from "@ant-design/icons";
 
 const Header = () => {
   return (
@@ -13,7 +13,7 @@ const Header = () => {
             {/* <img className="w-[50px]" src={logo} alt="logo" /> */}
             <span className="font-medium text-xl">CarWash</span>
           </Link>
-          <Avatar icon={<UserOutlined />} />
+          <Avatar className="cursor-pointer" onClick={() => window.location.reload()} icon={<ReloadOutlined />} />
         </nav>
       </div>
     </header>

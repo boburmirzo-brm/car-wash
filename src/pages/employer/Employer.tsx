@@ -1,15 +1,12 @@
-import CarWashing from "@/components/car-washing/CarWashing"
-import { useGetMyWashingsQuery } from "@/redux/api/car-washing"
-import React from "react"
+import CarWashing from "@/components/car-washing/CarWashing";
+import { useGetMyWashingsQuery } from "@/redux/api/car-washing";
+import { CustomEmpty } from "@/utils";
+import React from "react";
 
 const Employer = () => {
-  const {data} = useGetMyWashingsQuery()
-  
-  return (
-    <>
-      <CarWashing data={data?.data}/>
-    </>
-  )
-}
+  const { data, isError } = useGetMyWashingsQuery();
 
-export default React.memo(Employer)
+  return <>{isError ? <CustomEmpty /> : <CarWashing data={data?.data} />}</>;
+};
+
+export default React.memo(Employer);

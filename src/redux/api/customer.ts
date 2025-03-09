@@ -14,13 +14,13 @@ const invalidateCustomerTag = async (
 ) => {
   try {
     await queryFulfilled;
-    dispatch(customerApi.util.invalidateTags(["CUSTOMER", "CAR_WASHING"]));
+    dispatch(extendedApi.util.invalidateTags(["CUSTOMER", "CAR_WASHING"]));
   } catch (error) {
     console.error("Error:", error);
   }
 };
 
-export const customerApi = mainApi.injectEndpoints({
+export const extendedApi = mainApi.injectEndpoints({
   endpoints: (build: EndpointBuilder<any, any, any>) => ({
     getCustomers: build.query<IPayload<ICustomer>, { filter?: string }>({
       query: ({ filter }) => ({
@@ -73,6 +73,6 @@ export const {
   useCreateCustomerMutation,
   useUpdateCustomerMutation,
   useDeleteCustomerMutation,
-} = customerApi;
+} = extendedApi;
 
-export default customerApi;
+export default extendedApi;

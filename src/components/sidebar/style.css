@@ -1,0 +1,4 @@
+.sidebar-link.active{
+    background: var(--color-primary);
+    color: #fff;
+}

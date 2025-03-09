@@ -56,7 +56,7 @@ export interface ICar {
 }
 export interface IDetailCar {
   _id: string;
-  employerId: string;
+  employerId: any;
   customerId: ICustomer;
   plateNumber: string;
   name: string;
@@ -65,7 +65,7 @@ export interface IDetailCar {
 }
 export interface ICustomer {
   _id: string;
-  employerId: string;
+  employerId: any;
   budget: number;
   full_name: string;
   tel_primary: string;
@@ -121,7 +121,6 @@ export interface IUpdateUserDto {
 }
 
 export interface IPaymentCreate {
-  price: number;
   amount: number;
   comment?: string;
   type: string;

@@ -1,10 +1,30 @@
 import { EndpointBuilder } from "@reduxjs/toolkit/query/react";
 import { mainApi } from ".";
 
-const userApi = mainApi.injectEndpoints({
+const invalidateCustomerTag = async (
+  queryFulfilled: Promise<any>,
+  dispatch: any
+) => {
+  try {
+    await queryFulfilled;
+    dispatch(extendedApi.util.invalidateTags(["USER", "AUTH"]));
+  } catch (error) {
+    console.error("Error:", error);
+  }
+};
+
+const extendedApi = mainApi.injectEndpoints({
   endpoints: (build: EndpointBuilder<any, any, any>) => ({
     getUsers: build.query<any, void>({
       query: () => "/user",
+      providesTags: ["USER"],
+    }),
+    getAdmins: build.query<any, void>({
+      query: () => "/user/admins",
+      providesTags: ["USER"],
+    }),
+    getEmployees: build.query<any, void>({
+      query: () => "/user/employees",
       providesTags: ["USER"],
     }),
     getUserById: build.query<any, string>({
@@ -17,7 +37,9 @@ const userApi = mainApi.injectEndpoints({
         method: "POST",
         body,
       }),
-      invalidatesTags: ["USER"],
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+        await invalidateCustomerTag(queryFulfilled, dispatch);
+      },
     }),
     createEmployer: build.mutation<any, any>({
       query: (body) => ({
@@ -25,7 +47,9 @@ const userApi = mainApi.injectEndpoints({
         method: "POST",
         body,
       }),
-      invalidatesTags: ["USER"],
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+        await invalidateCustomerTag(queryFulfilled, dispatch);
+      },
     }),
     updateUser: build.mutation<any, { id: string; data: any }>({
       query: ({ id, data }) => ({
@@ -33,14 +57,18 @@ const userApi = mainApi.injectEndpoints({
         method: "PATCH",
         body: data,
       }),
-      invalidatesTags: ["USER", "AUTH"],
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+        await invalidateCustomerTag(queryFulfilled, dispatch);
+      },
     }),
     deleteUser: build.mutation<any, string>({
       query: (id) => ({
         url: `/user/${id}`,
         method: "DELETE",
       }),
-      invalidatesTags: ["USER"],
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+        await invalidateCustomerTag(queryFulfilled, dispatch);
+      },
     }),
   }),
   overrideExisting: false,
@@ -53,6 +81,8 @@ export const {
   useCreateEmployerMutation,
   useUpdateUserMutation,
   useDeleteUserMutation,
-} = userApi;
+  useGetAdminsQuery,
+  useGetEmployeesQuery
+} = extendedApi;
 
-export default userApi;
+export default extendedApi;
