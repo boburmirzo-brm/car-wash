@@ -6,7 +6,7 @@ import Title from "antd/es/typography/Title";
 import React from "react";
 import { FaRegEdit } from "react-icons/fa";
 import { MdAttachMoney } from "react-icons/md";
-import { TbUser, TbUserX } from "react-icons/tb";
+import { TbUser } from "react-icons/tb";
 import { useParams } from "react-router-dom";
 
 const UserDetail = () => {

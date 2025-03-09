@@ -7,7 +7,6 @@ import { FaRegEdit } from "react-icons/fa";
 import CarPopup from "@/components/car-popup/CarPopup";
 import CarWashingPopup from "@/components/car-washing-popup/CarWashingPopup";
 import Title from "antd/es/typography/Title";
-import { PlusOutlined } from "@ant-design/icons";
 import { CustomEmpty } from "@/utils";
 
 type ModalType = "start" | "edit" | null;

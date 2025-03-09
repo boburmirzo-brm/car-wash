@@ -1,5 +1,5 @@
 import React from "react";
-import { Modal, Form, Input, Button, Select, message } from "antd";
+import { Modal, Form, Input, Button,  message } from "antd";
 import {
   useCreateAdminMutation,
   useCreateEmployerMutation,
@@ -16,7 +16,6 @@ interface Props {
   currentRole: Role;
 }
 
-const { Option } = Select;
 
 const UserPopup: React.FC<Props> = ({ open, onClose, prevData, currentRole }) => {
   const [form] = Form.useForm();
