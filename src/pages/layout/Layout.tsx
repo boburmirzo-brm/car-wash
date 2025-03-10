@@ -46,7 +46,7 @@ const Layout = () => {
       )}
       <main
         className={
-          isAdminOrOwner ? "flex-1" : `container mx-auto min-h-[80vh] pb-[60px]`
+          isAdminOrOwner ? "flex-1 pb-[60px]" : `container mx-auto min-h-[80vh] pb-[60px]`
         }
       >
         {isAdminOrOwner && <DashboardHeader />}
