@@ -1,5 +1,5 @@
 import { useGetCarByIdQuery } from "@/redux/api/car";
-import { Button, Skeleton, Tooltip } from "antd";
+import { Alert, Button, Skeleton, Tooltip } from "antd";
 import React, { useCallback, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { IoCarOutline, IoPlayOutline } from "react-icons/io5";
@@ -8,12 +8,19 @@ import CarPopup from "@/components/car-popup/CarPopup";
 import CarWashingPopup from "@/components/car-washing-popup/CarWashingPopup";
 import Title from "antd/es/typography/Title";
 import { CustomEmpty } from "@/utils";
+import { useGetSalaryByIdQuery } from "@/redux/api/salary";
+import { useCheckTokenQuery } from "@/redux/api/auth";
 
 type ModalType = "start" | "edit" | null;
 
 const CarDetail = () => {
   const { id } = useParams<{ id: string }>();
+
   const { data, isLoading } = useGetCarByIdQuery(id || "");
+  const { data: dataUser } = useCheckTokenQuery();
+  const { isError } = useGetSalaryByIdQuery(dataUser?.user?.id, {
+    skip: !dataUser?.user?.id,
+  });
   const [modalType, setModalType] = useState<ModalType>(null);
 
   const handleOpenModal = (type: ModalType) => {
@@ -28,12 +35,19 @@ const CarDetail = () => {
   return (
     <>
       <div className="flex flex-col gap-4 my-4">
+        {isError && (
+          <Alert
+            message={"Oylik belgilanmagan. Avval oylikni belgilating"}
+            style={{ width: "100%" }}
+            type="error"
+          />
+        )}
         <div className="shadow-md md:p-6 p-4 rounded-md border border-gray-100 w-full">
           {isLoading ? (
             <Skeleton active />
           ) : (
             <div className="flex flex-col md:flex-row items-center md:items-start justify-between gap-4 md:gap-6 ">
-              <div className="flex items-center  w-full  flex-row gap-3">
+              <div className="flex w-full md:items-center flex-row-reverse md:flex-row gap-3">
                 <div>
                   <IoCarOutline className="text-7xl text-gray-600" />
                 </div>
@@ -78,6 +92,7 @@ const CarDetail = () => {
                   <Button
                     onClick={() => handleOpenModal("start")}
                     type="primary"
+                    disabled={isError}
                   >
                     <IoPlayOutline className="text-lg" />
                     <span>Start</span>

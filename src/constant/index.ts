@@ -13,3 +13,7 @@ export enum PaymentType {
   CASH = "CASH",
   CARD = "CARD"
 }
+export enum SalaryType {
+  PERCENT = "PERCENT",
+  CASH = "CASH"
+}

@@ -1,6 +1,6 @@
 import React from "react";
 import type { FormProps } from "antd";
-import { Button, Form, Input, message } from "antd";
+import { Alert, Button, Form, Input, message } from "antd";
 import { useNavigate } from "react-router-dom";
 import { useSignInUserMutation } from "../../redux/api/auth";
 import { useDispatch } from "react-redux";
@@ -13,10 +13,9 @@ type FieldType = {
 };
 
 const Login: React.FC = () => {
-  const [signInUser, { isLoading }] = useSignInUserMutation();
+  const [signInUser, { isLoading, isError, error }] = useSignInUserMutation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [apiMessage, contextHolder] = message.useMessage();
 
   const onFinish: FormProps<FieldType>["onFinish"] = (values) => {
     signInUser(values)
@@ -24,15 +23,11 @@ const Login: React.FC = () => {
       .then((response) => {
         dispatch(login(response?.data?.access_token));
         dispatch(setRole(response?.data?.role));
-
         if (response?.data?.role == "EMPLOYEE") {
           navigate(`/EMPLOYEE`);
         } else {
           navigate(`/`);
         }
-      })
-      .catch((error) => {
-        apiMessage.error(error?.data?.message || "Login xatosi!");
       });
   };
 
@@ -62,7 +57,13 @@ const Login: React.FC = () => {
           >
             <Input.Password />
           </Form.Item>
-
+          {isError && (
+            <Alert
+              message={error?.data?.message || "Login xatosi!"}
+              style={{ width: "100%", marginBottom: "1rem" }}
+              type="error"
+            />
+          )}
           <Form.Item label={null} style={{ margin: 0 }}>
             <Button
               className="w-full"
@@ -77,7 +78,6 @@ const Login: React.FC = () => {
           </Form.Item>
         </Form>
       </div>
-      {contextHolder}
     </section>
   );
 };

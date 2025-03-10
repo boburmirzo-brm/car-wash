@@ -2,21 +2,25 @@
 import { Suspense } from "@/utils";
 import React, { lazy } from "react";
 import { useRoutes } from "react-router-dom";
+// Dashboard
 const Dashboard = lazy(() => import("./dashboard/Dashboard"));
 const Admins = lazy(() => import("./admins/Admins"));
 const Employees = lazy(() => import("./employees/Employees"));
 const UserDetail = lazy(() => import("./user/detail/UserDetail"));
-const Login = lazy(() => import("./login/Login"));
-const Auth = lazy(() => import("./auth/Auth"));
-const CustomAuth = lazy(() => import("./custom-auth/CustomAuth"));
+const Profile = lazy(() => import("./profile/Profile"));
+// Employer
 const Employer = lazy(() => import("./employer/Employer"));
-const Layout = lazy(() => import("./layout/Layout"));
 const Order = lazy(() => import("./employer/order/Order"));
+// All
+const Auth = lazy(() => import("./auth/Auth"));
+const Layout = lazy(() => import("./layout/Layout"));
+const CustomAuth = lazy(() => import("./custom-auth/CustomAuth"));
 const CarSearch = lazy(() => import("./employer/order/car-search/CarSearch"));
+const Login = lazy(() => import("./login/Login"));
 const CustomerSearch = lazy(() => import("./employer/order/customer-search/CustomerSearch"));
 const CustomerDetail = lazy(() => import("./customer/detail/CustomerDetail"));
-const CarDetail = lazy(() => import("./car/detail/CarDetail"));
 const EmployeeProfile = lazy(() => import("./employer/profile/Profile"));
+const CarDetail = lazy(() => import("./car/detail/CarDetail"));
 const NotFound = lazy(() => import("./not-found/NotFound"));
 
 const AppRouter = () => {
@@ -76,6 +80,14 @@ const AppRouter = () => {
                       element: (
                         <Suspense>
                           <UserDetail />
+                        </Suspense>
+                      ),
+                    },
+                    {
+                      path: "/profile",
+                      element: (
+                        <Suspense>
+                          <Profile/>
                         </Suspense>
                       ),
                     },

@@ -19,10 +19,10 @@ const UserView: FC<Props> = ({ data }) => {
           className="flex justify-between py-4 max-[500px]:p-3 border-t border-gray-300 max-[700px]:flex-col max-[700px]:items-start"
         >
           <div>
-            <Link to={`/${user.role === Role.ADMIN ? "admins" : "employees"}/user/${user._id}`} className="font-medium">
+            <Link to={`/${user.role === Role.ADMIN ? "admins" : "employees"}/user/${user._id}`} className="font-medium hover:underline">
               {user.f_name} {user.l_name}
             </Link>
-            <p className="text-gray-600 my-1">@{user.username}</p>
+            <Link to={`/${user.role === Role.ADMIN ? "admins" : "employees"}/user/${user._id}`} className="text-gray-600 my-1 block hover:underline">@{user.username}</Link>
           </div>
           <div className="text-right flex flex-col max-[700px]:w-full max-[700px]:justify-end">
             <Title

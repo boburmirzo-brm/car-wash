@@ -5,6 +5,11 @@ import { useModalNavigation } from "@/hooks/useModalNavigation";
 import { useCreateCarMutation, useUpdateCarMutation } from "@/redux/api/car";
 import { checkErrorMessage } from "@/helper";
 
+type FieldType = {
+  plateNumber?: string;
+  name: string;
+};
+
 interface Props {
   open: boolean;
   onClose: () => void;
@@ -27,7 +32,9 @@ const CarPopup: React.FC<Props> = ({ open, onClose, prevData, customerId }) => {
     customerId?: string;
   }) => {
     if (prevData) {
-      values.plateNumber = values?.plateNumber?.replace(/\s/gi, "")?.toUpperCase();
+      values.plateNumber = values?.plateNumber
+        ?.replace(/\s/gi, "")
+        ?.toUpperCase();
       updateCar({ id: prevData.id || "", data: values })
         .unwrap()
         .then(() => {
@@ -40,7 +47,9 @@ const CarPopup: React.FC<Props> = ({ open, onClose, prevData, customerId }) => {
         });
     } else {
       values.customerId = customerId;
-      values.plateNumber = values?.plateNumber?.replace(/\s/gi, "")?.toUpperCase();
+      values.plateNumber = values?.plateNumber
+        ?.replace(/\s/gi, "")
+        ?.toUpperCase();
       !values.plateNumber && delete values.plateNumber;
 
       createCar(values)
@@ -72,11 +81,14 @@ const CarPopup: React.FC<Props> = ({ open, onClose, prevData, customerId }) => {
     >
       <Form
         form={form}
-        initialValues={{...prevData, plateNumber: prevData?.plateNumber?.plateNumberFormat()}}
+        initialValues={{
+          ...prevData,
+          plateNumber: prevData?.plateNumber?.plateNumberFormat(),
+        }}
         layout="vertical"
         onFinish={handleSave}
       >
-        <Form.Item
+        <Form.Item<FieldType>
           label="Mashina nomi"
           name="name"
           rules={[
@@ -87,7 +99,7 @@ const CarPopup: React.FC<Props> = ({ open, onClose, prevData, customerId }) => {
           <Input placeholder="nomi" />
         </Form.Item>
 
-        <Form.Item label="Mashina raqami" name="plateNumber">
+        <Form.Item<FieldType> label="Mashina raqami" name="plateNumber">
           <Input placeholder="raqami" />
         </Form.Item>
 

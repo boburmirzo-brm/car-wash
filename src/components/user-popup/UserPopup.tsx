@@ -1,5 +1,5 @@
-import React from "react";
-import { Modal, Form, Input, Button,  message } from "antd";
+import React, { useState } from "react";
+import { Modal, Form, Input, Button, message, FormProps, Alert } from "antd";
 import {
   useCreateAdminMutation,
   useCreateEmployerMutation,
@@ -8,6 +8,17 @@ import {
 import { PatternFormat } from "react-number-format";
 import { Role } from "@/constant";
 import { useModalNavigation } from "@/hooks/useModalNavigation";
+import { checkErrorMessage } from "@/helper";
+
+type FieldType = {
+  f_name: string;
+  l_name: string;
+  username: string;
+  tel_primary: string;
+  tel_secondary?: string;
+  address: string;
+  password?: string;
+};
 
 interface Props {
   open: boolean;
@@ -16,50 +27,66 @@ interface Props {
   currentRole: Role;
 }
 
-
-const UserPopup: React.FC<Props> = ({ open, onClose, prevData, currentRole }) => {
+const UserPopup: React.FC<Props> = ({
+  open,
+  onClose,
+  prevData,
+  currentRole,
+}) => {
   const [form] = Form.useForm();
+  const [error, setError] = useState<null | string>(null);
   const [updateUser, { isLoading: updating }] = useUpdateUserMutation();
   const [createUser, { isLoading: creating }] = useCreateEmployerMutation();
-  const [createAdmin] = useCreateAdminMutation();
+  const [createAdmin, { isLoading }] = useCreateAdminMutation();
+  const [apiMessage, contextHolder] = message.useMessage();
   useModalNavigation(open, onClose);
 
+  const onFinish: FormProps<FieldType>["onFinish"] = (values) => {
+    if (prevData) {
+      !values.password && delete values.password;
 
-
-  const handleSave = () => {
-    form
-      .validateFields()
-      .then((values) => {
-        console.log(values);
-        
-        if (prevData) {
-          const userId = prevData?.id || prevData?._id;
-          return updateUser({ id: userId, data: values }).unwrap();
-        } else {
-          if (currentRole !== Role.OWNER) {
-            message.error("Admin yaratish mumkin emas!");
-            return Promise.reject("Admin yaratish mumkin emas!");
-          }
-          if (values.role === Role.ADMIN) {
-            values.role = Role.ADMIN;
-            console.log(values);
-            return createAdmin(values).unwrap();
-          }
-          return createUser(values).unwrap();
-        }
-      })
-      .then((response) => {
-        message.success(
-          response?.message || "Amaliyot muvaffaqiyatli bajarildi!"
-        );
-        onClose();
-      })
-      .catch((error) => {
-        console.error("Xatolik:", error);
-        message.error(
-          error?.data?.message || "Amaliyot bajarishda xatolik yuz berdi!"
-        );
-      });
+      updateUser({ id: prevData.id || prevData._id, data: values })
+        .unwrap()
+        .then(() => {
+          apiMessage.success("Hodim muvaffaqiyatli o'zgartirildi!");
+          onClose();
+          form.resetFields();
+        })
+        .catch((err) => {
+          setError(checkErrorMessage(err.data.message));
+        });
+    } else {
+      if (currentRole === Role.OWNER) {
+        !values.tel_secondary && delete values.tel_secondary;
+        createAdmin({ ...values, role: Role.ADMIN })
+          .unwrap()
+          .then(() => {
+            apiMessage.success("Admin muvaffaqiyatli qo'shildi!");
+            onClose();
+            form.resetFields();
+          })
+          .catch((err) => {
+            setError(checkErrorMessage(err.data.message));
+          });
+      } else {
+        !values.tel_secondary && delete values.tel_secondary;
+        createUser({ ...values, role: Role.EMPLOYEE })
+          .unwrap()
+          .then(() => {
+            apiMessage.success("Hodim muvaffaqiyatli qo'shildi!");
+            onClose();
+            form.resetFields();
+          })
+          .catch((err) => {
+            setError(checkErrorMessage(err.data.message));
+          });
+      }
+    }
+  };
+  const handleClose = () => {
+    form.resetFields();
+    onClose();
+    setError(null);
   };
 
   const isEditing = Boolean(prevData);
@@ -69,7 +96,7 @@ const UserPopup: React.FC<Props> = ({ open, onClose, prevData, currentRole }) =>
     <Modal
       title={isEditing ? "Profilni tahrirlash" : "Yangi foydalanuvchi yaratish"}
       open={open}
-      onCancel={()=>onClose()}
+      onCancel={handleClose}
       footer={null}
       // centered
       className="max-w-[90vw] md:max-w-lg"
@@ -78,7 +105,9 @@ const UserPopup: React.FC<Props> = ({ open, onClose, prevData, currentRole }) =>
         form={form}
         layout="vertical"
         initialValues={prevData}
+        onFinish={onFinish}
         className="space-y-3 md:space-y-5 p-2 md:p-4"
+        autoComplete="off"
       >
         <Form.Item
           label="Ism"
@@ -124,10 +153,7 @@ const UserPopup: React.FC<Props> = ({ open, onClose, prevData, currentRole }) =>
               />
             </Form.Item>
 
-            <Form.Item
-              label="Qo‘shimcha telefon raqam"
-              name="tel_secondary"
-            >
+            <Form.Item label="Qo‘shimcha telefon raqam" name="tel_secondary">
               <PatternFormat
                 format="+998 ## ### ## ##"
                 allowEmptyFormatting
@@ -144,45 +170,38 @@ const UserPopup: React.FC<Props> = ({ open, onClose, prevData, currentRole }) =>
             >
               <Input placeholder="Tashkent, Uzbekistan" />
             </Form.Item>
-
-            {/* <Form.Item
-              label="Rol"
-              name="role"
-              rules={[{ required: true, message: "Rol tanlash shart!" }]}
+            <Form.Item
+              label="Parol"
+              name="password"
+              rules={[{ required: !isEditing, message: "Parolni kiriting!" }]}
             >
-              <Select disabled={isEditing}>
-                {currentRole === Role.ADMIN ? (
-                  <Option value={Role.EMPLOYEE}>Employee</Option>
-                ) : (
-                  <>
-                    <Option value={Role.ADMIN}>Admin</Option>
-                    <Option value={Role.EMPLOYEE}>Employee</Option>
-                  </>
-                )}
-              </Select>
-            </Form.Item> */}
+              <Input.Password placeholder="Yangi parol" />
+            </Form.Item>
           </>
         )}
 
-        {!isEditing && (
-          <Form.Item
-            label="Parol"
-            name="password"
-            rules={[{ required: true, message: "Parolni kiriting!" }]}
-          >
-            <Input.Password placeholder="Yangi parol" />
-          </Form.Item>
+        {error && (
+          <div className="mb-3 mt-[-12px]">
+            <Alert message={error} type="error" />
+          </div>
         )}
-
-        <Button
-          type="primary"
-          block
-          onClick={handleSave}
-          loading={updating || creating}
-        >
-          {isEditing ? "Saqlash" : "Yaratish"}
-        </Button>
+        <Form.Item style={{ margin: 0 }}>
+          <Button
+            type="primary"
+            block
+            htmlType="submit"
+            // onClick={handleSave}
+            loading={updating || creating || isLoading}
+          >
+            {updating || creating || isLoading
+              ? "Kuting..."
+              : isEditing
+              ? "Saqlash"
+              : "Yaratish"}
+          </Button>
+        </Form.Item>
       </Form>
+      {contextHolder}
     </Modal>
   );
 };

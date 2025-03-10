@@ -41,7 +41,7 @@ const CustomerDetail = () => {
             <Skeleton active />
           ) : (
             <div className="flex flex-col md:flex-row items-center md:items-start justify-between gap-4 md:gap-6 ">
-              <div className="flex items-center  w-full  flex-row gap-3">
+              <div className="flex w-full md:items-center flex-row-reverse md:flex-row gap-3">
                 <div>
                   {customer?.full_name === "Noma'lum" ? (
                     <TbUserX className="text-7xl text-yellow-500" />
@@ -74,7 +74,13 @@ const CustomerDetail = () => {
               <div className="flex w-full flex-col items-end gap-1.5">
                 <Title
                   level={3}
-                  type={customer?.budget === 0 ? "secondary" : (customer?.budget || 0) > 0 ? "success" : "danger"}
+                  type={
+                    customer?.budget === 0
+                      ? "secondary"
+                      : (customer?.budget || 0) > 0
+                      ? "success"
+                      : "danger"
+                  }
                   style={{ marginBottom: 0 }}
                 >
                   {(customer?.budget || 0)?.toLocaleString() || "0"} UZS

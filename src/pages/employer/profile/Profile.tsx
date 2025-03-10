@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from "react";
-import { Typography, Tag, Button, Popconfirm, Skeleton } from "antd";
+import { Typography, Tag, Button, Popconfirm, Skeleton, Alert } from "antd";
 // import { UserOutlined } from "@ant-design/icons";
 import { useCheckTokenQuery } from "@/redux/api/auth";
 import UserPopup from "@/components/user-popup/UserPopup";
@@ -10,12 +10,15 @@ import { useDispatch } from "react-redux";
 import { logout } from "@/redux/features/auth.slice";
 import { TbUserShield } from "react-icons/tb";
 import { useGetSalaryByIdQuery } from "@/redux/api/salary";
+import { SalaryType } from "@/constant";
 
 const { Title } = Typography;
 
 const Profile = () => {
   const { data, isLoading } = useCheckTokenQuery();
-  const { data: salary } = useGetSalaryByIdQuery( data?.user?.id , {skip: !data?.user?.id});
+  const { data: salary, isError } = useGetSalaryByIdQuery(data?.user?.id, {
+    skip: !data?.user?.id,
+  });
   console.log(salary);
   const [isEditing, setIsEditing] = useState(false);
   const dispatch = useDispatch();
@@ -26,25 +29,33 @@ const Profile = () => {
 
     if (!isBack) {
       console.log("asdsad");
-      
+
       window.history.back();
     }
   }, []);
 
   const user = data?.user || {};
+  console.log(user);
 
   const handleLogout = () => {
     dispatch(logout());
   };
 
   return (
-    <div className="flex flex-col items-center py-4">
+    <div className="flex flex-col gap-4 items-center py-4">
+      {isError && (
+        <Alert
+          message={"Oylik belgilanmagan. Avval oylikni belgilating"}
+          style={{ width: "100%" }}
+          type="error"
+        />
+      )}
       <div className="shadow-md md:p-6 p-4 rounded-md border border-gray-100 w-full">
         {isLoading ? (
           <Skeleton active />
         ) : (
           <div className="flex flex-col md:flex-row items-center md:items-start justify-between gap-4 md:gap-6 ">
-            <div className="flex   w-full  flex-row gap-3">
+            <div className="flex w-full md:items-center flex-row-reverse md:flex-row gap-3">
               <div>
                 <TbUserShield className="text-8xl text-gray-600" />
               </div>
@@ -66,11 +77,25 @@ const Profile = () => {
             <div className="flex w-full flex-col items-end gap-1.5">
               <Title
                 level={3}
-                type={user.budget === 0 ? "secondary" : user.budget > 0 ? "success" : "danger"}
+                type={
+                  user.budget === 0
+                    ? "secondary"
+                    : user.budget > 0
+                    ? "success"
+                    : "danger"
+                }
                 style={{ marginBottom: 0 }}
               >
                 {user.budget?.toLocaleString() || "0"} UZS
               </Title>
+              {!isError && (
+                <p className="text-base text-gray-600 bg-green-100  px-2 border border-green-200 rounded">
+                  {salary?.data?.payload?.amount?.toLocaleString()}{" "}
+                  {salary?.data?.payload?.type === SalaryType.PERCENT
+                    ? "%"
+                    : "so'm"}
+                </p>
+              )}
               <TelPopUp phoneNumber={user.tel_primary} />
               <div className="flex gap-1.5">
                 <Button onClick={() => setIsEditing(true)} type="default">

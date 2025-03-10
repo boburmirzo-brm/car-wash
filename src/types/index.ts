@@ -15,6 +15,11 @@ export interface ICarUpdate {
   plateNumber: string;
   name: string;
 }
+export interface ISalaryUpdate {
+  _id?: string;
+  type: string;
+  amount: number;
+}
 
 export interface ICarWashingUpdate {
   id?: string;
