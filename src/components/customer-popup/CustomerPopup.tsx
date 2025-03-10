@@ -53,7 +53,6 @@ const CustomerPopup: React.FC<Props> = ({ open, onClose, prevData }) => {
       if(values.tel_primary){
         values.tel_primary =  values?.tel_primary[0] === "+" ? values?.tel_primary : `+998${values?.tel_primary}`
       }
-      console.log(values);
       
       updateCustomer({ id: prevData.id || "", data: values })
         .unwrap()
@@ -69,7 +68,6 @@ const CustomerPopup: React.FC<Props> = ({ open, onClose, prevData }) => {
       createCustomer(values)
         .unwrap()
         .then((res) => {
-          console.log(res.data._id);
           navigate(`/customer/${res.data._id}`);
           apiMessage.success("Yangi mijoz qo'shildi!");
           form.resetFields();

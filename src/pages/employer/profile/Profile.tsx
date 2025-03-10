@@ -19,24 +19,18 @@ const Profile = () => {
   const { data: salary, isError } = useGetSalaryByIdQuery(data?.user?.id, {
     skip: !data?.user?.id,
   });
-  console.log(salary);
   const [isEditing, setIsEditing] = useState(false);
   const dispatch = useDispatch();
 
   const handleClose = useCallback((isBack?: boolean | undefined) => {
     setIsEditing(false);
-    console.log(isBack);
 
     if (!isBack) {
-      console.log("asdsad");
-
       window.history.back();
     }
   }, []);
 
   const user = data?.user || {};
-  console.log(user);
-
   const handleLogout = () => {
     dispatch(logout());
   };

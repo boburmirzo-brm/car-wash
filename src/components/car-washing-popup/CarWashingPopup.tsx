@@ -94,8 +94,6 @@ const CarWashingPopup: React.FC<Props> = ({
       if (!data.comment) {
         delete data.comment;
       }
-      console.log(data);
-      console.log(prevData);
       
       updateCarWashing({
         id: prevData._id,

@@ -44,7 +44,6 @@ const SalaryPopup: React.FC<Props> = ({
   }) => {
     values.amount = toNumber(values.amount);
     values.employerId = employeeId;
-    console.log(values);
 
     if (prevData) {
       updateSalary({ id: prevData._id || "", data: values })

@@ -1,25 +1,25 @@
-import { Button, Input, Skeleton } from "antd";
+import { Button, Skeleton } from "antd";
 import Title from "antd/es/typography/Title";
-import React, { ChangeEvent, useCallback, useState } from "react";
+import React, { useCallback, useState } from "react";
 import { PlusOutlined } from "@ant-design/icons";
 import { useGetEmployeesQuery } from "@/redux/api/user";
 import UsersView from "@/components/users-view/UsersView";
-import { useParamsHook } from "@/hooks/useParamsHook";
+// import { useParamsHook } from "@/hooks/useParamsHook";
 import UserPopup from "@/components/user-popup/UserPopup";
 import { Role } from "@/constant";
 
 const Employees = () => {
   const { data, isLoading } = useGetEmployeesQuery();
-  const { setParam, removeParam, getParam } = useParamsHook();
+  // const { setParam, removeParam, getParam } = useParamsHook();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  let value = getParam("q") || "";
-  const handleChangeInput = (e: ChangeEvent<HTMLInputElement>) => {
-    if (e.target.value) {
-      setParam("q", e.target.value);
-    } else {
-      removeParam("q");
-    }
-  };
+  // let value = getParam("q") || "";
+  // const handleChangeInput = (e: ChangeEvent<HTMLInputElement>) => {
+  //   if (e.target.value) {
+  //     setParam("q", e.target.value);
+  //   } else {
+  //     removeParam("q");
+  //   }
+  // };
   const handleOpen = useCallback(() => setIsModalOpen(true), []);
   const handleClose = useCallback((isBack?: boolean | undefined) => {
     setIsModalOpen(false);
@@ -33,12 +33,12 @@ const Employees = () => {
             <Title style={{ marginBottom: 0 }} level={4}>
               Ishchilar
             </Title>
-            <Input
+            {/* <Input
               placeholder="Qidirish..."
               value={value}
               style={{ width: "300px" }}
               onChange={handleChangeInput}
-            />
+            /> */}
           </div>
           <Button
             onClick={handleOpen}

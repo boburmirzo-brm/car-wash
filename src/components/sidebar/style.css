@@ -16,5 +16,6 @@
 @media (max-width: 380px) {
   .sidebar {
     width: 80%;
+    left: -80%;
   }
 }

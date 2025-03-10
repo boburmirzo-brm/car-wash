@@ -17,7 +17,8 @@ type ModalType = "expense" | "edit" | "salary" | null;
 const UserDetail = () => {
   const { id } = useParams<{ id: string }>();
   const { data, isLoading } = useGetUserByIdQuery(id!);
-  const { data: salary, isError } = useGetSalaryByIdQuery(id!);
+  const user = data?.data?.payload;
+  const { data: salary, isError } = useGetSalaryByIdQuery(id!); 
   const [modalType, setModalType] = useState<ModalType>(null);
 
   const handleOpenModal = (type: ModalType) => {
@@ -29,7 +30,6 @@ const UserDetail = () => {
     if (!isBack) window.history.back();
   }, []);
 
-  const user = data?.data?.payload;
 
   return (
     <div className="p-4">
@@ -111,20 +111,24 @@ const UserDetail = () => {
                     <FaRegEdit className="text-lg" />
                     {/* <span>Tahrirlash</span> */}
                   </Button>
-                  <Button
-                    onClick={() => handleOpenModal("salary")}
-                    type="default"
-                  >
-                    <MdOutlinePercent className="text-lg" />
-                    <span>Oylik</span>
-                  </Button>
-                  <Button
-                    onClick={() => handleOpenModal("expense")}
-                    type="default"
-                  >
-                    <MdAttachMoney className="text-lg" />
-                    <span>To'lov</span>
-                  </Button>
+                  {user.role !== Role.ADMIN && (
+                    <>
+                      <Button
+                        onClick={() => handleOpenModal("salary")}
+                        type="default"
+                      >
+                        <MdOutlinePercent className="text-lg" />
+                        <span>Oylik</span>
+                      </Button>
+                      <Button
+                        onClick={() => handleOpenModal("expense")}
+                        type="default"
+                      >
+                        <MdAttachMoney className="text-lg" />
+                        <span>To'lov</span>
+                      </Button>
+                    </>
+                  )}
                 </div>
               </div>
             </div>

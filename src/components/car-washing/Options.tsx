@@ -15,7 +15,6 @@ const Options = ({ data }: { data: any }) => {
     setModalType(type);
     setOpen(false);
   };
-  console.log(selected);
   
 
   const handleClose = useCallback((isBack?: boolean | undefined) => {

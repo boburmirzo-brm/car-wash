@@ -15,7 +15,6 @@ interface Props {
 
 const CarWashing: FC<Props> = ({ data }) => {
   const role = useSelector((state: RootState) => state.role.value);
-  console.log(data);
 
   return (
     <div className="my-4 space-y-4">

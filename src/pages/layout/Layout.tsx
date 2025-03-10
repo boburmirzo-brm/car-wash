@@ -28,7 +28,6 @@ const Layout = () => {
 
   const handleSidebarOpen = useCallback(() => setSidebarShow(true), []);
   const handleSidebarClose = useCallback(() => setSidebarShow(false), []);
-  console.log(sidebarShow);
   
   const isAdminOrOwner = roleState === Role.ADMIN || roleState === Role.OWNER;
 
