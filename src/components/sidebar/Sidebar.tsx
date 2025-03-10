@@ -5,10 +5,7 @@ import { NavLink } from "react-router-dom";
 import "./style.css";
 import {
   MdLogout,
-  MdOutlineAdminPanelSettings,
-  MdOutlineDashboard,
 } from "react-icons/md";
-import { FaRegUser, FaRegUserCircle } from "react-icons/fa";
 import { useDispatch } from "react-redux";
 import { logout } from "@/redux/features/auth.slice";
 import { SIDEBAR_LINKS } from "@/static";

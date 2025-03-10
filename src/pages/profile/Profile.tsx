@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from "react";
-import { Typography, Tag, Button, Popconfirm, Skeleton } from "antd";
+import { Tag, Button, Popconfirm, Skeleton } from "antd";
 import { useCheckTokenQuery } from "@/redux/api/auth";
 import UserPopup from "@/components/user-popup/UserPopup";
 import { FaRegEdit } from "react-icons/fa";
@@ -8,8 +8,6 @@ import { MdLogout } from "react-icons/md";
 import { useDispatch } from "react-redux";
 import { logout } from "@/redux/features/auth.slice";
 import { TbUserShield } from "react-icons/tb";
-
-const { Title } = Typography;
 
 const Profile = () => {
   const { data, isLoading } = useCheckTokenQuery();
