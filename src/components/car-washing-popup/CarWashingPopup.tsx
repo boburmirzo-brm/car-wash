@@ -26,7 +26,7 @@ type FieldType = {
   paidAmount?: string;
   nasiya?: string;
   comment: string;
-  type: string;
+  paymentType: string;
 };
 
 interface Props {
@@ -68,7 +68,7 @@ const CarWashingPopup: React.FC<Props> = ({
     status: string;
     comment: string;
     nasiya?: boolean;
-    type: string;
+    paymentType: string;
   }) => {
     if (prevData) {
       const washAmount = toNumber(values.washAmount);
@@ -78,7 +78,7 @@ const CarWashingPopup: React.FC<Props> = ({
         washAmount: number;
         paidAmount: number;
         comment?: string;
-        type: string;
+        paymentType: string;
         status: string;
         // customerId: string;
         // carId: string;
@@ -86,15 +86,15 @@ const CarWashingPopup: React.FC<Props> = ({
         washAmount,
         paidAmount: values.nasiya ? paidAmount : washAmount,
         comment: values.comment,
-        type: values.type,
-        status: CarWashingStatus.COMPLETED
+        paymentType: values.paymentType,
+        status: CarWashingStatus.COMPLETED,
         // customerId: customerId || "",
         // carId: carId || "",
       };
       if (!data.comment) {
         delete data.comment;
       }
-      
+
       updateCarWashing({
         id: prevData._id,
         data,
@@ -195,7 +195,7 @@ const CarWashingPopup: React.FC<Props> = ({
               <TextArea rows={2} />
             </Form.Item>
 
-            <Form.Item<FieldType> label="To'lov turi" name="type">
+            <Form.Item<FieldType> label="To'lov turi" name="paymentType">
               <Radio.Group
                 // value={value}
                 options={[
