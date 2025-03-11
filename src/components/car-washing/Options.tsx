@@ -1,11 +1,16 @@
-import React, { useCallback, useState } from "react";
+import React, { FC, useCallback, useState } from "react";
 import { MoreOutlined } from "@ant-design/icons";
 import { Popover, Button } from "antd";
 import CarWashingPopup from "../car-washing-popup/CarWashingPopup";
 
-type ModalType = "car-washing" | "edit" | null;
+type ModalType = "car-washing" | "edit" | "done" | null;
 
-const Options = ({ data }: { data: any }) => {
+interface Props {
+  data: any;
+  profile?: boolean;
+}
+
+const Options: FC<Props> = ({ data, profile }) => {
   const [selected, setSelected] = useState<any>(null);
   const [open, setOpen] = useState(false);
   const [modalType, setModalType] = useState<ModalType>(null);
@@ -15,7 +20,6 @@ const Options = ({ data }: { data: any }) => {
     setModalType(type);
     setOpen(false);
   };
-  
 
   const handleClose = useCallback((isBack?: boolean | undefined) => {
     setModalType(null);
@@ -24,12 +28,20 @@ const Options = ({ data }: { data: any }) => {
 
   const content = (
     <div className="flex flex-col">
-      <Button onClick={() => showModal("car-washing")} type="text">
-        To'lov
-      </Button>
-      <Button onClick={() => showModal("edit")} type="text">
-        Tahrirlash
-      </Button>
+      {profile ? (
+        <Button onClick={() => showModal("edit")} type="text">
+          Tahrirlash
+        </Button>
+      ) : (
+        <>
+          <Button onClick={() => showModal("car-washing")} type="text">
+            To'lov
+          </Button>
+          <Button onClick={() => showModal("done")} type="text">
+            Tayyor
+          </Button>
+        </>
+      )}
     </div>
   );
 
@@ -57,7 +69,6 @@ const Options = ({ data }: { data: any }) => {
         prevData={data}
       />
       {/* )} */}
-
     </>
   );
 };

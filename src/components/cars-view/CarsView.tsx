@@ -1,6 +1,7 @@
 import { ICar } from "@/types";
 import React, { FC } from "react";
 import { useNavigate } from "react-router-dom";
+import CarNumber from "./CarNumber";
 
 const CarsView: FC<{ data: ICar[] }> = ({ data }) => {
   const navigate = useNavigate();
@@ -18,9 +19,10 @@ const CarsView: FC<{ data: ICar[] }> = ({ data }) => {
               {car.name}
             </h3>
             <div className="flex max-[500px]:w-full max-[500px]:justify-end">
-              <b className="border border-gray-500 px-2 py-1 rounded-md text-base uppercase text-gray-700">
+              <CarNumber plateNumber={car.plateNumber} />
+              {/* <b className="border border-gray-500 px-2 py-1 rounded-md text-base uppercase text-gray-700">
                 {car.plateNumber?.plateNumberFormat()}
-              </b>
+              </b> */}
             </div>
           </div>
         </div>

@@ -20,6 +20,7 @@ import { CarWashingStatus, PaymentType } from "@/constant";
 import { NumericFormat } from "react-number-format";
 import TextArea from "antd/es/input/TextArea";
 import { toNumber } from "@/helper";
+import { useNavigate } from "react-router-dom";
 
 type FieldType = {
   washAmount?: string;
@@ -31,7 +32,7 @@ type FieldType = {
 
 interface Props {
   open: boolean;
-  onClose: () => void;
+  onClose: (bool?: boolean) => void;
   prevData?: any;
   customerId?: string;
   carId?: string;
@@ -52,6 +53,7 @@ const CarWashingPopup: React.FC<Props> = ({
   const [apiMessage, contextHolder] = message.useMessage();
   const nasiya = Form.useWatch("nasiya", form);
   const priceInputRef = useRef<InputRef>(null);
+  const navigate = useNavigate()
   useModalNavigation(open, onClose);
 
   useEffect(() => {
@@ -120,10 +122,11 @@ const CarWashingPopup: React.FC<Props> = ({
       })
         .unwrap()
         .then(() => {
-          apiMessage.success("Mashina yuvish boashlandi!");
+          apiMessage.success("Mashina yuvish boashlandi! +++");
           form.resetFields();
           setError(null);
-          onClose();
+          onClose(true);
+          navigate("/employee")
         })
         .catch((err) => {
           let error =
@@ -150,7 +153,7 @@ const CarWashingPopup: React.FC<Props> = ({
     >
       <Form
         form={form}
-        initialValues={{ type: "CASH" }}
+        initialValues={{ paymentType: "CASH" }}
         layout="vertical"
         onFinish={handleSave}
       >

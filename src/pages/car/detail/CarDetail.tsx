@@ -10,6 +10,7 @@ import Title from "antd/es/typography/Title";
 import { CustomEmpty } from "@/utils";
 import { useGetSalaryByIdQuery } from "@/redux/api/salary";
 import { useCheckTokenQuery } from "@/redux/api/auth";
+import CarNumber from "@/components/cars-view/CarNumber";
 
 type ModalType = "start" | "edit" | null;
 
@@ -78,9 +79,7 @@ const CarDetail = () => {
               </div>
 
               <div className="flex w-full flex-col items-end gap-3">
-                <b className="border-2 border-gray-500 px-2 py-1 rounded-md text-base uppercase text-gray-700">
-                  {car?.plateNumber?.plateNumberFormat()}
-                </b>
+                <CarNumber plateNumber={car?.plateNumber} />
                 <div className="flex gap-1.5">
                   <Button
                     onClick={() => handleOpenModal("edit")}
