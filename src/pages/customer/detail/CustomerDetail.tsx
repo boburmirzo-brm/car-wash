@@ -1,23 +1,26 @@
 import TelPopUp from "@/components/tel-pop-up/TelPopUp";
 import { useGetCustomerByIdQuery } from "@/redux/api/customer";
-import { Button, Skeleton, Typography, Tooltip } from "antd";
+import { Button, Skeleton, Typography, Tooltip, Tabs } from "antd";
 import React, { useCallback, useState } from "react";
 import { FaRegEdit } from "react-icons/fa";
 import { MdAttachMoney } from "react-icons/md";
 import { PlusOutlined } from "@ant-design/icons";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate, useLocation, Outlet } from "react-router-dom";
 import { TbUser, TbUserX } from "react-icons/tb";
 import CarsView from "@/components/cars-view/CarsView";
 import PaymentPopup from "@/components/payment-popup/PaymentPopup";
 import CustomerPopup from "@/components/customer-popup/CustomerPopup";
 import CarPopup from "@/components/car-popup/CarPopup";
 import { CustomEmpty } from "@/utils";
+import type { TabsProps } from "antd";
 
 const { Title } = Typography;
 type ModalType = "payment" | "edit" | "car" | null;
 
 const CustomerDetail = () => {
   const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
+  const {pathname} = useLocation();
   const { data, isLoading } = useGetCustomerByIdQuery(id || "");
   const [modalType, setModalType] = useState<ModalType>(null);
 
@@ -32,6 +35,24 @@ const CustomerDetail = () => {
 
   const customer = data?.data.payload.customer;
   const cars = data?.data.payload.cars;
+
+  const onChange = (key: string) => {    
+    navigate(key);
+  };
+
+  const activeTab = pathname.split("/").pop() === "payment-history" ? `payment-history` : ``;
+  const items: TabsProps["items"] = [
+    {
+      key: ``,
+      label: "Mashinalar",
+      // children: "Content of Tab Pane 1",
+    },
+    {
+      key: `payment-history`,
+      label: "To'lov tarixi",
+      // children: "Content of Tab Pane 2",
+    },
+  ];
 
   return (
     <>
@@ -92,7 +113,6 @@ const CustomerDetail = () => {
                     type="default"
                   >
                     <FaRegEdit className="text-lg" />
-                    {/* <span>Tahrirlash</span> */}
                   </Button>
                   <Button
                     onClick={() => handleOpenModal("payment")}
@@ -107,6 +127,12 @@ const CustomerDetail = () => {
           )}
         </div>
         <div className="shadow-md md:p-6 p-4 rounded-md border border-gray-100 w-full">
+          <Tabs
+            defaultActiveKey={activeTab}
+            items={items}
+            onChange={onChange}
+          />
+          <Outlet/>
           <div className="flex justify-between">
             <Title level={4}>Mijoz mashinalari</Title>
             <Button
@@ -132,7 +158,6 @@ const CustomerDetail = () => {
         customerId={customer?._id || ""}
         name={customer?.full_name || ""}
         onlyPayment={true}
-        // prevData={{price: 5000, amount: 60000, _id: "asdsadsad"}}
       />
       <CustomerPopup
         open={modalType === "edit"}
@@ -147,11 +172,6 @@ const CustomerDetail = () => {
         open={modalType === "car"}
         onClose={handleClose}
         customerId={customer?._id}
-        // prevData={{
-        //   name: car?.name || "",
-        //   plateNumber: car?.plateNumber || "",
-        //   id: car?._id || "",
-        // }}
       />
     </>
   );

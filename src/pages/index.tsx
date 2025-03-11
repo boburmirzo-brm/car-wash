@@ -152,6 +152,25 @@ const AppRouter = () => {
                       <CustomerDetail />
                     </Suspense>
                   ),
+                  children: [
+                    {
+                      path: "",
+                      element: (
+                        <Suspense>
+                          <div>cars</div>
+                        </Suspense>
+                      ),
+                    },
+                    {
+                      path: "payment-history",
+                      element: (
+                        <Suspense>
+                          <div>payment history</div>
+                        </Suspense>
+                      ),
+                    },
+                    
+                  ]
                 },
                 {
                   path: "car/:id",
