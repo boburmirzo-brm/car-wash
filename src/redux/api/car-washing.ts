@@ -22,10 +22,11 @@ const extendedApi = mainApi.injectEndpoints({
       }),
       providesTags: ["CAR_WASHING"],
     }),
-    getMyWashings: build.query<any, void>({
-      query: () => ({
+    getMyWashings: build.query<any, any>({
+      query: (params) => ({
         url: "car-washing/my",
         method: "GET",
+        params
       }),
       providesTags: ["CAR_WASHING"],
     }),

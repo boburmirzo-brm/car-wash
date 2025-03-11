@@ -11,6 +11,7 @@ import { logout } from "@/redux/features/auth.slice";
 import { TbUserShield } from "react-icons/tb";
 import { useGetSalaryByIdQuery } from "@/redux/api/salary";
 import { SalaryType } from "@/constant";
+import CarWashingHistory from "../../../components/car-washing/CarWashingHistory";
 
 const { Title } = Typography;
 
@@ -111,6 +112,14 @@ const Profile = () => {
               </div>
             </div>
           </div>
+        )}
+      </div>
+
+      <div className="shadow-md md:p-6 p-2 rounded-md border border-gray-100 w-full">
+        {isLoading ? (
+          <Skeleton active />
+        ) : (
+          <CarWashingHistory />
         )}
       </div>
 
