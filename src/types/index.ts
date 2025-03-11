@@ -131,3 +131,37 @@ export interface IPaymentCreate {
   type: string;
   customerId: string
 }
+
+interface ICarWashEmployer {
+  _id: string;
+  f_name: string;
+  l_name: string;
+  tel_primary: string;
+}
+
+interface ICarWashCar {
+  _id: string;
+  plateNumber: string;
+  name: string;
+}
+
+interface ICarWashCustomer {
+  _id: string;
+  full_name: string;
+  tel_primary: string;
+  budget: number;
+}
+
+export interface ICarWash {
+  _id: string;
+  employerId: ICarWashEmployer;
+  carId: ICarWashCar;
+  customerId: ICarWashCustomer;
+  washAmount: number;
+  status: "COMPLETED" | "PENDING" | "CANCELLED"; // Agar boshqa statuslar bo'lsa, qo'shish mumkin
+  employerSalary: number;
+  isBonus: boolean;
+  invitationId: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
