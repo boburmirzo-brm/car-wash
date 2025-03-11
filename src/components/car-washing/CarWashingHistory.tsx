@@ -56,7 +56,7 @@ const CarWashingHistory = () => {
 
   return (
     <div className="my-4 space-y-4">
-      <div className="flex justify-between items-start">
+      <div className="flex justify-between items-start max-[500px]:flex-col">
         <div className="text-xl font-bold flex items-center gap-2 text-gray-700">
           <HistoryOutlined />
           <span>Tarix</span>
@@ -126,7 +126,7 @@ const CarWashingHistory = () => {
         //   </div>
         // ))
       )}
-      
+
       {!isError && (
         <div className="flex justify-end">
           <Pagination
