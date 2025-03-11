@@ -168,6 +168,7 @@ const CustomerDetail = () => {
           id: customer?._id || "",
         }}
       />
+      
       <CarPopup
         open={modalType === "car"}
         onClose={handleClose}
