@@ -5,6 +5,7 @@ import { useGetMyWashingsQuery } from "../../redux/api/car-washing";
 import { CustomEmpty } from "@/utils";
 import CarWashing from "./CarWashing";
 import { useParamsHook } from "@/hooks/useParamsHook";
+import "./style.css"
 
 const { RangePicker } = DatePicker;
 
@@ -56,14 +57,18 @@ const CarWashingHistory = () => {
 
   return (
     <div className="my-4 space-y-4">
-      <div className="flex justify-between items-start max-[500px]:flex-col">
+      <div className="flex justify-between items-start max-[600px]:gap-4 max-[600px]:flex-col">
         <div className="text-xl font-bold flex items-center gap-2 text-gray-700">
           <HistoryOutlined />
           <span>Tarix</span>
         </div>
         <Space direction="vertical">
           <span className="font-semibold">Sana oralig'i:</span>
-          <RangePicker format="YYYY-MM-DD" onChange={handleFilterChange} />
+          <RangePicker
+            popupClassName="custom-range-picker-dropdown"
+            format="YYYY-MM-DD"
+            onChange={handleFilterChange}
+          />
           <Button type="primary" block onClick={clearFilters}>
             Tozalash
           </Button>
