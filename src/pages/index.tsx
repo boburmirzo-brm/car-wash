@@ -19,6 +19,8 @@ const CarSearch = lazy(() => import("./employer/order/car-search/CarSearch"));
 const Login = lazy(() => import("./login/Login"));
 const CustomerSearch = lazy(() => import("./employer/order/customer-search/CustomerSearch"));
 const CustomerDetail = lazy(() => import("./customer/detail/CustomerDetail"));
+const CustomersCar = lazy(() => import("./customer/detail/CustomersCar"));
+const PaymentHistory = lazy(() => import("./customer/detail/PaymentHistory"));
 const EmployeeProfile = lazy(() => import("./employer/profile/Profile"));
 const CarDetail = lazy(() => import("./car/detail/CarDetail"));
 const NotFound = lazy(() => import("./not-found/NotFound"));
@@ -157,7 +159,7 @@ const AppRouter = () => {
                       path: "",
                       element: (
                         <Suspense>
-                          <div>cars</div>
+                          <CustomersCar/>
                         </Suspense>
                       ),
                     },
@@ -165,7 +167,7 @@ const AppRouter = () => {
                       path: "payment-history",
                       element: (
                         <Suspense>
-                          <div>payment history</div>
+                          <PaymentHistory/>
                         </Suspense>
                       ),
                     },

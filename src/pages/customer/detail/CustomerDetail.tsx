@@ -4,14 +4,14 @@ import { Button, Skeleton, Typography, Tooltip, Tabs } from "antd";
 import React, { useCallback, useState } from "react";
 import { FaRegEdit } from "react-icons/fa";
 import { MdAttachMoney } from "react-icons/md";
-import { PlusOutlined } from "@ant-design/icons";
+// import { PlusOutlined } from "@ant-design/icons";
 import { useParams, useNavigate, useLocation, Outlet } from "react-router-dom";
 import { TbUser, TbUserX } from "react-icons/tb";
-import CarsView from "@/components/cars-view/CarsView";
+// import CarsView from "@/components/cars-view/CarsView";
 import PaymentPopup from "@/components/payment-popup/PaymentPopup";
 import CustomerPopup from "@/components/customer-popup/CustomerPopup";
 import CarPopup from "@/components/car-popup/CarPopup";
-import { CustomEmpty } from "@/utils";
+// import { CustomEmpty } from "@/utils";
 import type { TabsProps } from "antd";
 
 const { Title } = Typography;
@@ -20,7 +20,7 @@ type ModalType = "payment" | "edit" | "car" | null;
 const CustomerDetail = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const {pathname} = useLocation();
+  const { pathname } = useLocation();
   const { data, isLoading } = useGetCustomerByIdQuery(id || "");
   const [modalType, setModalType] = useState<ModalType>(null);
 
@@ -36,11 +36,12 @@ const CustomerDetail = () => {
   const customer = data?.data.payload.customer;
   const cars = data?.data.payload.cars;
 
-  const onChange = (key: string) => {    
+  const onChange = (key: string) => {
     navigate(key);
   };
 
-  const activeTab = pathname.split("/").pop() === "payment-history" ? `payment-history` : ``;
+  const activeTab =
+    pathname.split("/").pop() === "payment-history" ? `payment-history` : ``;
   const items: TabsProps["items"] = [
     {
       key: ``,
@@ -129,11 +130,12 @@ const CustomerDetail = () => {
         <div className="shadow-md md:p-6 p-4 rounded-md border border-gray-100 w-full">
           <Tabs
             defaultActiveKey={activeTab}
+            activeKey={activeTab}
             items={items}
             onChange={onChange}
           />
-          <Outlet/>
-          <div className="flex justify-between">
+          <Outlet context={{ cars, customerId: customer?._id }} />
+          {/* <div className="flex justify-between">
             <Title level={4}>Mijoz mashinalari</Title>
             <Button
               onClick={() => handleOpenModal("car")}
@@ -149,7 +151,7 @@ const CustomerDetail = () => {
             <CarsView data={cars || []} />
           ) : (
             <CustomEmpty />
-          )}
+          )} */}
         </div>
       </div>
       <PaymentPopup
@@ -168,7 +170,7 @@ const CustomerDetail = () => {
           id: customer?._id || "",
         }}
       />
-      
+
       <CarPopup
         open={modalType === "car"}
         onClose={handleClose}
