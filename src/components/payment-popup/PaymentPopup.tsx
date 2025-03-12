@@ -1,24 +1,17 @@
 import React, { FC, useRef, useEffect } from "react";
-import {
-  Modal,
-  Button,
-  Form,
-  Input,
-  InputRef,
-  message,
-  Radio,
-} from "antd";
+import { Modal, Button, Form, Input, InputRef, message, Radio } from "antd";
 import type { FormProps } from "antd";
 import { NumericFormat } from "react-number-format";
 import { IPaymentAmount, IPaymentCreate } from "@/types";
-import { useCreatePaymentMutation } from "@/redux/api/payment";
+import {
+  useCreatePaymentMutation,
+  useUpdatePaymentMutation,
+} from "@/redux/api/payment";
 import { useModalNavigation } from "@/hooks/useModalNavigation";
 import { PaymentType } from "@/constant";
-import { toNumber } from "@/helper";
 
 type FieldType = {
   amount?: string;
-  nasiya?: string;
   comment: string;
   type: string;
 };
@@ -28,8 +21,8 @@ interface Props {
   onClose: () => void;
   customerId: null | string;
   name: string;
+  payment?: IPaymentAmount;
   onlyPayment?: boolean;
-  prevData?: IPaymentAmount | undefined;
 }
 
 const { TextArea } = Input;
@@ -38,49 +31,90 @@ const PaymentPopup: FC<Props> = ({
   open,
   onClose,
   customerId,
-  prevData,
+  payment,
   name,
 }) => {
   const [form] = Form.useForm();
-  const [createPayment, { isLoading }] = useCreatePaymentMutation();
+  const [createPayment, { isLoading: isCreating }] = useCreatePaymentMutation();
+  const [updatePayment, { isLoading: isUpdating }] = useUpdatePaymentMutation();
   const [apiMessage, contextHolder] = message.useMessage();
   const priceInputRef = useRef<InputRef>(null);
   useModalNavigation(open, onClose);
+
+  const toNumber = (value: string | undefined | null): number => {
+    if (!value) return 0;
+    return Number(value.replace(/\s/g, ""));
+  };
 
   useEffect(() => {
     if (open) {
       setTimeout(() => {
         priceInputRef.current?.focus();
       }, 100);
+      if (payment) {
+        form.setFieldsValue({
+          amount: payment.amount.toString(),
+          comment: payment.comment,
+          type: payment.type,
+        });
+      }
     }
-  }, [open]);
+  }, [open, payment]);
 
   const onFinish: FormProps<FieldType>["onFinish"] = (values) => {
     const amount = toNumber(values.amount);
 
-    let data: IPaymentCreate = {
-      amount: amount,
-      comment: values.comment,
-      type: values.type,
-      customerId: customerId || "",
-    };
-    !data.comment && delete data.comment;
+    if (!amount) {
+      apiMessage.error("Summani to‘g‘ri kiriting!");
+      return;
+    }
 
-    createPayment(data)
-      .unwrap()
-      .then(() => {
-        apiMessage.success("To'lov muvaffaqiyatli saqlandi!");
-        form.resetFields();
-        onClose();
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+    if (payment) {
+      const data = {
+        id: payment._id,
+        data: {
+          amount,
+          comment: values.comment || "",
+          type: values.type,
+        },
+      };
+
+      console.log("Update qilish uchun data:", data);
+
+      updatePayment(data)
+        .unwrap()
+        .then(() => {
+          apiMessage.success("To'lov muvaffaqiyatli tahrirlandi!");
+          form.resetFields();
+          onClose();
+        })
+        .catch((err) => {
+          console.error("Xatolik yuz berdi:", err);
+        });
+    } else {
+      const data: IPaymentCreate = {
+        amount,
+        comment: values.comment,
+        type: values.type,
+        customerId: customerId || "",
+      };
+      if (!data.comment) delete data.comment;
+
+      createPayment(data)
+        .unwrap()
+        .then(() => {
+          apiMessage.success("To'lov muvaffaqiyatli saqlandi!");
+          form.resetFields();
+          onClose();
+        })
+        .catch((err) => {
+          console.error("Xatolik yuz berdi:", err);
+        });
+    }
   };
-
   return (
     <Modal
-      title={`To'lov: ${name}`}
+      title={payment ? `To'lovni tahrirlash: ${name}` : `To'lov: ${name}`}
       open={open}
       onCancel={() => {
         onClose();
@@ -91,7 +125,7 @@ const PaymentPopup: FC<Props> = ({
       <Form
         form={form}
         layout="vertical"
-        initialValues={prevData ? prevData : { type: "CASH" }}
+        initialValues={payment ? payment : { type: "CASH" }}
         onFinish={onFinish}
         autoComplete="off"
       >
@@ -107,6 +141,9 @@ const PaymentPopup: FC<Props> = ({
             fixedDecimalScale
             allowNegative={false}
             placeholder="Summani kiriting"
+            onValueChange={(values) =>
+              form.setFieldValue("amount", values.value)
+            } // `values.value` faqat raqamni oladi
           />
         </Form.Item>
 
@@ -125,12 +162,16 @@ const PaymentPopup: FC<Props> = ({
 
         <Form.Item style={{ margin: 0 }}>
           <Button
-            loading={isLoading}
+            loading={isCreating || isUpdating}
             type="primary"
             htmlType="submit"
             className="w-full"
           >
-            {isLoading ? "Kuting" : prevData ? "Saqlash" : "Qo'shish"}
+            {isCreating || isUpdating
+              ? "Kuting"
+              : payment
+              ? "Saqlash"
+              : "Qo'shish"}
           </Button>
         </Form.Item>
       </Form>
