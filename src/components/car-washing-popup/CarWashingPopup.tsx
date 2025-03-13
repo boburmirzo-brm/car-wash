@@ -53,8 +53,10 @@ const CarWashingPopup: React.FC<Props> = ({
   const [apiMessage, contextHolder] = message.useMessage();
   const nasiya = Form.useWatch("nasiya", form);
   const priceInputRef = useRef<InputRef>(null);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   useModalNavigation(open, onClose);
+
+  console.log(prevData);
 
   useEffect(() => {
     if (open) {
@@ -126,7 +128,7 @@ const CarWashingPopup: React.FC<Props> = ({
           form.resetFields();
           setError(null);
           onClose(true);
-          navigate("/employee")
+          navigate("/employee");
         })
         .catch((err) => {
           let error =
@@ -215,9 +217,14 @@ const CarWashingPopup: React.FC<Props> = ({
           /> */}
             </Form.Item>
 
-            <Form.Item<FieldType> name="nasiya" valuePropName="checked">
-              <Checkbox>Nasiya</Checkbox>
-            </Form.Item>
+            {!(
+              prevData?.customerId?.full_name === "Noma'lum" &&
+              prevData?.customerId?.tel_primary
+            ) && (
+              <Form.Item<FieldType> name="nasiya" valuePropName="checked">
+                <Checkbox>Nasiya</Checkbox>
+              </Form.Item>
+            )}
           </>
         ) : (
           <div className="text-gray-600 flex justify-center py-6 text-8xl">

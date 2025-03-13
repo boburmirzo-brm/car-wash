@@ -16,10 +16,12 @@ const invalidateCustomerTag = async (
 const extendedApi = mainApi.injectEndpoints({
   endpoints: (build: EndpointBuilder<any, any, any>) => ({
     getPaymentByCustomerId: build.query<any, any>({
-      query: ({ customerId, filters }) => ({
-        url: `/payments/customer/${customerId}?fromDate=${filters.fromDate}&toDate=${filters.toDate}&page=${filters.page}&limit=${filters.limit}`,
+      query: ({ customerId, params }) => ({
+        url: `/payments/customer/${customerId}`,
         method: "GET",
+        params,
       }),
+      providesTags: ["PAYMENT"],
     }),
 
     createPayment: build.mutation<any, any>({
@@ -49,6 +51,10 @@ const extendedApi = mainApi.injectEndpoints({
   overrideExisting: false,
 });
 
-export const { useCreatePaymentMutation, useGetPaymentByCustomerIdQuery, useUpdatePaymentMutation } = extendedApi;
+export const {
+  useCreatePaymentMutation,
+  useGetPaymentByCustomerIdQuery,
+  useUpdatePaymentMutation,
+} = extendedApi;
 
 export default extendedApi;

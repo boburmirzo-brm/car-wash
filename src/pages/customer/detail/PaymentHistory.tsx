@@ -5,6 +5,7 @@ import React, { useCallback, useMemo } from "react";
 import { useOutletContext } from "react-router-dom";
 import { useParamsHook } from "../../../hooks/useParamsHook";
 import { HistoryOutlined } from "@ant-design/icons";
+import { CustomEmpty, MiniLoading } from "@/utils";
 
 const { RangePicker } = DatePicker;
 
@@ -20,7 +21,7 @@ const PaymentHistory = () => {
   const fromDate = getParam("fromDate") || "";
   const toDate = getParam("toDate") || "";
   const page = parseInt(getParam("page") || "1", 10);
-  const limit = 2;
+  const limit = 5;
 
   const filters = useMemo(
     () => ({
@@ -49,10 +50,13 @@ const PaymentHistory = () => {
     removeParams(["fromDate", "toDate", "page"]);
   }, [removeParams]);
 
-  const { data, isError, isLoading } = useGetPaymentByCustomerIdQuery({
-    customerId,
-    filters,
-  });
+  const { data, isError, isFetching } = useGetPaymentByCustomerIdQuery(
+    {
+      customerId,
+      params: filters,
+    },
+    { skip: !customerId }
+  );
 
   const totalItems = data?.data?.total || 0;
 
@@ -64,43 +68,43 @@ const PaymentHistory = () => {
   );
 
   return (
-    <div>
-      {isLoading ? (
-        <p>Loading...</p>
-      ) : (
-        <>
-          <div className="flex justify-between items-start max-[600px]:gap-4 max-[600px]:flex-col">
-            <div className="text-xl font-bold flex items-center gap-2 text-gray-700">
-              <HistoryOutlined />
-              <span>Tarix</span>
-            </div>
-            <Space direction="vertical">
-              <span className="font-semibold">Sana oralig'i:</span>
-              <RangePicker
-                popupClassName="custom-range-picker-dropdown"
-                format="YYYY-MM-DD"
-                onChange={handleFilterChange}
-              />
-              <Button type="primary" block onClick={clearFilters}>
-                Tozalash
-              </Button>
-            </Space>
-          </div>
+    <>
+      <div className="flex justify-between items-start max-[600px]:gap-4 max-[600px]:flex-col">
+        <div className="text-xl font-bold flex items-center gap-2 text-gray-700">
+          <HistoryOutlined />
+          <span>Tarix</span>
+        </div>
+        <Space direction="vertical">
+          <span className="font-semibold">Sana oralig'i:</span>
+          <RangePicker
+            popupClassName="custom-range-picker-dropdown"
+            format="YYYY-MM-DD"
+            onChange={handleFilterChange}
+          />
+          <Button type="primary" block onClick={clearFilters}>
+            Tozalash
+          </Button>
+        </Space>
+      </div>
+      {isError && <CustomEmpty />}
+      {
+        !isError && (
           <PaymentView data={data?.data?.payload || []} />
-          {!isError && totalItems > limit && (
-            <div className="flex justify-end mt-4">
-              <Pagination
-                current={page}
-                pageSize={limit}
-                total={totalItems}
-                onChange={handlePageChange}
-                showSizeChanger={false}
-              />
-            </div>
-          )}
-        </>
+        )
+      }
+      {isFetching && <MiniLoading />}
+      {!isError && totalItems > limit && (
+        <div className="flex justify-end mt-4">
+          <Pagination
+            current={page}
+            pageSize={limit}
+            total={totalItems}
+            onChange={handlePageChange}
+            showSizeChanger={false}
+          />
+        </div>
       )}
-    </div>
+    </>
   );
 };
 

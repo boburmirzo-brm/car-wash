@@ -20,6 +20,7 @@ import CarPopup from "@/components/car-popup/CarPopup";
 import CarWashingPopup from "@/components/car-washing-popup/CarWashingPopup";
 import CarNumber from "@/components/cars-view/CarNumber";
 import CarsWashings from "./CarsWashings";
+import { CustomEmpty } from "@/utils";
 
 const { RangePicker } = DatePicker;
 type ModalType = "start" | "edit" | null;
@@ -48,7 +49,7 @@ const CarDetail = () => {
   const car = data?.data.payload?.car;
   const carWashings = data?.data.payload?.carWashings;
   const totalItems = data?.data.total;
-  console.log(totalItems, data);
+  
   
 
   const handleOpenModal = (type: ModalType) => setModalType(type);
@@ -134,7 +135,7 @@ const CarDetail = () => {
                   <Button
                     onClick={() => handleOpenModal("start")}
                     type="primary"
-                    disabled={isError}
+                    disabled={isError || car?.isWashing}
                   >
                     <IoPlayOutline className="text-lg" />
                     <span>Start</span>
@@ -159,6 +160,11 @@ const CarDetail = () => {
               </Button>
             </Space>
           </div>
+          {
+            !carWashings?.length && (
+              <CustomEmpty/>
+            )
+          }
           <CarsWashings profile={true} data={carWashings} />
           <div className="flex justify-end mt-4">
             <Pagination

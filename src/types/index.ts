@@ -4,7 +4,7 @@ export interface IPaymentAmount {
   price: number;
   amount: number;
   comment: string;
-  type: PaymentType
+  type: PaymentType;
   _id: string;
 }
 
@@ -61,11 +61,12 @@ export interface ICar {
   customerId: string;
   plateNumber: string;
   name: string;
+  isWashing: boolean;
   createdAt: string;
   updatedAt: string;
 }
 
-interface ICarDetail{
+interface ICarDetail {
   _id: string;
   employerId: any;
   customerId: ICustomer;
@@ -73,11 +74,12 @@ interface ICarDetail{
   name: string;
   createdAt: string;
   updatedAt: string;
+  isWashing: boolean;
 }
 
 export interface IDetailCar {
   car: ICarDetail;
-  carWashings:any;
+  carWashings: any;
 }
 export interface ICustomer {
   _id: string;
@@ -140,7 +142,7 @@ export interface IPaymentCreate {
   amount: number;
   comment?: string;
   type: string;
-  customerId: string
+  customerId: string;
 }
 
 interface ICarWashEmployer {

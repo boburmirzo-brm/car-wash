@@ -1,9 +1,11 @@
 import React, { FC, useCallback, useState } from "react";
 import { MoreOutlined } from "@ant-design/icons";
-import { Popover, Button } from "antd";
+import { Popover, Button, Popconfirm, message } from "antd";
 import CarWashingPopup from "../car-washing-popup/CarWashingPopup";
+import { useUpdateCarWashingMutation } from "@/redux/api/car-washing";
+import { CarWashingStatus, PaymentType } from "@/constant";
 
-type ModalType = "car-washing" | "edit" | "done" | null;
+type ModalType = "car-washing" | "edit" | "canceled" | null;
 
 interface Props {
   data: any;
@@ -14,6 +16,9 @@ const Options: FC<Props> = ({ data, profile }) => {
   const [selected, setSelected] = useState<any>(null);
   const [open, setOpen] = useState(false);
   const [modalType, setModalType] = useState<ModalType>(null);
+  const [updateCarWashing] =
+    useUpdateCarWashingMutation();
+  const [apiMessage, contextHolder] = message.useMessage();
 
   const showModal = (type: ModalType) => {
     setSelected(data);
@@ -26,6 +31,25 @@ const Options: FC<Props> = ({ data, profile }) => {
     if (!isBack) window.history.back();
   }, []);
 
+  const handleCancele = () => {
+    console.log(data?._id);
+
+    updateCarWashing({
+      id: data._id,
+      data: {
+        washAmount: 0,
+        paidAmount: 0,
+        paymentType: PaymentType.CASH,
+        status: CarWashingStatus.CANCELED,
+      },
+    })
+      .unwrap()
+      .then(() => {
+        apiMessage.warning("Mashina yuvish bekor qilindi!");
+        handleClose();
+      });
+  };
+
   const content = (
     <div className="flex flex-col">
       {profile ? (
@@ -37,9 +61,16 @@ const Options: FC<Props> = ({ data, profile }) => {
           <Button onClick={() => showModal("car-washing")} type="text">
             To'lov
           </Button>
-          <Button onClick={() => showModal("done")} type="text">
-            Tayyor
-          </Button>
+          <Popconfirm
+            title="Bekor qilmoqchimisiz?"
+            onConfirm={handleCancele}
+            okText="Ha"
+            cancelText="Yo'q"
+          >
+            <Button onClick={() => showModal("canceled")} type="text">
+              Bekor qilish
+            </Button>
+          </Popconfirm>
         </>
       )}
     </div>
@@ -69,6 +100,7 @@ const Options: FC<Props> = ({ data, profile }) => {
         prevData={data}
       />
       {/* )} */}
+      {contextHolder}
     </>
   );
 };

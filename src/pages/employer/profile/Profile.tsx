@@ -37,7 +37,7 @@ const Profile = () => {
   };
 
   return (
-    <div className="flex flex-col gap-4 items-center py-4">
+    <div className="flex flex-col gap-4 items-center py-4 max-[600px]:min-h-[1200px]">
       {isError && (
         <Alert
           message={"Oylik belgilanmagan. Avval oylikni belgilating"}
@@ -58,14 +58,14 @@ const Profile = () => {
                 <h3 className="text-2xl font-medium">{user.f_name}</h3>
                 <h4 className="text-base">{user.l_name}</h4>
                 <p className="text-gray-700 mt-2">@{user.username}</p>
-                <div className="mt-2">
+                {/* <div className="mt-2">
                   <Tag
                     color={user.is_active ? "green" : "red"}
                     className="text-xs md:text-sm"
                   >
                     {user.is_active ? "Faol" : "Faol emas"}
                   </Tag>
-                </div>
+                </div> */}
               </div>
             </div>
 
@@ -84,12 +84,12 @@ const Profile = () => {
                 {user.budget?.toLocaleString() || "0"} UZS
               </Title>
               {!isError && (
-                <p className="text-base text-gray-600 bg-green-100  px-2 border border-green-200 rounded">
+                <Tag color="green" >
                   {salary?.data?.payload?.amount?.toLocaleString()}{" "}
                   {salary?.data?.payload?.type === SalaryType.PERCENT
                     ? "%"
                     : "so'm"}
-                </p>
+                </Tag>
               )}
               <TelPopUp phoneNumber={user.tel_primary} />
               <div className="flex gap-1.5">

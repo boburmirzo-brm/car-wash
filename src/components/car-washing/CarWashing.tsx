@@ -1,14 +1,17 @@
 import React, { FC } from "react";
 import Options from "./Options";
-import { TbCoins, TbUserX } from "react-icons/tb";
+import { TbCancel, TbCoins, TbUserX } from "react-icons/tb";
 import { AiOutlineUser } from "react-icons/ai";
 import { IoCarOutline } from "react-icons/io5";
 import TelPopUp from "../tel-pop-up/TelPopUp";
-import { Role } from "@/constant";
+import { CarWashingStatus, Role } from "@/constant";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux";
 import { Link } from "react-router-dom";
 import CarNumber from "../cars-view/CarNumber";
+import { IoMdDoneAll } from "react-icons/io";
+import { MdOutlinePending } from "react-icons/md";
+import { FaRegCommentDots } from "react-icons/fa";
 
 interface Props {
   data: any;
@@ -25,16 +28,25 @@ const CarWashing: FC<Props> = ({ data, profile }) => {
           key={item._id}
           className="bg-white shadow-sm rounded-md p-4 max-[500px]:p-3 border border-gray-300"
         >
-          <div className="flex items-center justify-between">
-            <Link
-              to={`/customer/${item?.customerId?._id}`}
-              className="text-base font-semibold text-gray-800 flex items-center gap-2"
-            >
-              {item?.customerId?.full_name === "Noma'lum" && (
-                <TbUserX className="text-2xl text-yellow-500" />
-              )}
-              {item?.customerId?.full_name}
-            </Link>
+          <div className="flex items-center justify-between gap-1.5">
+            <div className="flex-1 flex">
+              <Link
+                to={`/customer/${item?.customerId?._id}`}
+                className="text-base font-semibold text-gray-800 flex items-center gap-2"
+              >
+                {item?.customerId?.full_name === "Noma'lum" && (
+                  <TbUserX className="text-2xl text-yellow-500" />
+                )}
+                {item?.customerId?.full_name}
+              </Link>
+            </div>
+            {item?.status === CarWashingStatus.PENDING ? (
+              <MdOutlinePending className="text-xl text-yellow-500" />
+            ) : item?.status === CarWashingStatus.COMPLETED ? (
+              <IoMdDoneAll className="text-green-700" />
+            ) : (
+              <TbCancel  className="text-xl text-red-500" />
+            )}
             <Options profile={profile} data={item} />
           </div>
 
@@ -51,8 +63,8 @@ const CarWashing: FC<Props> = ({ data, profile }) => {
             </Link>
           </div>
 
-          {role === Role.ADMIN ||
-            (profile && (
+          {(role === Role.ADMIN || profile) &&
+            item?.status === CarWashingStatus.COMPLETED && (
               <div className="flex justify-between items-center bg-gray-100 p-3 rounded-md mt-3">
                 <div>
                   {role === Role.ADMIN && (
@@ -74,8 +86,13 @@ const CarWashing: FC<Props> = ({ data, profile }) => {
                   {item?.washAmount?.toLocaleString() || "0"} UZS
                 </strong>
               </div>
-            ))}
-
+            )}
+          {item?.comment && (
+            <div className="text-gray-600 text-sm mt-3 flex items-center gap-2">
+              <FaRegCommentDots className="text-lg" />
+              <span>{item?.comment}</span>
+            </div>
+          )}
           <div className="flex justify-between items-center mt-3 text-gray-600 text-sm">
             <span>
               {item?.createdAt?.dateFormat()} {item?.createdAt?.timeFormat()}

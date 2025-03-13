@@ -57,7 +57,7 @@ const CustomerDetail = () => {
 
   return (
     <>
-      <div className="flex flex-col gap-4 my-4">
+      <div className="flex flex-col gap-4 my-4 max-[600px]:min-h-[1200px]">
         <div className="shadow-md md:p-6 p-4 rounded-md border border-gray-100 w-full">
           {isLoading ? (
             <Skeleton active />

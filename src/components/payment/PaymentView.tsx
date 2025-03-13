@@ -1,7 +1,15 @@
 import React, { FC, useState } from "react";
-import { Button, Popover } from "antd";
+import { Button, Popover, Tooltip } from "antd";
 import { MoreOutlined } from "@ant-design/icons";
 import PaymentPopup from "../payment-popup/PaymentPopup";
+import { PaymentType } from "@/constant";
+import {
+  FaRegCreditCard,
+  FaMoneyBillWave,
+  FaRegCommentDots,
+} from "react-icons/fa";
+import { AiOutlineUser } from "react-icons/ai";
+import { useCheckTokenQuery } from "@/redux/api/auth";
 
 interface Props {
   data: any[];
@@ -11,6 +19,11 @@ const PaymentView: FC<Props> = ({ data }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [selectedPayment, setSelectedPayment] = useState<any>(null);
   const [openPopover, setOpenPopover] = useState<string | null>(null);
+  const {
+    data: { user },
+  } = useCheckTokenQuery(undefined);
+
+  console.log(user);
 
   const handleEdit = (item: any) => {
     setSelectedPayment(item);
@@ -29,29 +42,57 @@ const PaymentView: FC<Props> = ({ data }) => {
             <strong className="text-lg text-gray-900 font-semibold">
               {item?.amount?.toLocaleString()} UZS
             </strong>
-            <Popover
-              content={
-                <Button onClick={() => handleEdit(item)} type="text">
-                  Tahrirlash
+            {user?.id === item?.employerId?._id && (
+              <Popover
+                content={
+                  <Button onClick={() => handleEdit(item)} type="text">
+                    Tahrirlash
+                  </Button>
+                }
+                trigger="click"
+                placement="bottomRight"
+                open={openPopover === item._id}
+                onOpenChange={(visible) =>
+                  setOpenPopover(visible ? item._id : null)
+                }
+              >
+                <Button type="text">
+                  <MoreOutlined />
                 </Button>
-              }
-              trigger="click"
-              placement="bottomRight"
-              open={openPopover === item._id}
-              onOpenChange={(visible) =>
-                setOpenPopover(visible ? item._id : null)
-              }
-            >
-              <Button type="text">
-                <MoreOutlined />
-              </Button>
-            </Popover>
+              </Popover>
+            )}
           </div>
-          <p className="text-sm text-gray-600">{item?.comment}</p>
+          <p className="flex items-center gap-2 text-gray-700 text-sm">
+            <AiOutlineUser className="text-lg" />
+            <span>
+              {item?.employerId?.l_name[0]}. {item?.employerId?.f_name}
+            </span>
+          </p>
+          {item?.comment && (
+            <div className="text-gray-600 text-sm mt-3 flex items-center gap-2">
+              <FaRegCommentDots className="text-lg" />
+              <span>{item?.comment}</span>
+            </div>
+          )}
           <div className="flex justify-between items-center mt-3 text-gray-600 text-sm">
             <span>
               {item?.createdAt?.dateFormat()} {item?.createdAt?.timeFormat()}
             </span>
+            <div className="flex items-center gap-2">
+              {item?.type === PaymentType.CASH ? (
+                <Tooltip placement="bottom" title="Naqd">
+                  <div>
+                    <FaMoneyBillWave className="text-xl" />
+                  </div>
+                </Tooltip>
+              ) : (
+                <Tooltip placement="bottom" title="Karta">
+                  <div>
+                    <FaRegCreditCard className="text-xl" />
+                  </div>
+                </Tooltip>
+              )}
+            </div>
           </div>
         </div>
       ))}
@@ -65,7 +106,6 @@ const PaymentView: FC<Props> = ({ data }) => {
           payment={selectedPayment}
         />
       )}
-      
     </div>
   );
 };
