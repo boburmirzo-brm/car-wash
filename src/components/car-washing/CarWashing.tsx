@@ -66,10 +66,10 @@ const CarWashing: FC<Props> = ({ data, profile }) => {
           <div className="flex items-center justify-between mt-2">
             <Link
               to={`/car/${item?.carId?._id}`}
-              className="flex items-center gap-2 text-gray-700 "
+              className="flex items-center gap-2 text-gray-700 flex-1"
             >
-              <IoCarOutline className="text-lg text-gray-600" />
-              <span>{item?.carId?.name}</span>
+              <IoCarOutline className="text-lg text-gray-600 line-clamp-1" />
+              <span title={item?.carId?.name} className="line-clamp-1 flex-1">{item?.carId?.name}</span>
             </Link>
             <Link to={`/car/${item?.carId?._id}`}>
               <CarNumber plateNumber={item?.carId?.plateNumber} />
