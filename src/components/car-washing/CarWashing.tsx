@@ -12,6 +12,7 @@ import CarNumber from "../cars-view/CarNumber";
 import { IoMdDoneAll } from "react-icons/io";
 import { MdOutlinePending } from "react-icons/md";
 import { FaRegCommentDots } from "react-icons/fa";
+import { Tooltip } from "antd";
 
 interface Props {
   data: any;
@@ -41,11 +42,23 @@ const CarWashing: FC<Props> = ({ data, profile }) => {
               </Link>
             </div>
             {item?.status === CarWashingStatus.PENDING ? (
-              <MdOutlinePending className="text-xl text-yellow-500" />
+              <Tooltip placement="bottom" title="Yuvilmoqda">
+                <div>
+                  <MdOutlinePending className="text-xl text-yellow-500" />
+                </div>
+              </Tooltip>
             ) : item?.status === CarWashingStatus.COMPLETED ? (
-              <IoMdDoneAll className="text-green-700" />
+              <Tooltip placement="bottom" title="Muvaffaqiyatli yuvilgan">
+                <div>
+                  <IoMdDoneAll className="text-green-700" />
+                </div>
+              </Tooltip>
             ) : (
-              <TbCancel  className="text-xl text-red-500" />
+              <Tooltip placement="bottom" title="Bekor qilingan">
+                <div>
+                  <TbCancel className="text-xl text-red-500" />
+                </div>
+              </Tooltip>
             )}
             <Options profile={profile} data={item} />
           </div>
