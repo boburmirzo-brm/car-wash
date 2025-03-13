@@ -15,20 +15,17 @@ const CarsView: FC<{ data: ICar[] }> = ({ data }) => {
           key={car._id}
           className="bg-white shadow-sm rounded-md p-4 max-[500px]:p-3 border border-gray-300 cursor-pointer hover:bg-gray-100 duration-200"
         >
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between max-[500px]:flex-col max-[500px]:items-start ">
             <h3 className="text-base font-semibold text-gray-800 flex-1">
               {car.name}
             </h3>
-            {car.isWashing && (
-              <div className="text-blue-500 px-2 py-1 rounded-md text-xl">
-                <MdOutlineLocalCarWash />
-              </div>
-            )}
             <div className="flex max-[500px]:w-full max-[500px]:justify-end">
+              {car.isWashing && (
+                <div className="text-blue-500 px-2 py-1 rounded-md text-xl">
+                  <MdOutlineLocalCarWash />
+                </div>
+              )}
               <CarNumber plateNumber={car.plateNumber} />
-              {/* <b className="border border-gray-500 px-2 py-1 rounded-md text-base uppercase text-gray-700">
-                {car.plateNumber?.plateNumberFormat()}
-              </b> */}
             </div>
           </div>
         </div>
