@@ -24,8 +24,9 @@ const extendedApi = mainApi.injectEndpoints({
       }),
       providesTags: ["CAR"],
     }),
-    getCarById: build.query<IDetailPayload<IDetailCar>, string>({
-      query: (id) => `/cars/${id}`,
+    getCarById: build.query<IDetailPayload<IDetailCar>, any>({
+      query: ({id, filters}) =>
+        `/cars/${id}?fromDate=${filters.fromDate}&toDate=${filters.toDate}&page=${filters.page}&limit=${filters.limit}`,
       providesTags: ["CAR"],
     }),
     createCar: build.mutation<any, any>({

@@ -1,6 +1,10 @@
+import { PaymentType } from "../constant";
+
 export interface IPaymentAmount {
   price: number;
   amount: number;
+  comment: string;
+  type: PaymentType
   _id: string;
 }
 
@@ -43,6 +47,7 @@ export interface IDetailPayload<T> {
   message: string;
   data: {
     payload: T;
+    total: number;
   };
 }
 export interface ICustomerDetail {
@@ -59,7 +64,8 @@ export interface ICar {
   createdAt: string;
   updatedAt: string;
 }
-export interface IDetailCar {
+
+interface ICarDetail{
   _id: string;
   employerId: any;
   customerId: ICustomer;
@@ -67,6 +73,11 @@ export interface IDetailCar {
   name: string;
   createdAt: string;
   updatedAt: string;
+}
+
+export interface IDetailCar {
+  car: ICarDetail;
+  carWashings:any;
 }
 export interface ICustomer {
   _id: string;
