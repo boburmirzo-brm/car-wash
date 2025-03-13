@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useState, useEffect } from "react";
 import { Typography, Tag, Button, Popconfirm, Skeleton, Alert } from "antd";
 // import { UserOutlined } from "@ant-design/icons";
 import { useCheckTokenQuery } from "@/redux/api/auth";
@@ -30,6 +30,10 @@ const Profile = () => {
       window.history.back();
     }
   }, []);
+
+  useEffect(()=>{
+    window.scrollTo(0,0)
+  }, [])
 
   const user = data?.user || {};
   const handleLogout = () => {
