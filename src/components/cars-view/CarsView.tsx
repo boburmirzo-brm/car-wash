@@ -15,7 +15,7 @@ const CarsView: FC<{ data: ICar[] }> = ({ data }) => {
           key={car._id}
           className="bg-white shadow-sm rounded-md p-4 max-[500px]:p-3 border border-gray-300 cursor-pointer hover:bg-gray-100 duration-200"
         >
-          <div className="flex items-center justify-between max-[500px]:flex-col max-[500px]:items-start ">
+          <div className="flex items-center justify-between">
             <h3 className="text-base font-semibold text-gray-800 flex-1">
               {car.name}
             </h3>
