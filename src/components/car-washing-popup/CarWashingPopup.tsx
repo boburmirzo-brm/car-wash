@@ -218,8 +218,8 @@ const CarWashingPopup: React.FC<Props> = ({
             </Form.Item>
 
             {!(
-              prevData?.customerId?.full_name === "Noma'lum" &&
-              prevData?.customerId?.tel_primary
+              prevData?.customerId?.full_name === "Noma'lum" ||
+              !prevData?.customerId?.tel_primary
             ) && (
               <Form.Item<FieldType> name="nasiya" valuePropName="checked">
                 <Checkbox>Nasiya</Checkbox>
