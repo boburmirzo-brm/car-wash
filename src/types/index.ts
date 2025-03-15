@@ -178,3 +178,12 @@ export interface ICarWash {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface ExpenseType {
+  _id: string;
+  amount: number;
+  comment: string;
+  createdAt: string;
+  type: PaymentType;
+  employerId: any;
+}

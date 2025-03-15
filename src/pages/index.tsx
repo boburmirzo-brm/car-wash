@@ -8,6 +8,7 @@ const Admins = lazy(() => import("./admins/Admins"));
 const Employees = lazy(() => import("./employees/Employees"));
 const UserDetail = lazy(() => import("./user/detail/UserDetail"));
 const Profile = lazy(() => import("./profile/Profile"));
+const ExpenseHistory = lazy(() => import("./expense/ExpenseHistory"));
 // Employer
 const Employer = lazy(() => import("./employer/Employer"));
 const Order = lazy(() => import("./employer/order/Order"));
@@ -89,7 +90,15 @@ const AppRouter = () => {
                       path: "/profile",
                       element: (
                         <Suspense>
-                          <Profile/>
+                          <Profile />
+                        </Suspense>
+                      ),
+                    },
+                    {
+                      path: "/expense",
+                      element: (
+                        <Suspense>
+                          <ExpenseHistory />
                         </Suspense>
                       ),
                     },
@@ -135,7 +144,7 @@ const AppRouter = () => {
                             </Suspense>
                           ),
                         },
-                      ]
+                      ],
                     },
                     {
                       path: "employee/profile",
@@ -159,7 +168,7 @@ const AppRouter = () => {
                       path: "",
                       element: (
                         <Suspense>
-                          <CustomersCar/>
+                          <CustomersCar />
                         </Suspense>
                       ),
                     },
@@ -167,12 +176,11 @@ const AppRouter = () => {
                       path: "payment-history",
                       element: (
                         <Suspense>
-                          <PaymentHistory/>
+                          <PaymentHistory />
                         </Suspense>
                       ),
                     },
-                    
-                  ]
+                  ],
                 },
                 {
                   path: "car/:id",
