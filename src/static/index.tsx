@@ -3,7 +3,7 @@ import {
   AppstoreAddOutlined,
   UserOutlined,
 } from "@ant-design/icons";
-import { FaRegUser, FaRegUserCircle } from "react-icons/fa";
+import { FaMoneyBillWave, FaRegUser, FaRegUserCircle } from "react-icons/fa";
 import {
   MdOutlineAdminPanelSettings,
   MdOutlineDashboard,
@@ -32,25 +32,31 @@ export const SIDEBAR_LINKS = [
     id: 1,
     path: "/",
     title: "Dashboard",
-    icon: <MdOutlineDashboard className="text-2xl"/>,
+    icon: <MdOutlineDashboard className="text-2xl" />,
   },
   {
     id: 2,
     path: "/admins",
     title: "Adminlar",
-    icon: <MdOutlineAdminPanelSettings className="text-2xl"/>,
+    icon: <MdOutlineAdminPanelSettings className="text-2xl" />,
   },
   {
     id: 3,
     path: "/employees",
     title: "Ishchilar",
-    icon: <FaRegUserCircle className="text-2xl"/>,
+    icon: <FaRegUserCircle className="text-2xl" />,
   },
   {
     id: 4,
     path: "/profile",
     title: "Profile",
-    icon: <FaRegUser className="text-2xl"/>,
+    icon: <FaRegUser className="text-2xl" />,
+  },
+  {
+    id: 5,
+    path: "/expense",
+    title: "Xarajat",
+    icon: <FaMoneyBillWave className="text-2xl" />,
   },
 ];
 

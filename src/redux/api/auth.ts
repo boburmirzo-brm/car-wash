@@ -32,10 +32,18 @@ const extendedApi = mainApi.injectEndpoints({
         url: "auth/profile",
         method: "GET",
       }),
-      providesTags: ["AUTH"]
+      providesTags: ["AUTH"],
+    }),
+    stats: build.query<any, any>({
+      query: (params) => ({
+        url: "auth/stats",
+        method: "GET",
+        params
+      }),
+      providesTags: ["AUTH"],
     }),
   }),
   overrideExisting: false,
 });
 
-export const { useSignInUserMutation, useCheckTokenQuery } = extendedApi;
+export const { useSignInUserMutation, useCheckTokenQuery, useStatsQuery } = extendedApi;
