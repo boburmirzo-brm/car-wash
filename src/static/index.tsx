@@ -8,6 +8,7 @@ import {
   MdOutlineAdminPanelSettings,
   MdOutlineDashboard,
 } from "react-icons/md";
+import { TbCoins } from "react-icons/tb";
 
 export const EMPLOYEE_NAVIGATION = [
   {
@@ -57,6 +58,12 @@ export const SIDEBAR_LINKS = [
     path: "/expense",
     title: "Xarajat",
     icon: <FaMoneyBillWave className="text-2xl" />,
+  },
+  {
+    id: 6,
+    path: "/payment",
+    title: "To'lov",
+    icon: <TbCoins className="text-2xl" />,
   },
 ];
 
