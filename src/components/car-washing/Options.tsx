@@ -16,8 +16,7 @@ const Options: FC<Props> = ({ data, profile }) => {
   const [selected, setSelected] = useState<any>(null);
   const [open, setOpen] = useState(false);
   const [modalType, setModalType] = useState<ModalType>(null);
-  const [updateCarWashing] =
-    useUpdateCarWashingMutation();
+  const [updateCarWashing] = useUpdateCarWashingMutation();
   const [apiMessage, contextHolder] = message.useMessage();
 
   const showModal = (type: ModalType) => {
@@ -26,7 +25,7 @@ const Options: FC<Props> = ({ data, profile }) => {
     setOpen(false);
   };
 
-  const handleClose = useCallback((isBack?: boolean | undefined) => {
+  const handleClose = useCallback((isBack?: boolean) => {
     setModalType(null);
     if (!isBack) window.history.back();
   }, []);
@@ -67,9 +66,7 @@ const Options: FC<Props> = ({ data, profile }) => {
             okText="Ha"
             cancelText="Yo'q"
           >
-            <Button onClick={() => showModal("canceled")} type="text">
-              Bekor qilish
-            </Button>
+            <Button type="text">Bekor qilish</Button>
           </Popconfirm>
         </>
       )}
@@ -91,15 +88,14 @@ const Options: FC<Props> = ({ data, profile }) => {
         </Button>
       </Popover>
 
-      {/* {modalType === "payment" && ( */}
       <CarWashingPopup
-        open={modalType === "car-washing"}
+        open={modalType === "car-washing" || modalType === "edit"}
         onClose={handleClose}
         customerId={selected?.customerId?._id}
         carId={selected?.carId?._id}
         prevData={data}
       />
-      {/* )} */}
+
       {contextHolder}
     </>
   );
