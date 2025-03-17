@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import Options from "./Options";
-import { TbCancel, TbCoins, TbUserX } from "react-icons/tb";
+import { TbCoins, TbUserX } from "react-icons/tb";
 import { AiOutlineUser } from "react-icons/ai";
 import { IoCarOutline } from "react-icons/io5";
 import TelPopUp from "../tel-pop-up/TelPopUp";
@@ -9,10 +9,9 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/redux";
 import { Link } from "react-router-dom";
 import CarNumber from "../cars-view/CarNumber";
-import { IoMdDoneAll } from "react-icons/io";
-import { MdOutlinePending } from "react-icons/md";
 import { FaRegCommentDots } from "react-icons/fa";
-import { Tooltip } from "antd";
+import CarWashingStatusTooltip from "./CarWashingStatusTooltip";
+import Box from "../ui/Box";
 
 interface Props {
   data: any;
@@ -25,10 +24,7 @@ const CarWashing: FC<Props> = ({ data, profile }) => {
   return (
     <div className="my-4 space-y-4">
       {data?.payload.map((item: any) => (
-        <div
-          key={item._id}
-          className="bg-white shadow-sm rounded-md p-4 max-[500px]:p-3 border border-gray-300"
-        >
+        <Box key={item._id}>
           <div className="flex items-center justify-between gap-1.5">
             <div className="flex-1 flex">
               <Link
@@ -41,25 +37,7 @@ const CarWashing: FC<Props> = ({ data, profile }) => {
                 {item?.customerId?.full_name}
               </Link>
             </div>
-            {item?.status === CarWashingStatus.PENDING ? (
-              <Tooltip placement="bottom" title="Yuvilmoqda">
-                <div>
-                  <MdOutlinePending className="text-xl text-yellow-500" />
-                </div>
-              </Tooltip>
-            ) : item?.status === CarWashingStatus.COMPLETED ? (
-              <Tooltip placement="bottom" title="Muvaffaqiyatli yuvilgan">
-                <div>
-                  <IoMdDoneAll className="text-green-700" />
-                </div>
-              </Tooltip>
-            ) : (
-              <Tooltip placement="bottom" title="Bekor qilingan">
-                <div>
-                  <TbCancel className="text-xl text-red-500" />
-                </div>
-              </Tooltip>
-            )}
+            <CarWashingStatusTooltip status={item?.status} />
             <Options profile={profile} data={item} />
           </div>
 
@@ -69,7 +47,9 @@ const CarWashing: FC<Props> = ({ data, profile }) => {
               className="flex items-center gap-2 text-gray-700 flex-1"
             >
               <IoCarOutline className="text-lg text-gray-600 line-clamp-1" />
-              <span title={item?.carId?.name} className="line-clamp-1 flex-1">{item?.carId?.name}</span>
+              <span title={item?.carId?.name} className="line-clamp-1 flex-1">
+                {item?.carId?.name}
+              </span>
             </Link>
             <Link to={`/car/${item?.carId?._id}`}>
               <CarNumber plateNumber={item?.carId?.plateNumber} />
@@ -112,7 +92,7 @@ const CarWashing: FC<Props> = ({ data, profile }) => {
             </span>
             <TelPopUp phoneNumber={item?.customerId?.tel_primary} />
           </div>
-        </div>
+        </Box>
       ))}
     </div>
   );

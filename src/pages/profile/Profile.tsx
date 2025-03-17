@@ -8,6 +8,7 @@ import { MdLogout } from "react-icons/md";
 import { useDispatch } from "react-redux";
 import { logout } from "@/redux/features/auth.slice";
 import { TbUserShield } from "react-icons/tb";
+import Box from "@/components/ui/Box";
 
 const Profile = () => {
   const { data, isLoading } = useCheckTokenQuery();
@@ -29,7 +30,7 @@ const Profile = () => {
 
   return (
     <div className="flex flex-col gap-4 items-center p-4">
-      <div className="shadow-md md:p-6 bg-white p-4 rounded-md border border-gray-100 w-full">
+      <Box >
         {isLoading ? (
           <Skeleton active />
         ) : (
@@ -77,7 +78,7 @@ const Profile = () => {
             </div>
           </div>
         )}
-      </div>
+      </Box>
 
       <UserPopup
         open={isEditing}

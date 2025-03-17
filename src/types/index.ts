@@ -186,4 +186,5 @@ export interface ExpenseType {
   createdAt: string;
   type: PaymentType;
   employerId: any;
+  adminId: any
 }

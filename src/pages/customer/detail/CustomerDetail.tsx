@@ -13,6 +13,7 @@ import CustomerPopup from "@/components/customer-popup/CustomerPopup";
 import CarPopup from "@/components/car-popup/CarPopup";
 // import { CustomEmpty } from "@/utils";
 import type { TabsProps } from "antd";
+import Box from "@/components/ui/Box";
 
 const { Title } = Typography;
 type ModalType = "payment" | "edit" | "car" | null;
@@ -61,8 +62,8 @@ const CustomerDetail = () => {
 
   return (
     <>
-      <div className="flex flex-col gap-4 my-4 max-[600px]:min-h-[1200px]">
-        <div className="shadow-md md:p-6 p-4 rounded-md border border-gray-100 w-full">
+      <div className="flex flex-col gap-4 p-4 ">
+        <Box >
           {isLoading ? (
             <Skeleton active />
           ) : (
@@ -130,8 +131,8 @@ const CustomerDetail = () => {
               </div>
             </div>
           )}
-        </div>
-        <div className="shadow-md md:p-6 p-4 rounded-md border border-gray-100 w-full">
+        </Box>
+        <Box >
           <Tabs
             defaultActiveKey={activeTab}
             activeKey={activeTab}
@@ -156,14 +157,13 @@ const CustomerDetail = () => {
           ) : (
             <CustomEmpty />
           )} */}
-        </div>
+        </Box>
       </div>
       <PaymentPopup
         open={modalType === "payment"}
         onClose={handleClose}
         customerId={customer?._id || ""}
         name={customer?.full_name || ""}
-        onlyPayment={true}
       />
       <CustomerPopup
         open={modalType === "edit"}

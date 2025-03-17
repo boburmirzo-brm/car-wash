@@ -36,6 +36,7 @@ interface Props {
   prevData?: any;
   customerId?: string;
   carId?: string;
+  profile?: boolean
 }
 
 const CarWashingPopup: React.FC<Props> = ({
@@ -44,6 +45,7 @@ const CarWashingPopup: React.FC<Props> = ({
   prevData,
   customerId,
   carId,
+  profile
 }) => {
   const [form] = Form.useForm();
   const [createCarWashing, { isLoading }] = useCreateCarWashingMutation();
@@ -55,9 +57,8 @@ const CarWashingPopup: React.FC<Props> = ({
   const priceInputRef = useRef<InputRef>(null);
   const navigate = useNavigate();
   useModalNavigation(open, onClose);
-
-  console.log(prevData);
-
+  console.log(profile);
+  
   useEffect(() => {
     if (open) {
       setTimeout(() => {
@@ -155,7 +156,7 @@ const CarWashingPopup: React.FC<Props> = ({
     >
       <Form
         form={form}
-        initialValues={{ paymentType: "CASH" }}
+        initialValues={prevData ? {...prevData, paymentType: "CASH"} : { paymentType: "CASH" }}
         layout="vertical"
         onFinish={handleSave}
       >
@@ -220,7 +221,7 @@ const CarWashingPopup: React.FC<Props> = ({
             {!(
               prevData?.customerId?.full_name === "Noma'lum" ||
               !prevData?.customerId?.tel_primary
-            ) && (
+            ) && !profile && (
               <Form.Item<FieldType> name="nasiya" valuePropName="checked">
                 <Checkbox>Nasiya</Checkbox>
               </Form.Item>

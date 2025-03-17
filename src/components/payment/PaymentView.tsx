@@ -1,15 +1,12 @@
 import React, { FC, useState } from "react";
-import { Button, Popover, Tooltip } from "antd";
+import { Button, Popover } from "antd";
 import { MoreOutlined } from "@ant-design/icons";
 import PaymentPopup from "../payment-popup/PaymentPopup";
-import { PaymentType } from "@/constant";
-import {
-  FaRegCreditCard,
-  FaMoneyBillWave,
-  FaRegCommentDots,
-} from "react-icons/fa";
+import { FaRegCommentDots } from "react-icons/fa";
 import { AiOutlineUser } from "react-icons/ai";
 import { useCheckTokenQuery } from "@/redux/api/auth";
+import PaymentTypeTooltip from "./PaymentTypeTooltip";
+import Box from "../ui/Box";
 
 interface Props {
   data: any[];
@@ -23,8 +20,6 @@ const PaymentView: FC<Props> = ({ data }) => {
     data: { user },
   } = useCheckTokenQuery(undefined);
 
-  console.log(user);
-
   const handleEdit = (item: any) => {
     setSelectedPayment(item);
     setIsEditing(true);
@@ -34,10 +29,7 @@ const PaymentView: FC<Props> = ({ data }) => {
   return (
     <div className="my-4 space-y-4">
       {data?.map((item, index) => (
-        <div
-          key={item?._id || index}
-          className="bg-white shadow-sm rounded-md p-4 max-[500px]:p-3 border border-gray-300 relative"
-        >
+        <Box key={item?._id || index}>
           <div className="flex items-center justify-between">
             <strong className="text-lg text-gray-900 font-semibold">
               {item?.amount?.toLocaleString()} UZS
@@ -79,22 +71,10 @@ const PaymentView: FC<Props> = ({ data }) => {
               {item?.createdAt?.dateFormat()} {item?.createdAt?.timeFormat()}
             </span>
             <div className="flex items-center gap-2">
-              {item?.type === PaymentType.CASH ? (
-                <Tooltip placement="bottom" title="Naqd">
-                  <div>
-                    <FaMoneyBillWave className="text-xl" />
-                  </div>
-                </Tooltip>
-              ) : (
-                <Tooltip placement="bottom" title="Karta">
-                  <div>
-                    <FaRegCreditCard className="text-xl" />
-                  </div>
-                </Tooltip>
-              )}
+              <PaymentTypeTooltip type={item?.type} />
             </div>
           </div>
-        </div>
+        </Box>
       ))}
 
       {isEditing && selectedPayment && (

@@ -1,12 +1,12 @@
 import React, { FC } from "react";
-import { TbCancel, TbCoins } from "react-icons/tb";
+import { TbCoins } from "react-icons/tb";
 import { AiOutlineUser } from "react-icons/ai";
 import { CarWashingStatus, Role } from "@/constant";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux";
 import { TbUserShield } from "react-icons/tb";
-import { MdOutlinePending } from "react-icons/md";
-import { IoMdDoneAll } from "react-icons/io";
+import CarWashingStatusTooltip from "@/components/car-washing/CarWashingStatusTooltip";
+import Box from "@/components/ui/Box";
 
 interface Props {
   data: any;
@@ -19,10 +19,7 @@ const CarsWashings: FC<Props> = ({ data, profile }) => {
   return (
     <div className="my-4 space-y-4">
       {data?.map((item: any) => (
-        <div
-          key={item._id}
-          className="bg-white shadow-sm rounded-md p-4 max-[500px]:p-3 border border-gray-300"
-        >
+        <Box key={item._id}>
           <div className="flex items-center gap-2 justify-between">
             <div className="flex items-center gap-2 ">
               <TbUserShield className="text-xl" />
@@ -30,13 +27,7 @@ const CarsWashings: FC<Props> = ({ data, profile }) => {
                 {item?.employerId?.f_name} {item?.employerId?.l_name}
               </span>
             </div>
-            {item?.status === CarWashingStatus.PENDING ? (
-              <MdOutlinePending className="text-xl text-yellow-500" />
-            ) : item?.status === CarWashingStatus.COMPLETED ? (
-              <IoMdDoneAll className="text-green-700" />
-            ) : (
-              <TbCancel className="text-xl text-red-500" />
-            )}
+            <CarWashingStatusTooltip status={item?.status} />
           </div>
 
           {/* <div className="flex items-center justify-between mt-2">
@@ -52,14 +43,14 @@ const CarsWashings: FC<Props> = ({ data, profile }) => {
             </Link>
           </div> */}
 
-          {(role === Role.ADMIN || profile) &&
+          {(role === Role.ADMIN || role === Role.OWNER || profile) &&
             !(
               item?.status === CarWashingStatus.CANCELED ||
               item?.status === CarWashingStatus.PENDING
             ) && (
               <div className="flex justify-between items-center bg-gray-100 p-3 rounded-md mt-3">
                 <div>
-                  {role === Role.ADMIN && (
+                  {role === Role.ADMIN || role === Role.OWNER && (
                     <p className="flex items-center gap-2 text-gray-700 text-sm">
                       <AiOutlineUser className="text-lg" />
                       <span>
@@ -70,7 +61,12 @@ const CarsWashings: FC<Props> = ({ data, profile }) => {
                   <p className="flex items-center gap-2 text-gray-700 text-sm font-medium">
                     <TbCoins className="text-lg" />
                     <span>
-                      {item?.employerSalary?.toLocaleString() || "0"} UZS
+                      {
+                        role === Role.ADMIN || role === Role.OWNER ?
+                        item?.employerSalary?.toLocaleString() || "0" + "UZS"
+                        :
+                        "*****"
+                      }
                     </span>
                   </p>
                 </div>
@@ -85,7 +81,7 @@ const CarsWashings: FC<Props> = ({ data, profile }) => {
               {item?.createdAt?.dateFormat()} {item?.createdAt?.timeFormat()}
             </span>
           </div>
-        </div>
+        </Box>
       ))}
     </div>
   );

@@ -1,11 +1,12 @@
 import PaymentView from "@/components/payment/PaymentView";
 import { useGetPaymentByCustomerIdQuery } from "@/redux/api/payment";
-import { Pagination, Space, Button, DatePicker } from "antd";
+import { Pagination,  Button, DatePicker } from "antd";
 import React, { useCallback, useMemo } from "react";
 import { useOutletContext } from "react-router-dom";
 import { useParamsHook } from "../../../hooks/useParamsHook";
 import { HistoryOutlined } from "@ant-design/icons";
 import { CustomEmpty, MiniLoading } from "@/utils";
+import { PiBroom } from "react-icons/pi";
 
 const { RangePicker } = DatePicker;
 
@@ -21,7 +22,7 @@ const PaymentHistory = () => {
   const fromDate = getParam("fromDate") || "";
   const toDate = getParam("toDate") || "";
   const page = parseInt(getParam("page") || "1", 10);
-  const limit = 5;
+  const limit = 20;
 
   const filters = useMemo(
     () => ({
@@ -74,17 +75,16 @@ const PaymentHistory = () => {
           <HistoryOutlined />
           <span>Tarix</span>
         </div>
-        <Space direction="vertical">
-          <span className="font-semibold">Sana oralig'i:</span>
+        <div className="flex gap-2">
           <RangePicker
             popupClassName="custom-range-picker-dropdown"
             format="YYYY-MM-DD"
             onChange={handleFilterChange}
           />
-          <Button type="primary" block onClick={clearFilters}>
-            Tozalash
+          <Button type="default" onClick={clearFilters}>
+            <PiBroom className="text-xl"/>
           </Button>
-        </Space>
+        </div>
       </div>
       {isError && <CustomEmpty />}
       {

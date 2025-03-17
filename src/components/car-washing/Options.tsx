@@ -31,8 +31,6 @@ const Options: FC<Props> = ({ data, profile }) => {
   }, []);
 
   const handleCancele = () => {
-    console.log(data?._id);
-
     updateCarWashing({
       id: data._id,
       data: {
@@ -88,13 +86,16 @@ const Options: FC<Props> = ({ data, profile }) => {
         </Button>
       </Popover>
 
-      <CarWashingPopup
-        open={modalType === "car-washing" || modalType === "edit"}
-        onClose={handleClose}
-        customerId={selected?.customerId?._id}
-        carId={selected?.carId?._id}
-        prevData={data}
-      />
+      {(modalType === "car-washing" || modalType === "edit") && (
+        <CarWashingPopup
+          open={modalType === "car-washing" || modalType === "edit"}
+          onClose={handleClose}
+          customerId={selected?.customerId?._id}
+          carId={selected?.carId?._id}
+          prevData={data}
+          profile={profile}
+        />
+      )}
 
       {contextHolder}
     </>

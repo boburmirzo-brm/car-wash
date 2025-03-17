@@ -1,11 +1,11 @@
 import React, { useCallback, useMemo } from "react";
 import { HistoryOutlined } from "@ant-design/icons";
-import { DatePicker, Space, Pagination, Button } from "antd";
+import { DatePicker, Pagination, Button } from "antd";
 import { useGetMyWashingsQuery } from "../../redux/api/car-washing";
 import { CustomEmpty, MiniLoading } from "@/utils";
 import CarWashing from "./CarWashing";
 import { useParamsHook } from "@/hooks/useParamsHook";
-import "./style.css";
+import { PiBroom } from "react-icons/pi";
 
 const { RangePicker } = DatePicker;
 
@@ -15,7 +15,7 @@ const CarWashingHistory = () => {
   const fromDate = getParam("fromDate") || "";
   const toDate = getParam("toDate") || "";
   const page = getParam("page") || "1";
-  const limit = "2";
+  const limit = "20";
 
   const filters = useMemo(
     () => ({
@@ -29,7 +29,6 @@ const CarWashingHistory = () => {
   );
 
   const { data, isError, isFetching } = useGetMyWashingsQuery(filters);
-  console.log(data);
 
   const handleFilterChange = useCallback(
     (dates: any) => {
@@ -62,24 +61,23 @@ const CarWashingHistory = () => {
           <HistoryOutlined />
           <span>Tarix</span>
         </div>
-        <Space direction="vertical">
-          <span className="font-semibold">Sana oralig'i:</span>
+        <div className="flex items-center gap-2">
           <RangePicker
             popupClassName="custom-range-picker-dropdown"
             format="YYYY-MM-DD"
             onChange={handleFilterChange}
           />
-          <Button type="primary" block onClick={clearFilters}>
-            Tozalash
+          <Button type="default" onClick={clearFilters}>
+            <PiBroom className="text-xl" />
           </Button>
-        </Space>
+        </div>
       </div>
       {isError ? (
         <CustomEmpty />
       ) : (
         <CarWashing profile={true} data={data?.data} />
       )}
-      {isFetching && <MiniLoading/>}
+      {isFetching && <MiniLoading />}
 
       {!isError && (
         <div className="flex justify-end">

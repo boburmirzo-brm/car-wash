@@ -23,37 +23,23 @@ const CustomerPopup: React.FC<Props> = ({ open, onClose, prevData }) => {
   const [updateCustomer, { isLoading: updateLoading }] =
     useUpdateCustomerMutation();
   const navigate = useNavigate();
-  // const [name, setName] = useState("");
   const [apiMessage, contextHolder] = message.useMessage();
   const full_name = Form.useWatch("full_name", form) || "";
 
   useModalNavigation(open, onClose);
 
-  // useEffect(() => {
-  //   if (open && form) {
-  //     if (customer) {
-  //       form.setFieldsValue({
-  //         name: customer.name,
-  //         phone: customer.phone,
-  //       });
-  //       setName(customer.name);
-  //     } else {
-  //       form.resetFields();
-  //       setName("");
-  //     }
-  //   }
-  // }, [open, customer, form]);
-
   const handleSave = (values: { full_name: string; tel_primary?: string }) => {
-    // message.destroy();
     values.tel_primary =
       values.tel_primary && values.tel_primary.replace(/\s/gi, "");
     !values.tel_primary && delete values.tel_primary;
     if (prevData) {
-      if(values.tel_primary){
-        values.tel_primary =  values?.tel_primary[0] === "+" ? values?.tel_primary : `+998${values?.tel_primary}`
+      if (values.tel_primary) {
+        values.tel_primary =
+          values?.tel_primary[0] === "+"
+            ? values?.tel_primary
+            : `+998${values?.tel_primary}`;
       }
-      
+
       updateCustomer({ id: prevData.id || "", data: values })
         .unwrap()
         .then(() => {

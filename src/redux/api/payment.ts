@@ -44,7 +44,6 @@ const extendedApi = mainApi.injectEndpoints({
     }),
     updatePayment: build.mutation<any, { id: string; data: any }>({
       query: ({ id, data }) => {
-        console.log("updatePayment queryga kelgan:", { id, data });
         return {
           url: `/payments/${id}`,
           method: "PATCH",

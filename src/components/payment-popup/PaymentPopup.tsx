@@ -22,7 +22,7 @@ interface Props {
   customerId: null | string;
   name: string;
   payment?: IPaymentAmount;
-  onlyPayment?: boolean;
+  // onlyPayment?: boolean;
 }
 
 const { TextArea } = Input;
@@ -51,13 +51,13 @@ const PaymentPopup: FC<Props> = ({
       setTimeout(() => {
         priceInputRef.current?.focus();
       }, 100);
-      if (payment) {
-        form.setFieldsValue({
-          amount: payment.amount.toString(),
-          comment: payment.comment,
-          type: payment.type,
-        });
-      }
+      // if (payment) {
+      //   form.setFieldsValue({
+      //     amount: payment.amount.toString(),
+      //     comment: payment.comment,
+      //     type: payment.type,
+      //   });
+      // }
     }
   }, [open, payment]);
 
@@ -78,8 +78,6 @@ const PaymentPopup: FC<Props> = ({
           type: values.type,
         },
       };
-
-      console.log("Update qilish uchun data:", data);
 
       updatePayment(data)
         .unwrap()
@@ -125,7 +123,7 @@ const PaymentPopup: FC<Props> = ({
       <Form
         form={form}
         layout="vertical"
-        initialValues={payment ? payment : { type: "CASH" }}
+        initialValues={payment ? payment : { type: PaymentType.CASH }}
         onFinish={onFinish}
         autoComplete="off"
       >

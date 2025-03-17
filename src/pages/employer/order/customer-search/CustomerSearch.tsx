@@ -4,6 +4,7 @@ import React from "react";
 import { Link, useOutletContext } from "react-router-dom";
 import { TbUserX } from "react-icons/tb";
 import Title from "antd/es/typography/Title";
+import Box from "@/components/ui/Box";
 
 interface ContextType {
   data: IPayload<ICustomer>;
@@ -20,9 +21,9 @@ const CustomerSearch = () => {
         </Title>
         <div className="space-y-4 my-4">
           {data?.data?.payload?.map((customer: ICustomer) => (
-            <div
+            <Box
+              className="cursor-pointer hover:bg-gray-100"
               key={customer._id}
-              className="bg-white shadow-sm rounded-md p-4 max-[500px]:p-3 border border-gray-300"
             >
               <div className="flex items-center justify-between max-[500px]:flex-col max-[500px]:items-start ">
                 <Link
@@ -38,7 +39,7 @@ const CustomerSearch = () => {
                   <TelPopUp phoneNumber={customer.tel_primary} />
                 </div>
               </div>
-            </div>
+            </Box>
           ))}
         </div>
       </>

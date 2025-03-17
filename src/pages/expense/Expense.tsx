@@ -1,15 +1,15 @@
 import React, { FC, useState } from "react";
-import { Button, Popover, Tooltip } from "antd";
+import { Button, Popover } from "antd";
 import { MoreOutlined } from "@ant-design/icons";
-import ExpensePopup from "../../components/expense-popup/ExpensePopup";
-import { ExpenseType } from "../../types";
-import {
-  FaRegCreditCard,
-  FaMoneyBillWave,
-  FaRegCommentDots,
-} from "react-icons/fa";
+import ExpensePopup from "@/components/expense-popup/ExpensePopup";
+import { ExpenseType } from "@/types";
+import { FaRegCommentDots } from "react-icons/fa";
 import { AiOutlineUser } from "react-icons/ai";
-import { PaymentType } from "../../constant";
+import { PaymentType } from "@/constant";
+import PaymentTypeTooltip from "@/components/payment/PaymentTypeTooltip";
+import { Link } from "react-router-dom";
+import { MdOutlineAdminPanelSettings } from "react-icons/md";
+import Box from "@/components/ui/Box";
 
 interface ExpenseItemType extends Omit<ExpenseType, "type"> {
   type: PaymentType;
@@ -37,77 +37,63 @@ const ExpenseView: FC<Props> = ({ data }) => {
   };
 
   return (
-    <div className="my-4 space-y-4 m-2">
-      {data?.map((item: ExpenseType, index: number) => {
-        const expenseType = item?.type as PaymentType;
-
-        return (
-          <div
-            key={item?._id || index}
-            className="bg-white shadow-sm rounded-md p-4 max-[500px]:p-3 border border-gray-300 relative"
-          >
-            <div className="flex items-center justify-between">
-              <strong className="text-lg text-gray-900 font-semibold">
-                {item?.amount?.toLocaleString()} UZS
-              </strong>
-              <Popover
-                content={
-                  <Button onClick={() => handleEdit(item)} type="text">
-                    Tahrirlash
-                  </Button>
-                }
-                trigger="click"
-                placement="bottomRight"
-                open={openPopover === item._id}
-                onOpenChange={(visible) =>
-                  setOpenPopover(visible ? item._id : null)
-                }
-              >
-                <Button type="text">
-                  <MoreOutlined />
+    <div className="space-y-4 p-4">
+      {data?.map((item: ExpenseType, index: number) => (
+        <Box key={item?._id || index}>
+          <div className="flex items-center justify-between">
+            <strong className="text-lg text-gray-900 font-semibold">
+              {item?.amount?.toLocaleString()} UZS
+            </strong>
+            <Popover
+              content={
+                <Button onClick={() => handleEdit(item)} type="text">
+                  Tahrirlash
                 </Button>
-              </Popover>
-            </div>
-            <p className="flex items-center gap-2 text-gray-700 text-sm">
-              {item?.employerId && (
-                <>
-                  <AiOutlineUser className="text-lg" />
-                  <span>
-                    {item.employerId.l_name?.[0]}. {item.employerId.f_name}
-                  </span>
-                </>
-              )}
-            </p>
+              }
+              trigger="click"
+              placement="bottomRight"
+              open={openPopover === item._id}
+              onOpenChange={(visible) =>
+                setOpenPopover(visible ? item._id : null)
+              }
+            >
+              <Button type="text">
+                <MoreOutlined />
+              </Button>
+            </Popover>
+          </div>
+          <div className="flex items-center gap-2 text-gray-700 text-sm">
+            <MdOutlineAdminPanelSettings className="text-lg" />
+            <span>
+              {item?.adminId?.l_name?.[0]}. {item?.adminId?.f_name}
+            </span>
+          </div>
+          <div className="flex items-center gap-2 text-gray-700 text-sm mt-3">
+            <AiOutlineUser className="text-lg" />
+            <Link
+              className="hover:underline"
+              to={`/employees/user/${item?.employerId?._id}`}
+            >
+              {item?.employerId?.l_name?.[0]}. {item?.employerId?.f_name}
+            </Link>
+          </div>
 
-            {item?.comment && (
-              <div className="text-gray-600 text-sm mt-3 flex items-center gap-2">
-                <FaRegCommentDots className="text-lg" />
-                <span>{item?.comment}</span>
-              </div>
-            )}
-            <div className="flex justify-between items-center mt-3 text-gray-600 text-sm">
-              <span>
-                {item?.createdAt?.dateFormat()} {item?.createdAt?.timeFormat()}
-              </span>
-              <div className="flex items-center gap-2">
-                {expenseType == PaymentType.CASH ? (
-                  <Tooltip placement="bottom" title="Naqd">
-                    <div>
-                      <FaMoneyBillWave className="text-xl" />
-                    </div>
-                  </Tooltip>
-                ) : (
-                  <Tooltip placement="bottom" title="Karta">
-                    <div>
-                      <FaRegCreditCard className="text-xl" />
-                    </div>
-                  </Tooltip>
-                )}
-              </div>
+          {item?.comment && (
+            <div className="text-gray-600 text-sm  flex items-center gap-2">
+              <FaRegCommentDots className="text-lg" />
+              <span>{item?.comment}</span>
+            </div>
+          )}
+          <div className="flex justify-between items-center mt-3 text-gray-600 text-sm">
+            <span>
+              {item?.createdAt?.dateFormat()} {item?.createdAt?.timeFormat()}
+            </span>
+            <div className="flex items-center gap-2">
+              <PaymentTypeTooltip type={item?.type} />
             </div>
           </div>
-        );
-      })}
+        </Box>
+      ))}
 
       {isEditing && selectedExpense && (
         <ExpensePopup

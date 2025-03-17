@@ -3,6 +3,7 @@ import React, { FC } from "react";
 import { useNavigate } from "react-router-dom";
 import CarNumber from "./CarNumber";
 import { MdOutlineLocalCarWash } from "react-icons/md";
+import Box from "../ui/Box";
 
 const CarsView: FC<{ data: ICar[] }> = ({ data }) => {
   const navigate = useNavigate();
@@ -10,11 +11,7 @@ const CarsView: FC<{ data: ICar[] }> = ({ data }) => {
   return (
     <div className="space-y-4 my-4">
       {data?.map((car: ICar) => (
-        <div
-          onClick={() => navigate(`/car/${car._id}`)}
-          key={car._id}
-          className="bg-white shadow-sm rounded-md p-4 max-[500px]:p-3 border border-gray-300 cursor-pointer hover:bg-gray-100 duration-200"
-        >
+        <Box onClick={() => navigate(`/car/${car._id}`)} className="cursor-pointer hover:bg-gray-100" key={car._id}>
           <div className="flex items-center justify-between max-[500px]:flex-col max-[500px]:items-start ">
             <h3 className="text-base font-semibold text-gray-800 flex-1">
               {car.name}
@@ -28,7 +25,7 @@ const CarsView: FC<{ data: ICar[] }> = ({ data }) => {
               <CarNumber plateNumber={car.plateNumber} />
             </div>
           </div>
-        </div>
+        </Box>
       ))}
     </div>
   );

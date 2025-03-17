@@ -64,16 +64,16 @@ const ExpensePopup: FC<Props> = ({
       setTimeout(() => {
         priceInputRef.current?.focus();
       }, 100);
-      form.setFieldsValue(
-        expense
-          ? {
-              amount: expense.amount.toString(),
-              comment: expense.comment,
-              type: expense.type,
-              employerId: expense.employerId || employerId,
-            }
-          : { type: PaymentType.CASH, employerId }
-      );
+      // form.setFieldsValue(
+      //   expense
+      //     ? {
+      //         amount: expense.amount.toString(),
+      //         comment: expense.comment,
+      //         type: expense.type,
+      //         employerId: expense.employerId || employerId,
+      //       }
+      //     : { type: PaymentType.CASH, employerId }
+      // );
     }
   }, [open, expense, employerId]);
 
@@ -128,6 +128,7 @@ const ExpensePopup: FC<Props> = ({
         layout="vertical"
         onFinish={onFinish}
         autoComplete="off"
+        initialValues={expense ? expense : { type: PaymentType.CASH }}
       >
         <Form.Item<FieldType>
           label="Xarajat summasi"

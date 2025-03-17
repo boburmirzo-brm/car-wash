@@ -9,7 +9,6 @@ import {
   Button,
   Pagination,
   Skeleton,
-  Space,
   Tooltip,
   DatePicker,
 } from "antd";
@@ -21,6 +20,11 @@ import CarWashingPopup from "@/components/car-washing-popup/CarWashingPopup";
 import CarNumber from "@/components/cars-view/CarNumber";
 import CarsWashings from "./CarsWashings";
 import { CustomEmpty } from "@/utils";
+import Box from "@/components/ui/Box";
+import { PiBroom } from "react-icons/pi";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux";
+import { Role } from "@/constant";
 
 const { RangePicker } = DatePicker;
 type ModalType = "start" | "edit" | null;
@@ -34,23 +38,22 @@ const CarDetail = () => {
 
   const [modalType, setModalType] = useState<ModalType>(null);
   const { getParam, setParam, removeParam, removeParams } = useParamsHook();
+  const role = useSelector((state: RootState) => state.role.value);
 
   const fromDate = getParam("fromDate") || "";
   const toDate = getParam("toDate") || "";
   const page = parseInt(getParam("page") || "1", 10);
-  const limit = 2;
+  const limit = 20;
 
   const filters = useMemo(
     () => ({ fromDate, toDate, page, limit }),
     [fromDate, toDate, page]
   );
 
-  const { data, isLoading } = useGetCarByIdQuery({ id, filters });
+  const { data, isLoading } = useGetCarByIdQuery({ id, params: filters });
   const car = data?.data.payload?.car;
   const carWashings = data?.data.payload?.carWashings;
   const totalItems = data?.data.total;
-  
-  
 
   const handleOpenModal = (type: ModalType) => setModalType(type);
   const handleClose = useCallback((isBack?: boolean) => {
@@ -82,8 +85,8 @@ const CarDetail = () => {
 
   return (
     <>
-      <div className="flex flex-col gap-4 my-4">
-        {isError && (
+      <div className="flex flex-col gap-4  p-4 ">
+        {isError && role === Role.EMPLOYEE && (
           <Alert
             message="Oylik belgilanmagan. Avval oylikni belgilating"
             style={{ width: "100%" }}
@@ -91,7 +94,7 @@ const CarDetail = () => {
           />
         )}
 
-        <div className="shadow-md md:p-6 p-4 rounded-md border border-gray-100 w-full">
+        <Box>
           {isLoading ? (
             <Skeleton active />
           ) : (
@@ -144,27 +147,26 @@ const CarDetail = () => {
               </div>
             </div>
           )}
-        </div>
+        </Box>
 
-        <div className="shadow-md md:p-6 p-4 rounded-md border border-gray-100 w-full">
+        <Box>
           <div className="flex justify-between items-start max-[600px]:gap-4 max-[600px]:flex-col">
             <div className="text-xl font-bold flex items-center gap-2 text-gray-700">
               <HistoryOutlined />
               <span>Tarix</span>
             </div>
-            <Space direction="vertical">
-              <span className="font-semibold">Sana oralig'i:</span>
-              <RangePicker format="YYYY-MM-DD" onChange={handleFilterChange} />
-              <Button type="primary" block onClick={clearFilters}>
-                Tozalash
+            <div className="flex gap-2">
+              <RangePicker
+                popupClassName="custom-range-picker-dropdown"
+                format="YYYY-MM-DD"
+                onChange={handleFilterChange}
+              />
+              <Button type="default"  onClick={clearFilters}>
+                <PiBroom className="text-xl"/>
               </Button>
-            </Space>
+            </div>
           </div>
-          {
-            !carWashings?.length && (
-              <CustomEmpty/>
-            )
-          }
+          {!carWashings?.length && <CustomEmpty />}
           <CarsWashings profile={true} data={carWashings} />
           <div className="flex justify-end mt-4">
             <Pagination
@@ -175,7 +177,7 @@ const CarDetail = () => {
               showSizeChanger={false}
             />
           </div>
-        </div>
+        </Box>
       </div>
 
       <CarPopup

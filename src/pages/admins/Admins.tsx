@@ -6,6 +6,7 @@ import React, { useCallback, useState } from "react";
 import { PlusOutlined } from "@ant-design/icons";
 import UserPopup from "@/components/user-popup/UserPopup";
 import { Role } from "@/constant";
+import Box from "@/components/ui/Box";
 
 const Admins = () => {
   const { data, isLoading } = useGetAdminsQuery();
@@ -18,7 +19,7 @@ const Admins = () => {
   }, []);
   return (
     <div className="p-4">
-      <div className="shadow bg-white md:p-6 p-4 rounded-md border  border-gray-100 w-full">
+      <Box >
         <div className="flex justify-between mb-4">
           <Title level={4}>Adminlar</Title>
           <Button onClick={handleOpen} loading={isLoading} type="primary">
@@ -31,7 +32,7 @@ const Admins = () => {
         ) : (
           <UsersView data={data?.data.payload} />
         )}
-      </div>
+      </Box>
       <UserPopup currentRole={Role.OWNER} open={isModalOpen} onClose={handleClose} />
     </div>
   );

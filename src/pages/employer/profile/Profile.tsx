@@ -12,6 +12,7 @@ import { TbUserShield } from "react-icons/tb";
 import { useGetSalaryByIdQuery } from "@/redux/api/salary";
 import { SalaryType } from "@/constant";
 import CarWashingHistory from "../../../components/car-washing/CarWashingHistory";
+import Box from "@/components/ui/Box";
 
 const { Title } = Typography;
 
@@ -41,7 +42,7 @@ const Profile = () => {
   };
 
   return (
-    <div className="flex flex-col gap-4 items-center py-4 max-[600px]:min-h-[1200px]">
+    <div className="flex flex-col gap-4 items-center py-4 ">
       {isError && (
         <Alert
           message={"Oylik belgilanmagan. Avval oylikni belgilating"}
@@ -49,7 +50,7 @@ const Profile = () => {
           type="error"
         />
       )}
-      <div className="shadow-md md:p-6 p-4 rounded-md border border-gray-100 w-full">
+      <Box >
         {isLoading ? (
           <Skeleton active />
         ) : (
@@ -117,15 +118,15 @@ const Profile = () => {
             </div>
           </div>
         )}
-      </div>
+      </Box>
 
-      <div className="shadow-md md:p-6 p-2 rounded-md border border-gray-100 w-full">
+      <Box >
         {isLoading ? (
           <Skeleton active />
         ) : (
           <CarWashingHistory />
         )}
-      </div>
+      </Box>
 
       <UserPopup
         open={isEditing}

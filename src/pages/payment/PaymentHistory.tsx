@@ -1,10 +1,11 @@
-import { Pagination, Space, Button, DatePicker } from "antd";
+import { Pagination, Button, DatePicker } from "antd";
 import React, { useCallback, useMemo } from "react";
 import { useParamsHook } from "../../hooks/useParamsHook";
 import { HistoryOutlined } from "@ant-design/icons";
 import { CustomEmpty, MiniLoading } from "@/utils";
 import { useGetAllPaymentQuery } from "../../redux/api/payment";
 import Payment from "./Payment";
+import { PiBroom } from "react-icons/pi";
 
 const { RangePicker } = DatePicker;
 
@@ -14,7 +15,7 @@ const PaymentHistory = () => {
   const fromDate = getParam("fromDate") || "";
   const toDate = getParam("toDate") || "";
   const page = parseInt(getParam("page") || "1", 10);
-  const limit = 2;
+  const limit = 20;
 
   const filters = useMemo(
     () => ({
@@ -26,10 +27,8 @@ const PaymentHistory = () => {
     [fromDate, toDate, page]
   );
 
-  console.log(filters);
-
   const handleFilterChange = useCallback(
-    (dates:any) => {
+    (dates: any) => {
       if (dates) {
         setParam("fromDate", dates[0].format("YYYY-MM-DD"));
         setParam("toDate", dates[1].format("YYYY-MM-DD"));
@@ -47,11 +46,9 @@ const PaymentHistory = () => {
 
   const { data, isError, isFetching } = useGetAllPaymentQuery(filters);
   const totalItems = data?.data?.total || 0;
-  console.log("DATAA",data);
-  
 
   const handlePageChange = useCallback(
-    (newPage:any) => {
+    (newPage: any) => {
       setParam("page", newPage.toString());
     },
     [setParam]
@@ -59,22 +56,21 @@ const PaymentHistory = () => {
 
   return (
     <>
-      <div className="flex justify-between items-center flex-wrap gap-4 m-4">
+      <div className="flex justify-between items-center flex-wrap gap-4 p-4">
         <div className="text-xl font-bold flex items-center gap-2 text-gray-700">
           <HistoryOutlined />
           <span>Tarix</span>
         </div>
-        <Space direction="horizontal" className="flex items-center gap-4">
-          <span className="font-semibold">Sana oralig'i:</span>
+        <div className="flex items-center gap-2">
           <RangePicker
             popupClassName="custom-range-picker-dropdown"
             format="YYYY-MM-DD"
             onChange={handleFilterChange}
           />
-          <Button type="primary" onClick={clearFilters}>
-            Tozalash
+          <Button type="default" onClick={clearFilters}>
+            <PiBroom className="text-xl" />
           </Button>
-        </Space>
+        </div>
       </div>
 
       {isError && <CustomEmpty />}
