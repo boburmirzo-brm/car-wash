@@ -1,12 +1,13 @@
 import React, { FC } from "react";
 import { TbCoins } from "react-icons/tb";
-import { AiOutlineUser } from "react-icons/ai";
+// import { AiOutlineUser } from "react-icons/ai";
 import { CarWashingStatus, Role } from "@/constant";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux";
 import { TbUserShield } from "react-icons/tb";
 import CarWashingStatusTooltip from "@/components/car-washing/CarWashingStatusTooltip";
 import Box from "@/components/ui/Box";
+import { Link } from "react-router-dom";
 
 interface Props {
   data: any;
@@ -23,25 +24,12 @@ const CarsWashings: FC<Props> = ({ data, profile }) => {
           <div className="flex items-center gap-2 justify-between">
             <div className="flex items-center gap-2 ">
               <TbUserShield className="text-xl" />
-              <span>
+              <Link to={`/employees/user/${item?.employerId?._id}`} className="hover:underline">
                 {item?.employerId?.f_name} {item?.employerId?.l_name}
-              </span>
+              </Link>
             </div>
             <CarWashingStatusTooltip status={item?.status} />
           </div>
-
-          {/* <div className="flex items-center justify-between mt-2">
-            <Link
-              to={`/car/${item?.carId?._id}`}
-              className="flex items-center gap-2 text-gray-700 "
-            >
-              <IoCarOutline className="text-lg text-gray-600" />
-              <span>{item?.carId?.name}</span>
-            </Link>
-            <Link to={`/car/${item?.carId?._id}`}>
-              <CarNumber plateNumber={item?.carId?.plateNumber} />
-            </Link>
-          </div> */}
 
           {(role === Role.ADMIN || role === Role.OWNER || profile) &&
             !(
@@ -50,23 +38,12 @@ const CarsWashings: FC<Props> = ({ data, profile }) => {
             ) && (
               <div className="flex justify-between items-center bg-gray-100 p-3 rounded-md mt-3">
                 <div>
-                  {role === Role.ADMIN || role === Role.OWNER && (
-                    <p className="flex items-center gap-2 text-gray-700 text-sm">
-                      <AiOutlineUser className="text-lg" />
-                      <span>
-                        {item?.employerId?.l_name} {item?.employerId?.f_name}
-                      </span>
-                    </p>
-                  )}
                   <p className="flex items-center gap-2 text-gray-700 text-sm font-medium">
                     <TbCoins className="text-lg" />
                     <span>
-                      {
-                        role === Role.ADMIN || role === Role.OWNER ?
-                        item?.employerSalary?.toLocaleString() || "0" + "UZS"
-                        :
-                        "*****"
-                      }
+                      {role === Role.ADMIN || role === Role.OWNER
+                        ? item?.employerSalary?.toLocaleString() || "0" + "UZS"
+                        : "*****"}
                     </span>
                   </p>
                 </div>

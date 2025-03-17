@@ -62,21 +62,23 @@ const ExpenseView: FC<Props> = ({ data }) => {
               </Button>
             </Popover>
           </div>
-          <div className="flex items-center gap-2 text-gray-700 text-sm">
-            <MdOutlineAdminPanelSettings className="text-lg" />
+          <div className="flex items-center gap-2 text-gray-700 text-sm mb-3">
+            <MdOutlineAdminPanelSettings className="text-lg " />
             <span>
               {item?.adminId?.l_name?.[0]}. {item?.adminId?.f_name}
             </span>
           </div>
-          <div className="flex items-center gap-2 text-gray-700 text-sm mt-3">
-            <AiOutlineUser className="text-lg" />
-            <Link
-              className="hover:underline"
-              to={`/employees/user/${item?.employerId?._id}`}
-            >
-              {item?.employerId?.l_name?.[0]}. {item?.employerId?.f_name}
-            </Link>
-          </div>
+          {item?.employerId && (
+            <div className="flex items-center gap-2 text-gray-700 text-sm">
+              <AiOutlineUser className="text-lg text-green-600" />
+              <Link
+                className="hover:underline"
+                to={`/employees/user/${item?.employerId?._id}`}
+              >
+                {item?.employerId?.l_name?.[0]}. {item?.employerId?.f_name}
+              </Link>
+            </div>
+          )}
 
           {item?.comment && (
             <div className="text-gray-600 text-sm  flex items-center gap-2">

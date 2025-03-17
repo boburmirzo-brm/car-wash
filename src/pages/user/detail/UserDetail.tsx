@@ -4,7 +4,7 @@ import UserPopup from "@/components/user-popup/UserPopup";
 import { Role, SalaryType } from "@/constant";
 import { useGetSalaryByIdQuery } from "@/redux/api/salary";
 import { useGetUserByIdQuery } from "@/redux/api/user";
-import { Alert, Button, Skeleton, Tooltip } from "antd";
+import { Alert, Button, Skeleton, Tag, Tooltip } from "antd";
 import Title from "antd/es/typography/Title";
 import React, { useCallback, useState } from "react";
 import { FaRegEdit } from "react-icons/fa";
@@ -18,7 +18,7 @@ const UserDetail = () => {
   const { id } = useParams<{ id: string }>();
   const { data, isLoading } = useGetUserByIdQuery(id!);
   const user = data?.data?.payload;
-  const { data: salary, isError } = useGetSalaryByIdQuery(id!); 
+  const { data: salary, isError } = useGetSalaryByIdQuery(id!);
   const [modalType, setModalType] = useState<ModalType>(null);
 
   const handleOpenModal = (type: ModalType) => {
@@ -29,7 +29,6 @@ const UserDetail = () => {
     setModalType(null);
     if (!isBack) window.history.back();
   }, []);
-
 
   return (
     <div className="p-4">
@@ -94,12 +93,12 @@ const UserDetail = () => {
                   </Title>
                 )}
                 {!isError && (
-                  <p className="text-xl text-gray-600 bg-green-100 py-1 px-2 border border-green-200 rounded">
+                  <Tag color="green">
                     {salary?.data?.payload?.amount?.toLocaleString()}{" "}
                     {salary?.data?.payload?.type === SalaryType.PERCENT
                       ? "%"
                       : "so'm"}
-                  </p>
+                  </Tag>
                 )}
                 <TelPopUp phoneNumber={user?.tel_primary || ""} />
                 <TelPopUp phoneNumber={user?.tel_secondary || ""} />

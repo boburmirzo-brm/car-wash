@@ -71,7 +71,7 @@ const ExpenseHistory = () => {
       <div className="flex justify-between  items-center flex-wrap gap-4 p-4">
         <div className="text-xl font-bold flex items-center gap-2 text-gray-700">
           <HistoryOutlined />
-          <span>Tarix</span>
+          <span>Xarajat</span>
         </div>
         <Space
           direction="horizontal"
