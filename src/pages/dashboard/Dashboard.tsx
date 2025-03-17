@@ -2,7 +2,6 @@ import { Tag } from "antd";
 import Title from "antd/es/typography/Title";
 import React from "react";
 import { useStatsQuery } from "../../redux/api/auth";
-import { Link } from "react-router-dom";
 import Box from "@/components/ui/Box";
 
 const Dashboard = () => {
