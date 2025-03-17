@@ -92,11 +92,15 @@ const ExpenseView: FC<Props> = ({ data }) => {
               <div className="flex items-center gap-2">
                 {expenseType == PaymentType.CASH ? (
                   <Tooltip placement="bottom" title="Naqd">
-                    <FaMoneyBillWave className="text-xl" />
+                    <div>
+                      <FaMoneyBillWave className="text-xl" />
+                    </div>
                   </Tooltip>
                 ) : (
                   <Tooltip placement="bottom" title="Karta">
-                    <FaRegCreditCard className="text-xl" />
+                    <div>
+                      <FaRegCreditCard className="text-xl" />
+                    </div>
                   </Tooltip>
                 )}
               </div>
@@ -109,7 +113,7 @@ const ExpenseView: FC<Props> = ({ data }) => {
         <ExpensePopup
           open={isEditing}
           onClose={() => setIsEditing(false)}
-          employerId={selectedExpense.employerId?._id}
+          employerId={selectedExpense?.employerId?._id}
           name="Xarajatni tahrirlash"
           expense={selectedExpense}
         />
