@@ -15,10 +15,11 @@ const invalidateCustomerTag = async (
 
 const extendedApi = mainApi.injectEndpoints({
   endpoints: (build: EndpointBuilder<any, any, any>) => ({
-    getCarWashings: build.query<any, void>({
-      query: () => ({
+    getCarWashings: build.query<any, any>({
+      query: (params) => ({
         url: "car-washing",
         method: "GET",
+        params
       }),
       providesTags: ["CAR_WASHING"],
     }),
@@ -57,6 +58,16 @@ const extendedApi = mainApi.injectEndpoints({
         await invalidateCustomerTag(queryFulfilled, dispatch);
       },
     }),
+    updateCarWashingChange: build.mutation<any, { id: string; data: any }>({
+      query: ({ id, data }) => ({
+        url: `car-washing/change-washAmount/${id}`,
+        method: "PATCH",
+        body: data,
+      }),
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+        await invalidateCustomerTag(queryFulfilled, dispatch);
+      },
+    }),
     updateWashAmountCarWashing: build.mutation<any, { id: string; data: any }>({
       query: ({ id, data }) => ({
         url: `car-washing/change-washAmount/${id}`,
@@ -88,6 +99,7 @@ export const {
   useUpdateWashAmountCarWashingMutation,
   useDeleteCarWashingMutation,
   useGetMyWashingsQuery,
+  useUpdateCarWashingChangeMutation
 } = extendedApi;
 
 export default extendedApi;

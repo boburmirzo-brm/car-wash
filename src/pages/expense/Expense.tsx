@@ -70,7 +70,7 @@ const ExpenseView: FC<Props> = ({ data }) => {
           </div>
           {item?.employerId && (
             <div className="flex items-center gap-2 text-gray-700 text-sm">
-              <AiOutlineUser className="text-lg text-green-600" />
+              <AiOutlineUser className="text-lg " />
               <Link
                 className="hover:underline"
                 to={`/employees/user/${item?.employerId?._id}`}

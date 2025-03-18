@@ -3,9 +3,7 @@ import { Avatar, Button, Popconfirm } from "antd";
 import React from "react";
 import { NavLink } from "react-router-dom";
 import "./style.css";
-import {
-  MdLogout,
-} from "react-icons/md";
+import { MdLogout } from "react-icons/md";
 import { useDispatch } from "react-redux";
 import { logout } from "@/redux/features/auth.slice";
 import { SIDEBAR_LINKS } from "@/static";
@@ -34,7 +32,7 @@ const Sidebar: React.FC<Props> = ({ open, onClose }) => {
           open ? "show" : ""
         } sidebar w-[250px] h-screen overflow-auto flex flex-col text-primary p-4 bg-white border-r border-gray-200 sticky top-0 left-0  z-[52]`}
       >
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 ">
           <Avatar>{data?.user?.f_name?.charAt(0)}</Avatar>
           <h2>{data?.user?.f_name}</h2>
         </div>
@@ -44,6 +42,7 @@ const Sidebar: React.FC<Props> = ({ open, onClose }) => {
               <NavLink
                 to={link.path}
                 onClick={onClose}
+                end={false}
                 className="flex items-center gap-2 py-2 hover:bg-gray-100 px-2 rounded-md sidebar-link"
               >
                 {link.icon}

@@ -14,6 +14,7 @@ import { useModalNavigation } from "@/hooks/useModalNavigation";
 import { MdOutlineLocalCarWash } from "react-icons/md";
 import {
   useCreateCarWashingMutation,
+  useUpdateCarWashingChangeMutation,
   useUpdateCarWashingMutation,
 } from "@/redux/api/car-washing";
 import { CarWashingStatus, PaymentType } from "@/constant";
@@ -36,7 +37,7 @@ interface Props {
   prevData?: any;
   customerId?: string;
   carId?: string;
-  profile?: boolean
+  profile?: boolean;
 }
 
 const CarWashingPopup: React.FC<Props> = ({
@@ -45,10 +46,12 @@ const CarWashingPopup: React.FC<Props> = ({
   prevData,
   customerId,
   carId,
-  profile
+  profile,
 }) => {
   const [form] = Form.useForm();
   const [createCarWashing, { isLoading }] = useCreateCarWashingMutation();
+  const [updateCarWashingChange, { isLoading: updateLoadingChange }] =
+    useUpdateCarWashingChangeMutation();
   const [updateCarWashing, { isLoading: updateLoading }] =
     useUpdateCarWashingMutation();
   const [error, setError] = useState<null | string>(null);
@@ -58,7 +61,7 @@ const CarWashingPopup: React.FC<Props> = ({
   const navigate = useNavigate();
   useModalNavigation(open, onClose);
   console.log(profile);
-  
+
   useEffect(() => {
     if (open) {
       setTimeout(() => {
@@ -66,6 +69,8 @@ const CarWashingPopup: React.FC<Props> = ({
       }, 100);
     }
   }, [open]);
+
+  console.log(prevData);
 
   const handleSave = (values: {
     washAmount: number;
@@ -100,23 +105,43 @@ const CarWashingPopup: React.FC<Props> = ({
         delete data.comment;
       }
 
-      updateCarWashing({
-        id: prevData._id,
-        data,
-      })
-        .unwrap()
-        .then(() => {
-          apiMessage.success("Mashina ma'lumoti yangilandi!");
-          setError(null);
-          onClose();
+      if (prevData.washAmount === null) {
+        updateCarWashing({
+          id: prevData._id,
+          data,
         })
-        .catch((err) => {
-          let error =
-            typeof err.data.message === "string"
-              ? err.data.message
-              : err.data.message[0];
-          setError(error);
-        });
+          .unwrap()
+          .then(() => {
+            apiMessage.success("Mashina ma'lumoti yangilandi!");
+            setError(null);
+            onClose();
+          })
+          .catch((err) => {
+            let error =
+              typeof err.data.message === "string"
+                ? err.data.message
+                : err.data.message[0];
+            setError(error);
+          });
+      }else{
+        updateCarWashingChange({
+          id: prevData._id,
+          data,
+        })
+          .unwrap()
+          .then(() => {
+            apiMessage.success("Mashina ma'lumoti yangilandi!");
+            setError(null);
+            onClose();
+          })
+          .catch((err) => {
+            let error =
+              typeof err.data.message === "string"
+                ? err.data.message
+                : err.data.message[0];
+            setError(error);
+          });
+      }
     } else {
       createCarWashing({
         carId: carId || "",
@@ -156,7 +181,11 @@ const CarWashingPopup: React.FC<Props> = ({
     >
       <Form
         form={form}
-        initialValues={prevData ? {...prevData, paymentType: "CASH"} : { paymentType: "CASH" }}
+        initialValues={
+          prevData
+            ? { ...prevData, paymentType: "CASH" }
+            : { paymentType: "CASH" }
+        }
         layout="vertical"
         onFinish={handleSave}
       >
@@ -221,11 +250,12 @@ const CarWashingPopup: React.FC<Props> = ({
             {!(
               prevData?.customerId?.full_name === "Noma'lum" ||
               !prevData?.customerId?.tel_primary
-            ) && !profile && (
-              <Form.Item<FieldType> name="nasiya" valuePropName="checked">
-                <Checkbox>Nasiya</Checkbox>
-              </Form.Item>
-            )}
+            ) &&
+              !profile && (
+                <Form.Item<FieldType> name="nasiya" valuePropName="checked">
+                  <Checkbox>Nasiya</Checkbox>
+                </Form.Item>
+              )}
           </>
         ) : (
           <div className="text-gray-600 flex justify-center py-6 text-8xl">

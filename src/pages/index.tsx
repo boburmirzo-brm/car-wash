@@ -1,4 +1,3 @@
-
 import { Suspense } from "@/utils";
 import React, { lazy } from "react";
 import { useRoutes } from "react-router-dom";
@@ -8,7 +7,14 @@ const Admins = lazy(() => import("./admins/Admins"));
 const Employees = lazy(() => import("./employees/Employees"));
 const UserDetail = lazy(() => import("./user/detail/UserDetail"));
 const Profile = lazy(() => import("./profile/Profile"));
+const Bonus = lazy(() => import("./bonus/Bonus"));
 const ExpenseHistory = lazy(() => import("./expense/ExpenseHistory"));
+const CarWashingDone = lazy(
+  () => import("./dashboard/car-washing-done/CarWashingDone")
+);
+const CarWahingProgress = lazy(
+  () => import("./dashboard/car-washing-progress/CarWahingProgress")
+);
 // Employer
 const Employer = lazy(() => import("./employer/Employer"));
 const Order = lazy(() => import("./employer/order/Order"));
@@ -18,7 +24,9 @@ const Layout = lazy(() => import("./layout/Layout"));
 const CustomAuth = lazy(() => import("./custom-auth/CustomAuth"));
 const CarSearch = lazy(() => import("./employer/order/car-search/CarSearch"));
 const Login = lazy(() => import("./login/Login"));
-const CustomerSearch = lazy(() => import("./employer/order/customer-search/CustomerSearch"));
+const CustomerSearch = lazy(
+  () => import("./employer/order/customer-search/CustomerSearch")
+);
 const CustomerDetail = lazy(() => import("./customer/detail/CustomerDetail"));
 const CustomersCar = lazy(() => import("./customer/detail/CustomersCar"));
 const PaymentHistory = lazy(() => import("./customer/detail/PaymentHistory"));
@@ -62,6 +70,24 @@ const AppRouter = () => {
                           <Dashboard />
                         </Suspense>
                       ),
+                      children: [
+                        {
+                          path: "",
+                          element: (
+                            <Suspense>
+                              <CarWahingProgress />
+                            </Suspense>
+                          ),
+                        },
+                        {
+                          path: "car-washing-done",
+                          element: (
+                            <Suspense>
+                              <CarWashingDone />
+                            </Suspense>
+                          ),
+                        },
+                      ],
                     },
                     {
                       path: "/admins",
@@ -108,6 +134,14 @@ const AppRouter = () => {
                       element: (
                         <Suspense>
                           <PaymentsHistory />
+                        </Suspense>
+                      ),
+                    },
+                    {
+                      path: "/bonus",
+                      element: (
+                        <Suspense>
+                          <Bonus />
                         </Suspense>
                       ),
                     },
