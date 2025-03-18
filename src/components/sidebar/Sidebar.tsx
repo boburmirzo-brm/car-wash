@@ -1,7 +1,7 @@
 import { useCheckTokenQuery } from "@/redux/api/auth";
 import { Avatar, Button, Popconfirm } from "antd";
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import "./style.css";
 import { MdLogout } from "react-icons/md";
 import { useDispatch } from "react-redux";
@@ -16,6 +16,13 @@ interface Props {
 const Sidebar: React.FC<Props> = ({ open, onClose }) => {
   const { data } = useCheckTokenQuery(undefined);
   const dispatch = useDispatch();
+  const { pathname } = useLocation();
+  const isActive =
+    pathname === "/" ||
+    pathname === "/car-washing-done" ||
+    pathname.startsWith("/customer/") ||
+    pathname.startsWith("/car/");
+
   const handleLogout = () => {
     dispatch(logout());
   };
@@ -43,7 +50,9 @@ const Sidebar: React.FC<Props> = ({ open, onClose }) => {
                 to={link.path}
                 onClick={onClose}
                 end={false}
-                className="flex items-center gap-2 py-2 hover:bg-gray-100 px-2 rounded-md sidebar-link"
+                className={`${
+                  link.path === "/" && isActive ? "active" : ""
+                } flex items-center gap-2 py-2 hover:bg-gray-100 px-2 rounded-md sidebar-link`}
               >
                 {link.icon}
                 <span>{link.title}</span>

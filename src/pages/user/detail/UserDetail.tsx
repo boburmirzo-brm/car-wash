@@ -37,7 +37,7 @@ const UserDetail = () => {
           <Skeleton active />
         ) : (
           <>
-            {isError && user.role !== Role.ADMIN && (
+            {isError && user?.role !== Role.ADMIN && (
               <Alert
                 message={"Oylik belgilanmagan. Avval oylikni belgilang"}
                 style={{ width: "100%" }}
@@ -53,8 +53,8 @@ const UserDetail = () => {
                   <h3 className="text-2xl font-medium">
                     {user?.f_name} {user?.l_name}
                   </h3>
-                  <p className="text-gray-600 my-1">@{user.username}</p>
-                  <p className="text-gray-600 text-sm">{user.address}</p>
+                  <p className="text-gray-600 my-1">@{user?.username}</p>
+                  <p className="text-gray-600 text-sm">{user?.address}</p>
                   {user?.role !== Role.ADMIN && (
                     <p className="text-gray-600 text-sm mt-3">
                       Ro'yhatdan o'tkazgan{" "}
@@ -77,11 +77,11 @@ const UserDetail = () => {
               </div>
 
               <div className="flex w-full flex-col items-end gap-1.5">
-                {user.role !== Role.ADMIN && (
+                {user?.role !== Role.ADMIN && (
                   <Title
                     level={3}
                     type={
-                      user.budget === 0
+                      user?.budget === 0
                         ? "secondary"
                         : (user?.budget || 0) > 0
                         ? "success"
@@ -110,7 +110,7 @@ const UserDetail = () => {
                     <FaRegEdit className="text-lg" />
                     {/* <span>Tahrirlash</span> */}
                   </Button>
-                  {user.role !== Role.ADMIN && (
+                  {user?.role !== Role.ADMIN && (
                     <>
                       <Button
                         onClick={() => handleOpenModal("salary")}
