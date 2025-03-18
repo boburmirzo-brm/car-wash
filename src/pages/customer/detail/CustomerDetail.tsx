@@ -14,6 +14,9 @@ import CarPopup from "@/components/car-popup/CarPopup";
 // import { CustomEmpty } from "@/utils";
 import type { TabsProps } from "antd";
 import Box from "@/components/ui/Box";
+import { Role } from "@/constant";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux";
 
 const { Title } = Typography;
 type ModalType = "payment" | "edit" | "car" | null;
@@ -24,6 +27,7 @@ const CustomerDetail = () => {
   const { pathname } = useLocation();
   const { data, isLoading } = useGetCustomerByIdQuery(id || "");
   const [modalType, setModalType] = useState<ModalType>(null);
+  const role = useSelector((state: RootState) => state.role.value);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -62,7 +66,7 @@ const CustomerDetail = () => {
 
   return (
     <>
-      <div className="flex flex-col gap-4 p-4 ">
+      <div className={`flex flex-col gap-4  ${role === Role.EMPLOYEE ? "my-4" : "p-4"}`}>
         <Box >
           {isLoading ? (
             <Skeleton active />

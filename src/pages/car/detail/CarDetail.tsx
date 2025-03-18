@@ -85,7 +85,7 @@ const CarDetail = () => {
 
   return (
     <>
-      <div className="flex flex-col gap-4  p-4 ">
+      <div className={`flex flex-col gap-4  ${role === Role.EMPLOYEE ? "my-4" : "p-4"}`}>
         {isError && role === Role.EMPLOYEE && (
           <Alert
             message="Oylik belgilanmagan. Avval oylikni belgilating"

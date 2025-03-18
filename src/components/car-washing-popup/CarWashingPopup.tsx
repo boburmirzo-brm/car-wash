@@ -123,7 +123,7 @@ const CarWashingPopup: React.FC<Props> = ({
                 : err.data.message[0];
             setError(error);
           });
-      }else{
+      } else {
         updateCarWashingChange({
           id: prevData._id,
           data,
@@ -270,8 +270,13 @@ const CarWashingPopup: React.FC<Props> = ({
         )}
 
         <Form.Item style={{ margin: 0 }}>
-          <Button type="primary" loading={isLoading} block htmlType="submit">
-            {isLoading || updateLoading
+          <Button
+            type="primary"
+            loading={isLoading || updateLoadingChange || updateLoading}
+            block
+            htmlType="submit"
+          >
+            {isLoading || updateLoading || updateLoadingChange
               ? "Kuting"
               : prevData
               ? "Saqlash"
