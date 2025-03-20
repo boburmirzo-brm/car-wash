@@ -188,3 +188,9 @@ export interface ExpenseType {
   employerId: any;
   adminId: any
 }
+
+export interface IBonus {
+  _id: string;
+  freeCounter: number;
+  friendPercent: number;
+}

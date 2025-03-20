@@ -19,7 +19,7 @@ const extendedApi = mainApi.injectEndpoints({
       query: (params) => ({
         url: "car-washing",
         method: "GET",
-        params
+        params,
       }),
       providesTags: ["CAR_WASHING"],
     }),
@@ -31,9 +31,19 @@ const extendedApi = mainApi.injectEndpoints({
       }),
       providesTags: ["CAR_WASHING"],
     }),
+
+    getByEmployeeId: build.query<any, any>({
+      query: ({ userId, fromDate, toDate, page, limit }) => ({
+        url: `car-washing/employee/${userId}`,
+        method: "GET",
+        params: { fromDate, toDate, page, limit },
+      }),
+      providesTags: ["CAR_WASHING"],
+    }),
+
     getCarWashingById: build.query<any, string>({
       query: (id) => ({
-        url: `car-washings/${id}`,
+        url: `car-washing/${id}`,
         method: "GET",
       }),
       providesTags: (id) => [{ type: "CAR_WASHING", id }],
@@ -99,7 +109,8 @@ export const {
   useUpdateWashAmountCarWashingMutation,
   useDeleteCarWashingMutation,
   useGetMyWashingsQuery,
-  useUpdateCarWashingChangeMutation
+  useUpdateCarWashingChangeMutation,
+  useGetByEmployeeIdQuery
 } = extendedApi;
 
 export default extendedApi;

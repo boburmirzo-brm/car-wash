@@ -1,14 +1,16 @@
-import CarWashing from "@/components/car-washing/CarWashing";
 import Box from "@/components/ui/Box";
-import { useGetCarWashingsQuery } from "@/redux/api/car-washing";
 import { Button, DatePicker, Pagination, Skeleton } from "antd";
 import React, { useCallback, useMemo } from "react";
 import { PiBroom } from "react-icons/pi";
 import { useParamsHook } from "../../../hooks/useParamsHook";
+import { useGetUserExpenseQuery } from "../../../redux/api/expense";
+import { useParams } from "react-router-dom";
+import Expense from "../../expense/Expense";
 
 const { RangePicker } = DatePicker;
 
-const CarWashingDone = () => {
+const UserExpenseHistory = () => {
+  const { id } = useParams();
   const { getParam, setParam, removeParam, removeParams } = useParamsHook();
 
   const fromDate = getParam("fromDate") || "";
@@ -18,11 +20,11 @@ const CarWashingDone = () => {
 
   const filters = useMemo(
     () => ({
+      userId: id,
       fromDate,
       toDate,
       page,
       limit,
-      done: "1",
     }),
     [fromDate, toDate, page, limit]
   );
@@ -51,12 +53,13 @@ const CarWashingDone = () => {
     [setParam]
   );
 
-  const { data, isLoading } = useGetCarWashingsQuery(filters);
+  const { data, isLoading } = useGetUserExpenseQuery(filters);
+  
   return (
     <div>
       <div className="flex justify-between items-center flex-wrap gap-4">
         <div className="text-xl font-bold flex items-center gap-2 text-gray-700">
-          <span>Tayyor</span>
+          <span>Expense History</span>
         </div>
         <div className="flex items-center gap-2">
           <RangePicker
@@ -74,7 +77,7 @@ const CarWashingDone = () => {
           <Skeleton active />
         </Box>
       )}
-      <CarWashing data={data?.data} />
+      <Expense data={data?.data?.payload} />
 
       <div className="flex justify-end">
         <Pagination
@@ -88,4 +91,4 @@ const CarWashingDone = () => {
   );
 };
 
-export default React.memo(CarWashingDone);
+export default React.memo(UserExpenseHistory);
