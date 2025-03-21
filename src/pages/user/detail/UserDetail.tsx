@@ -3,14 +3,16 @@ import TelPopUp from "@/components/tel-pop-up/TelPopUp";
 import UserPopup from "@/components/user-popup/UserPopup";
 import { Role, SalaryType } from "@/constant";
 import { useGetSalaryByIdQuery } from "@/redux/api/salary";
-import { useGetUserByIdQuery } from "@/redux/api/user";
-import { Alert, Button, Skeleton, Tag, Tooltip } from "antd";
+import { useGetUserByIdQuery, useUpdateUserMutation } from "@/redux/api/user";
+import { Alert, Button, Popconfirm, Skeleton, Tag, Tooltip } from "antd";
 import Title from "antd/es/typography/Title";
 import React, { useCallback, useState } from "react";
-import { FaRegEdit } from "react-icons/fa";
+import { FaRegEdit, FaUserAltSlash, FaUserPlus } from "react-icons/fa";
 import { MdAttachMoney, MdOutlinePercent } from "react-icons/md";
 import { TbUser } from "react-icons/tb";
-import { useParams } from "react-router-dom";
+import { NavLink, Outlet, useParams } from "react-router-dom";
+import "../style.css";
+import ExpensePopup from "../../../components/expense-popup/ExpensePopup";
 
 type ModalType = "expense" | "edit" | "salary" | null;
 
@@ -29,6 +31,22 @@ const UserDetail = () => {
     setModalType(null);
     if (!isBack) window.history.back();
   }, []);
+
+  const [updateUser] = useUpdateUserMutation();
+
+  const handleToggleUserStatus = async () => {
+    if (!id) return;
+
+    try {
+      await updateUser({
+        id: id!,
+        data: { is_active: !user?.is_active },
+      }).unwrap();
+    } catch (error) {
+      console.error("Foydalanuvchi holatini o'zgartirishda xatolik:", error);
+    }
+  };
+
 
   return (
     <div className="p-4">
@@ -126,6 +144,36 @@ const UserDetail = () => {
                         <MdAttachMoney className="text-lg" />
                         <span>To'lov</span>
                       </Button>
+                      <Popconfirm
+                        title={
+                          user?.is_active ? "Ishdan olish" : "Ishga qaytarish"
+                        }
+                        description={
+                          user?.is_active
+                            ? "Chindan ham ishdan olmoqchimisiz?"
+                            : "Foydalanuvchini ishga qaytarmoqchimisiz?"
+                        }
+                        onConfirm={handleToggleUserStatus}
+                        okText="Ha"
+                        cancelText="Yo'q"
+                      >
+                        <Button
+                          type="default"
+                          className="flex items-center gap-2"
+                        >
+                          {user?.is_active ? (
+                            <FaUserAltSlash className="text-lg" />
+                          ) : (
+                            <FaUserPlus className="text-lg" />
+                          )}
+
+                          <span>
+                            {user?.is_active
+                              ? "Ishdan olish"
+                              : "Ishga qaytarish"}
+                          </span>
+                        </Button>
+                      </Popconfirm>
                     </>
                   )}
                 </div>
@@ -146,6 +194,41 @@ const UserDetail = () => {
         employeeId={id}
         prevData={salary?.data?.payload}
       />
+
+      <ExpensePopup
+        open={modalType === "expense"}
+        onClose={handleClose}
+        employerId={id}
+        name=""
+      />
+
+      <div className="px-4 flex gap-6 mt-4">
+        <NavLink
+          to={`/dynamic/user/${id}`}
+          className={({ isActive }) =>
+            `user-detail-link hover:text-black text-gray-600 ${
+              isActive ? "active" : ""
+            }`
+          }
+          end
+        >
+          Car-Wash
+        </NavLink>
+        <NavLink
+          to={`/dynamic/user/${id}/expense-history`}
+          className={({ isActive }) =>
+            `user-detail-link hover:text-black text-gray-600 ${
+              isActive ? "active" : ""
+            }`
+          }
+        >
+          Expense
+        </NavLink>
+      </div>
+
+      <div className="p-4">
+        <Outlet />
+      </div>
     </div>
   );
 };

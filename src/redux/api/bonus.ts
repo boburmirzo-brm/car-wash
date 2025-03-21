@@ -7,7 +7,7 @@ const invalidateCustomerTag = async (
 ) => {
   try {
     await queryFulfilled;
-    dispatch(extendedApi.util.invalidateTags(["EXPENSE", "CUSTOMER"]));
+    dispatch(extendedApi.util.invalidateTags(["BONUS", "CUSTOMER"]));
   } catch (error) {
     console.error("Error:", error);
   }
@@ -15,27 +15,18 @@ const invalidateCustomerTag = async (
 
 const extendedApi = mainApi.injectEndpoints({
   endpoints: (build: EndpointBuilder<any, any, any>) => ({
-    getAllExpense: build.query<any, any>({
+    getAllBonus: build.query<any, any>({
       query: (params) => ({
-        url: `/expense`,
+        url: `/bonus`,
         method: "GET",
         params,
       }),
-      providesTags: ["EXPENSE"],
+      providesTags: ["BONUS"],
     }),
 
-    getUserExpense: build.query<any, any>({
-      query: ({ userId, fromDate, toDate, page, limit }) => ({
-        url: `/expense/user/${userId}`,
-        method: "GET",
-        params: { fromDate, toDate, page, limit }, // To‘g‘ri format
-      }),
-      providesTags: ["EXPENSE"],
-    }),
-
-    createExpense: build.mutation<any, any>({
+    createBonus: build.mutation<any, any>({
       query: (body) => ({
-        url: `/expense`,
+        url: `/bonus`,
         method: "POST",
         body,
       }),
@@ -43,10 +34,11 @@ const extendedApi = mainApi.injectEndpoints({
         await invalidateCustomerTag(queryFulfilled, dispatch);
       },
     }),
-    updateExpense: build.mutation<any, { id: string; data: any }>({
+    updateBonus: build.mutation<any, { id: string; data: any }>({
       query: ({ id, data }) => {
+        console.log("BONUSS",id);
         return {
-          url: `/expense/${id}`,
+          url: `/bonus/${id}`,
           method: "PATCH",
           body: data,
         };
@@ -60,10 +52,9 @@ const extendedApi = mainApi.injectEndpoints({
 });
 
 export const {
-  useGetAllExpenseQuery,
-  useCreateExpenseMutation,
-  useUpdateExpenseMutation,
-  useGetUserExpenseQuery
+  useCreateBonusMutation,
+  useUpdateBonusMutation,
+  useGetAllBonusQuery,
 } = extendedApi;
 
 export default extendedApi;

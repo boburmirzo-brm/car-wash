@@ -1,31 +1,33 @@
-import CarWashing from "@/components/car-washing/CarWashing";
-import Box from "@/components/ui/Box";
-import { useGetCarWashingsQuery } from "@/redux/api/car-washing";
-import { Button, DatePicker, Pagination, Skeleton } from "antd";
 import React, { useCallback, useMemo } from "react";
-import { PiBroom } from "react-icons/pi";
+import { useGetCarsQuery } from "../../../redux/api/car";
+import CarsView from "../../../components/cars-view/CarsView";
 import { useParamsHook } from "../../../hooks/useParamsHook";
-
+import { Button, DatePicker, Pagination, Skeleton } from "antd";
+import { PiBroom } from "react-icons/pi";
+import Box from "../../../components/ui/Box";
+import { CustomEmpty } from "../../../utils";
 const { RangePicker } = DatePicker;
 
-const CarWashingDone = () => {
+const Cars = () => {
   const { getParam, setParam, removeParam, removeParams } = useParamsHook();
 
   const fromDate = getParam("fromDate") || "";
   const toDate = getParam("toDate") || "";
   const page = getParam("page") || "1";
   const limit = "20";
+  const sortBy = getParam("sortBy");
+  const sortOrder = getParam("sortOrder");
 
-  const filters = useMemo(
-    () => ({
-      fromDate,
-      toDate,
-      page,
-      limit,
-      done: "1",
-    }),
-    [fromDate, toDate, page, limit]
-  );
+  const filters = useMemo(() => {
+    let query: any = { fromDate, toDate, page, limit };
+
+    if (sortBy && sortOrder) {
+      query.sortBy = sortBy;
+      query.sortOrder = sortOrder;
+    }
+
+    return query;
+  }, [fromDate, toDate, page, limit, sortBy, sortOrder]);
 
   const handleFilterChange = useCallback(
     (dates: any) => {
@@ -41,7 +43,7 @@ const CarWashingDone = () => {
   );
 
   const clearFilters = useCallback(() => {
-    removeParams(["fromDate", "toDate", "page"]);
+    removeParams(["fromDate", "toDate", "page", "sortBy", "sortOrder"]);
   }, [removeParams]);
 
   const handlePageChange = useCallback(
@@ -50,31 +52,37 @@ const CarWashingDone = () => {
     },
     [setParam]
   );
+  const { data, isLoading } = useGetCarsQuery(filters);
+  const cars = data?.data?.payload || [];
+  console.log(cars);
+  
 
-  const { data, isLoading } = useGetCarWashingsQuery(filters);
   return (
     <div>
-      <div className="flex justify-between items-center flex-wrap gap-4">
+      <div className="mt-4 flex justify-between items-center flex-wrap gap-4">
         <div className="text-xl font-bold flex items-center gap-2 text-gray-700">
-          <span>Tayyor</span>
+          <span>Mashinalar</span>
         </div>
+
         <div className="flex items-center gap-2">
           <RangePicker
             popupClassName="custom-range-picker-dropdown"
             format="YYYY-MM-DD"
             onChange={handleFilterChange}
           />
+
           <Button type="default" onClick={clearFilters}>
             <PiBroom className="text-xl" />
           </Button>
         </div>
       </div>
+
       {isLoading && (
         <Box className="mt-4">
           <Skeleton active />
         </Box>
       )}
-      <CarWashing data={data?.data} />
+      {cars.length > 0 ? <CarsView data={cars} /> : <CustomEmpty />}
 
       <div className="flex justify-end">
         <Pagination
@@ -88,4 +96,4 @@ const CarWashingDone = () => {
   );
 };
 
-export default React.memo(CarWashingDone);
+export default React.memo(Cars);

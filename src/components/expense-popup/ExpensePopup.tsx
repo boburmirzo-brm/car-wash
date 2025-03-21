@@ -128,7 +128,11 @@ const ExpensePopup: FC<Props> = ({
         layout="vertical"
         onFinish={onFinish}
         autoComplete="off"
-        initialValues={expense ? expense : { type: PaymentType.CASH }}
+        initialValues={{
+          type: PaymentType.CASH,
+          employerId: employerId || null,
+          ...(expense ? expense : {}),
+        }}
       >
         <Form.Item<FieldType>
           label="Xarajat summasi"

@@ -73,6 +73,12 @@ export const SIDEBAR_LINKS = [
     title: "Profile",
     icon: <FaRegUser className="text-2xl" />,
   },
+  {
+    id: 8,
+    path: "/customer-car",
+    title: "Customer",
+    icon: <FaRegUser className="text-2xl" />,
+  },
 ];
 
 export const ACTIVE_ROUTES_EMPLOYEE: string[] = [

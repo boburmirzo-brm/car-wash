@@ -1,6 +1,12 @@
 import { Suspense } from "@/utils";
 import React, { lazy } from "react";
 import { useRoutes } from "react-router-dom";
+import EmployeeCarWash from "./user/car-wash/EmployeeCarWash";
+import InactiveEmployees from "./employees/inactive-employees/InactiveEmployees";
+import ActiveEmployees from "./employees/active-employees/ActiveEmployees";
+import CustomerCar from "./customer-car/CustomerCar";
+import Customers from "./customer-car/customers/Customers";
+import Cars from "./customer-car/cars/Cars";
 // Dashboard
 const Dashboard = lazy(() => import("./dashboard/Dashboard"));
 const Admins = lazy(() => import("./admins/Admins"));
@@ -9,6 +15,9 @@ const UserDetail = lazy(() => import("./user/detail/UserDetail"));
 const Profile = lazy(() => import("./profile/Profile"));
 const Bonus = lazy(() => import("./bonus/Bonus"));
 const ExpenseHistory = lazy(() => import("./expense/ExpenseHistory"));
+const UserExpenseHistory = lazy(
+  () => import("./user/expense/UserExpenseHistory")
+);
 const CarWashingDone = lazy(
   () => import("./dashboard/car-washing-done/CarWashingDone")
 );
@@ -104,6 +113,24 @@ const AppRouter = () => {
                           <Employees />
                         </Suspense>
                       ),
+                      children: [
+                        {
+                          path: "",
+                          element: (
+                            <Suspense>
+                              <ActiveEmployees />
+                            </Suspense>
+                          ),
+                        },
+                        {
+                          path: "inactive-employees",
+                          element: (
+                            <Suspense>
+                              <InactiveEmployees />
+                            </Suspense>
+                          ),
+                        },
+                      ],
                     },
                     {
                       path: "/:dynamic/user/:id",
@@ -112,6 +139,24 @@ const AppRouter = () => {
                           <UserDetail />
                         </Suspense>
                       ),
+                      children: [
+                        {
+                          path: "",
+                          element: (
+                            <Suspense>
+                              <EmployeeCarWash />
+                            </Suspense>
+                          ),
+                        },
+                        {
+                          path: "expense-history",
+                          element: (
+                            <Suspense>
+                              <UserExpenseHistory />
+                            </Suspense>
+                          ),
+                        },
+                      ],
                     },
                     {
                       path: "/profile",
@@ -144,6 +189,32 @@ const AppRouter = () => {
                           <Bonus />
                         </Suspense>
                       ),
+                    },
+                    {
+                      path: "/customer-car",
+                      element: (
+                        <Suspense>
+                          <CustomerCar />
+                        </Suspense>
+                      ),
+                      children: [
+                        {
+                          path: "",
+                          element: (
+                            <Suspense>
+                              <Customers />
+                            </Suspense>
+                          ),
+                        },
+                        {
+                          path: "cars",
+                          element: (
+                            <Suspense>
+                              <Cars />
+                            </Suspense>
+                          ),
+                        },
+                      ],
                     },
                   ],
                 },
