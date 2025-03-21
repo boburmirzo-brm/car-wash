@@ -61,7 +61,7 @@ const PaymentHistory = () => {
           <HistoryOutlined />
           <span>Kirim</span>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 max-[600px]:order-3">
           <RangePicker
             popupClassName="custom-range-picker-dropdown"
             format="YYYY-MM-DD"
@@ -70,6 +70,9 @@ const PaymentHistory = () => {
           <Button type="default" onClick={clearFilters}>
             <PiBroom className="text-xl" />
           </Button>
+        </div>
+        <div className="min-[600px]:w-full text-right max-[600px]:order-2">
+          <h3 className="text-2xl font-bold">1,200,000 UZS</h3>
         </div>
       </div>
 

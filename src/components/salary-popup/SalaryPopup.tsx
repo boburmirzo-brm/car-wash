@@ -111,7 +111,7 @@ const SalaryPopup: React.FC<Props> = ({
           <Radio.Group
             options={[
               { value: SalaryType.PERCENT, label: "Foiz" },
-              { value: SalaryType.CASH, label: "Naxt" },
+              { value: SalaryType.CASH, label: "Naqd" },
             ]}
           />
         </Form.Item>

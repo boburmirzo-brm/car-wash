@@ -1,7 +1,8 @@
 import React, { FC } from "react";
 import Box from "../ui/Box";
-import { MdPerson, MdPhone, MdCalendarToday } from "react-icons/md";
 import TelPopUp from "../tel-pop-up/TelPopUp";
+import { Link } from "react-router-dom";
+import { TbUserX } from "react-icons/tb";
 
 interface Props {
   data: any;
@@ -10,40 +11,35 @@ interface Props {
 const Customer: FC<Props> = ({ data }) => {
   return (
     <div className="my-4 space-y-4">
-      {data?.payload.map((item: any) => (
-        <Box
-          key={item._id}
-          className="p-4 bg-white shadow-md rounded-lg hover:shadow-lg transition-shadow"
-        >
+      {data?.payload.map((customer: any) => (
+        <Box key={customer?._id} className="hover:shadow-lg transition-shadow">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <MdPerson className="text-2xl text-blue-500" />
-              <span className="font-semibold text-lg">{item.full_name}</span>
+            <div className="flex items-center gap-2 flex-1">
+              {customer?.full_name === "Noma'lum" && (
+                <TbUserX className="text-2xl text-yellow-500" />
+              )}
+              <Link
+                to={`/customer/${customer?._id}`}
+                className="font-semibold text-lg hover:underline line-clamp-1"
+              >
+                {customer?.full_name}
+              </Link>
             </div>
 
             <span
-              className={`font-semibold ${
-                item.budget >= 0 ? "text-green-600" : "text-red-500"
+              className={`font-semibold text-lg ${
+                customer?.budget >= 0 ? "text-green-600" : "text-red-500"
               }`}
             >
-              {item.budget.toLocaleString()} UZS
+              {customer?.budget?.toLocaleString()} UZS
             </span>
           </div>
-
-          <div className="mt-2 mb-2 flex items-center gap-4 text-gray-600">
-            {item.tel_primary ? (
-              <TelPopUp phoneNumber={item.tel_primary} />
-            ) : (
-              <div className="flex items-center gap-1">
-                <MdPhone className="text-gray-400" />
-                <span className="text-gray-400">Noma'lum</span>
-              </div>
-            )}
-          </div>
-
-          <div className="flex items-center gap-1 text-gray-600">
-            <MdCalendarToday className="text-lg" />
-            <span>{item.createdAt.split(" ")[0]}</span>
+          <div className="flex justify-between items-end">
+            <span className="gap-1 text-sm text-gray-600">
+              {customer?.createdAt?.dateFormat()}{" "}
+              {customer?.createdAt?.timeFormat()}
+            </span>
+            <TelPopUp phoneNumber={customer?.tel_primary} />
           </div>
         </Box>
       ))}

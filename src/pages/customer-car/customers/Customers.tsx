@@ -2,9 +2,9 @@ import React, { useCallback, useMemo } from "react";
 import { useGetCustomersQuery } from "../../../redux/api/customer";
 import { useParamsHook } from "../../../hooks/useParamsHook";
 import { Button, DatePicker, Pagination, Skeleton, Select } from "antd";
-import Box from "../../../components/ui/Box";
+import Box from "@/components/ui/Box";
 import { PiBroom } from "react-icons/pi";
-import Customer from "../../../components/customer/Customer";
+import Customer from "@/components/customer/Customer";
 
 const { RangePicker } = DatePicker;
 const { Option } = Select;
@@ -79,10 +79,11 @@ const Customers = () => {
           <span>Mijozlar</span>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center max-[500px]:flex-wrap gap-2">
           <RangePicker
             popupClassName="custom-range-picker-dropdown"
             format="YYYY-MM-DD"
+            className="max-[500px]:w-full"
             onChange={handleFilterChange}
           />
           <Select

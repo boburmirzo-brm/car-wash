@@ -77,7 +77,7 @@ const UserExpenseHistory = () => {
           <Skeleton active />
         </Box>
       )}
-      <Expense data={data?.data?.payload} />
+      <Expense padding={"py-4"} data={data?.data?.payload} />
 
       <div className="flex justify-end">
         <Pagination

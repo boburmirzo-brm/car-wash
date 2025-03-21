@@ -7,12 +7,12 @@ import { useGetUserByIdQuery, useUpdateUserMutation } from "@/redux/api/user";
 import { Alert, Button, Popconfirm, Skeleton, Tag, Tooltip } from "antd";
 import Title from "antd/es/typography/Title";
 import React, { useCallback, useState } from "react";
-import { FaRegEdit, FaUserAltSlash, FaUserPlus } from "react-icons/fa";
+import { FaRegEdit } from "react-icons/fa";
 import { MdAttachMoney, MdOutlinePercent } from "react-icons/md";
 import { TbUser } from "react-icons/tb";
 import { NavLink, Outlet, useParams } from "react-router-dom";
-import "../style.css";
 import ExpensePopup from "../../../components/expense-popup/ExpensePopup";
+import { LuUserMinus, LuUserPlus } from "react-icons/lu";
 
 type ModalType = "expense" | "edit" | "salary" | null;
 
@@ -47,7 +47,6 @@ const UserDetail = () => {
     }
   };
 
-
   return (
     <div className="p-4">
       <div className="shadow bg-white md:p-6 p-4 rounded-md border border-gray-100 w-full">
@@ -73,6 +72,9 @@ const UserDetail = () => {
                   </h3>
                   <p className="text-gray-600 my-1">@{user?.username}</p>
                   <p className="text-gray-600 text-sm">{user?.address}</p>
+                  <Tag color={user?.is_active ? "green" : "red"}>
+                    {user?.is_active ? "Faol" : "Ishdan bo'shatilgan"}
+                  </Tag>
                   {user?.role !== Role.ADMIN && (
                     <p className="text-gray-600 text-sm mt-3">
                       Ro'yhatdan o'tkazgan{" "}
@@ -121,66 +123,85 @@ const UserDetail = () => {
                 <TelPopUp phoneNumber={user?.tel_primary || ""} />
                 <TelPopUp phoneNumber={user?.tel_secondary || ""} />
                 <div className="flex gap-1.5">
+                  <Popconfirm
+                    title={user?.is_active ? "Ishdan olish" : "Ishga qaytarish"}
+                    description={
+                      user?.is_active
+                        ? "Chindan ham ishdan olmoqchimisiz?"
+                        : "Foydalanuvchini ishga qaytarmoqchimisiz?"
+                    }
+                    onConfirm={handleToggleUserStatus}
+                    okText="Ha"
+                    cancelText="Yo'q"
+                  >
+                    <Button
+                      type="default"
+                      danger
+                      className="flex items-center gap-2"
+                    >
+                      {user?.is_active ? (
+                        <LuUserMinus className="text-lg" />
+                      ) : (
+                        <LuUserPlus className="text-lg" />
+                      )}
+                      <span>
+                        {user?.is_active ? "Ishdan olish" : "Ishga qaytarish"}
+                      </span>
+                    </Button>
+                  </Popconfirm>
                   <Button
                     onClick={() => handleOpenModal("edit")}
                     type="default"
                   >
                     <FaRegEdit className="text-lg" />
-                    {/* <span>Tahrirlash</span> */}
                   </Button>
-                  {user?.role !== Role.ADMIN && (
-                    <>
-                      <Button
-                        onClick={() => handleOpenModal("salary")}
-                        type="default"
-                      >
-                        <MdOutlinePercent className="text-lg" />
-                        <span>Oylik</span>
-                      </Button>
-                      <Button
-                        onClick={() => handleOpenModal("expense")}
-                        type="default"
-                      >
-                        <MdAttachMoney className="text-lg" />
-                        <span>To'lov</span>
-                      </Button>
-                      <Popconfirm
-                        title={
-                          user?.is_active ? "Ishdan olish" : "Ishga qaytarish"
-                        }
-                        description={
-                          user?.is_active
-                            ? "Chindan ham ishdan olmoqchimisiz?"
-                            : "Foydalanuvchini ishga qaytarmoqchimisiz?"
-                        }
-                        onConfirm={handleToggleUserStatus}
-                        okText="Ha"
-                        cancelText="Yo'q"
-                      >
-                        <Button
-                          type="default"
-                          className="flex items-center gap-2"
-                        >
-                          {user?.is_active ? (
-                            <FaUserAltSlash className="text-lg" />
-                          ) : (
-                            <FaUserPlus className="text-lg" />
-                          )}
-
-                          <span>
-                            {user?.is_active
-                              ? "Ishdan olish"
-                              : "Ishga qaytarish"}
-                          </span>
-                        </Button>
-                      </Popconfirm>
-                    </>
-                  )}
+                  <Button
+                    onClick={() => handleOpenModal("salary")}
+                    type="default"
+                  >
+                    <MdOutlinePercent className="text-lg" />
+                    <span>Oylik</span>
+                  </Button>
+                  <Button
+                    onClick={() => handleOpenModal("expense")}
+                    type="default"
+                  >
+                    <MdAttachMoney className="text-lg" />
+                    <span>To'lov</span>
+                  </Button>
                 </div>
               </div>
             </div>
           </>
         )}
+      </div>
+
+      <div className="border-b border-gray-200 pb-[0.5px] flex gap-6 mt-4">
+        <NavLink
+          to={`/employees/user/${id}`}
+          className={({ isActive }) =>
+            `custom-tab-link hover:text-black text-gray-600 ${
+              isActive ? "active" : ""
+            }`
+          }
+          end
+        >
+          Yuvgan mashinalari
+        </NavLink>
+        <NavLink
+          to={`/employees/user/${id}/expense-history`}
+          className={({ isActive }) =>
+            `custom-tab-link hover:text-black text-gray-600 ${
+              isActive ? "active" : ""
+            }`
+          }
+        >
+          Olgan maoshlari
+        </NavLink>
+      </div>
+
+      <div className="py-4">
+        <Outlet />
       </div>
       <UserPopup
         currentRole={Role.ADMIN}
@@ -201,34 +222,6 @@ const UserDetail = () => {
         employerId={id}
         name=""
       />
-
-      <div className="px-4 flex gap-6 mt-4">
-        <NavLink
-          to={`/dynamic/user/${id}`}
-          className={({ isActive }) =>
-            `user-detail-link hover:text-black text-gray-600 ${
-              isActive ? "active" : ""
-            }`
-          }
-          end
-        >
-          Car-Wash
-        </NavLink>
-        <NavLink
-          to={`/dynamic/user/${id}/expense-history`}
-          className={({ isActive }) =>
-            `user-detail-link hover:text-black text-gray-600 ${
-              isActive ? "active" : ""
-            }`
-          }
-        >
-          Expense
-        </NavLink>
-      </div>
-
-      <div className="p-4">
-        <Outlet />
-      </div>
     </div>
   );
 };

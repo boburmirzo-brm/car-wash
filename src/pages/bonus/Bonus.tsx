@@ -35,7 +35,7 @@ const Bonus = () => {
   return (
     <div className="p-4">
       <Box className="mb-4">
-        <div className="flex justify-between items-center mb-4">
+        <div className="flex justify-between items-center">
           <div className="flex items-center gap-4">
             <Title style={{ marginBottom: 0 }} level={4}>
               Bonus
@@ -52,48 +52,71 @@ const Bonus = () => {
       </Box>
 
       {data?.length ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {data.map((bonus: any, index: number) => {
-            const key = bonus._id
-              ? `bonus-${bonus._id}`
+            const key = bonus?._id
+              ? `bonus-${bonus?._id}`
               : `bonus-fallback-${index}`;
 
             return (
               <Box key={key} className="relative">
-                <div className="flex items-center gap-3">
-                  <GiftOutlined className="text-2xl text-blue-500" />
-                  <span className="text-lg font-semibold">
-                    {bonus.freeCounter}
-                  </span>
+                <div>
+                  <div className="mb-4 space-y-2">
+                    <div className="flex items-center justify-between gap-2">
+                      <div className="flex items-center gap-3 flex-1 border-b border-gray-200 pb-2">
+                        <GiftOutlined className="text-2xl " />
+                        <span className="text-lg font-semibold">
+                          {bonus?.freeCounter}
+                        </span>
+                      </div>
+                      <Popover
+                        content={
+                          <Button onClick={() => handleEdit(bonus)} type="text">
+                            Tahrirlash
+                          </Button>
+                        }
+                        trigger="click"
+                        placement="bottomRight"
+                        open={openPopover === bonus?._id}
+                        onOpenChange={(visible) =>
+                          setOpenPopover(visible ? bonus?._id : null)
+                        }
+                      >
+                        <Button type="text">
+                          <MoreOutlined />
+                        </Button>
+                      </Popover>
+                    </div>
+                    <p className="text-gray-600">
+                      Bitta mashina <b>{bonus?.freeCounter - 1}</b> marta kelib
+                      yuvdirilsa <b>{bonus?.freeCounter}</b> - bepul bo'ladi. Va
+                      bu har gal davom etadi yani{" "}
+                      <b>
+                        {bonus?.freeCounter}, {bonus.freeCounter * 2},{" "}
+                        {bonus.freeCounter * 3}...
+                      </b>{" "}
+                      va hakazo.
+                    </p>
+                  </div>
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-3 border-b border-gray-200 pb-2">
+                      <UsergroupAddOutlined className="text-2xl text-green-500" />
+                      <span className="text-lg font-semibold">
+                        {bonus?.friendPercent} %
+                      </span>
+                    </div>
+                    <p className="text-gray-600">
+                      Bir mijoz do'stini boshlab kelsa va do'sti avval kelmagan
+                      yani yangi mijoz bo'lsa, do'stini olib kelgan mijozga{" "}
+                      <b>{bonus?.friendPercent} %</b> bonus taqdim etiladi.
+                    </p>
+                  </div>
                 </div>
-                <div className="flex items-center gap-3">
-                  <UsergroupAddOutlined className="text-2xl text-green-500" />
-                  <span className="text-lg font-semibold">
-                    {bonus.friendPercent} %
-                  </span>
-                </div>
-                <div className="flex justify-between items-center mt-5 text-gray-600 text-sm">
+                <div className=" mt-5 text-gray-600 text-sm">
                   <span>
                     {bonus?.createdAt?.dateFormat()}{" "}
                     {bonus?.createdAt?.timeFormat()}
                   </span>
-                  <Popover
-                    content={
-                      <Button onClick={() => handleEdit(bonus)} type="text">
-                        Tahrirlash
-                      </Button>
-                    }
-                    trigger="click"
-                    placement="bottomRight"
-                    open={openPopover === bonus._id}
-                    onOpenChange={(visible) =>
-                      setOpenPopover(visible ? bonus._id : null)
-                    }
-                  >
-                    <Button type="text">
-                      <MoreOutlined />
-                    </Button>
-                  </Popover>
                 </div>
               </Box>
             );

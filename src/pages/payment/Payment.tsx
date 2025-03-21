@@ -32,7 +32,7 @@ const Payment: FC<Props> = ({ data }) => {
   };
 
   return (
-    <div className="space-y-4 p-4">
+    <div className="space-y-4 px-4">
       {data?.map((item: any, index: number) => (
         <Box key={item?._id || index}>
           <div className="flex items-center justify-between">

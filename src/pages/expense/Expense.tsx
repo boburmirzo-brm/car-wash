@@ -17,9 +17,10 @@ interface ExpenseItemType extends Omit<ExpenseType, "type"> {
 
 interface Props {
   data: ExpenseType[];
+  padding?: string;
 }
 
-const ExpenseView: FC<Props> = ({ data }) => {
+const ExpenseView: FC<Props> = ({ data, padding="p-4" }) => {
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [selectedExpense, setSelectedExpense] =
     useState<ExpenseItemType | null>(null);
@@ -37,7 +38,7 @@ const ExpenseView: FC<Props> = ({ data }) => {
   };
 
   return (
-    <div className="space-y-4 p-4">
+    <div className={`space-y-4 ${padding}`}>
       {data?.map((item: ExpenseType, index: number) => (
         <Box key={item?._id || index}>
           <div className="flex items-center justify-between">

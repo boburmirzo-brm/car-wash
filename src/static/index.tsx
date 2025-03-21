@@ -58,7 +58,7 @@ export const SIDEBAR_LINKS = [
   {
     id: 6,
     path: "/payment",
-    title: "To'lov",
+    title: "Kirim",
     icon: <TbCoins className="text-2xl" />,
   },
   {
@@ -68,15 +68,15 @@ export const SIDEBAR_LINKS = [
     icon: <MdOutlineDiscount className="text-2xl" />,
   },
   {
-    id: 4,
-    path: "/profile",
-    title: "Profile",
-    icon: <FaRegUser className="text-2xl" />,
-  },
-  {
     id: 8,
     path: "/customer-car",
     title: "Customer",
+    icon: <FaRegUser className="text-2xl" />,
+  },
+  {
+    id: 4,
+    path: "/profile",
+    title: "Profile",
     icon: <FaRegUser className="text-2xl" />,
   },
 ];

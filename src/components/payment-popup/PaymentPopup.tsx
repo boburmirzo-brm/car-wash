@@ -152,7 +152,7 @@ const PaymentPopup: FC<Props> = ({
         <Form.Item<FieldType> label="To'lov turi" name="type">
           <Radio.Group
             options={[
-              { value: PaymentType.CASH, label: "Naxt" },
+              { value: PaymentType.CASH, label: "Naqd" },
               { value: PaymentType.CARD, label: "Karta" },
             ]}
           />

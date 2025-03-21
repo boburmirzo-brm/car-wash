@@ -11,7 +11,11 @@ const CarsView: FC<{ data: ICar[] }> = ({ data }) => {
   return (
     <div className="space-y-4 my-4">
       {data?.map((car: ICar) => (
-        <Box onClick={() => navigate(`/car/${car._id}`)} className="cursor-pointer hover:bg-gray-100" key={car._id}>
+        <Box
+          onClick={() => navigate(`/car/${car._id}`)}
+          className="cursor-pointer hover:shadow-lg transition-shadow"
+          key={car._id}
+        >
           <div className="flex items-center justify-between max-[500px]:flex-col max-[500px]:items-start ">
             <h3 className="text-base font-semibold text-gray-800 flex-1">
               {car.name}

@@ -73,13 +73,12 @@ const ExpenseHistory = () => {
           <HistoryOutlined />
           <span>Xarajat</span>
         </div>
-        <Space
-          direction="horizontal"
-          className="flex flex-wrap items-center gap-4"
+        <div
+          className="flex flex-wrap items-center gap-4 max-[700px]:order-3"
         >
           <div className="flex gap-2 items-center">
             <RangePicker
-              popupClassName="custom-range-picker-dropdown"
+              popupClassName="custom-range-picker-dropdown "
               format="YYYY-MM-DD"
               onChange={handleFilterChange}
             />
@@ -90,7 +89,10 @@ const ExpenseHistory = () => {
           <Button onClick={handleAddExpense} type="primary">
             <PlusOutlined /> Xarajat qo‘shish
           </Button>
-        </Space>
+        </div>
+        <div className="min-[700px]:w-full text-right max-[700px]:order-2">
+          <h3 className="text-2xl font-bold">1,360,000 UZS</h3>
+        </div>
       </div>
 
       {isError && <CustomEmpty />}

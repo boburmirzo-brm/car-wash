@@ -8,7 +8,6 @@ import UserPopup from "@/components/user-popup/UserPopup";
 import { Role } from "@/constant";
 import Box from "@/components/ui/Box";
 import { NavLink, Outlet } from "react-router-dom";
-import "./style.css";
 
 const Employees = () => {
   const { isLoading } = useGetEmployeesQuery({});
@@ -30,7 +29,7 @@ const Employees = () => {
   return (
     <div className="p-4">
       <Box>
-        <div className="flex justify-between items-center mb-4">
+        <div className="flex justify-between items-center">
           <div className=" flex items-center gap-4">
             <Title style={{ marginBottom: 0 }} level={4}>
               Ishchilar
@@ -47,21 +46,21 @@ const Employees = () => {
           </Button>
         </div>
       </Box>
-      <div className="px-4 flex gap-6 mt-4">
+      <div className="flex gap-6 mt-4 border-b border-gray-200 pb-[0.5px]">
         <NavLink
           className={({ isActive }) =>
-            `employees-link hover:text-black text-gray-600 ${
+            `custom-tab-link hover:text-black text-gray-600 ${
               isActive ? "active" : ""
             }`
           }
           end
           to={"/employees"}
         >
-          Faol Ishchilar
+          Faol ishchilar
         </NavLink>
         <NavLink
           className={({ isActive }) =>
-            `employees-link hover:text-black text-gray-600 ${
+            `custom-tab-link hover:text-black text-gray-600 ${
               isActive ? "active" : ""
             }`
           }

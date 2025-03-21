@@ -234,7 +234,7 @@ const CarWashingPopup: React.FC<Props> = ({
               <Radio.Group
                 // value={value}
                 options={[
-                  { value: PaymentType.CASH, label: "Naxt" },
+                  { value: PaymentType.CASH, label: "Naqd" },
                   { value: PaymentType.CARD, label: "Karta" },
                 ]}
               />

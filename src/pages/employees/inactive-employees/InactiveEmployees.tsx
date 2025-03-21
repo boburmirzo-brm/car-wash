@@ -4,17 +4,18 @@ import React from "react";
 import { useGetEmployeesQuery } from "@/redux/api/user";
 import UsersView from "@/components/users-view/UsersView";
 import Box from "@/components/ui/Box";
+import { CustomEmpty } from "@/utils";
 
 const InactiveEmployees = () => {
   // Faqat is_active=false bo'lgan ishchilarni olish
   const { data, isLoading } = useGetEmployeesQuery({ is_active: false });
 
   return (
-    <div className="p-4">
+    <div className="py-4">
       <Box>
         <div className="flex justify-between items-center mb-4">
           <Title style={{ marginBottom: 0 }} level={4}>
-            Noaktiv Ishchilar
+            Bo'shagan ishchilar
           </Title>
         </div>
 
@@ -23,6 +24,7 @@ const InactiveEmployees = () => {
         ) : (
           <UsersView data={data?.data.payload} />
         )}
+        {!isLoading && !data?.data.payload.length && <CustomEmpty />}
       </Box>
     </div>
   );
