@@ -4,14 +4,7 @@ import { useGetCarByIdQuery } from "@/redux/api/car";
 import { useGetSalaryByIdQuery } from "@/redux/api/salary";
 import { useCheckTokenQuery } from "@/redux/api/auth";
 import { useParamsHook } from "../../../hooks/useParamsHook";
-import {
-  Alert,
-  Button,
-  Pagination,
-  Skeleton,
-  Tooltip,
-  DatePicker,
-} from "antd";
+import { Alert, Button, Pagination, Skeleton, Tooltip, DatePicker } from "antd";
 import { IoCarOutline, IoPlayOutline } from "react-icons/io5";
 import { FaRegEdit } from "react-icons/fa";
 import { HistoryOutlined } from "@ant-design/icons";
@@ -25,6 +18,7 @@ import { PiBroom } from "react-icons/pi";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux";
 import { Role } from "@/constant";
+import { useGetByCarIdQuery } from "../../../redux/api/car-washing";
 
 const { RangePicker } = DatePicker;
 type ModalType = "start" | "edit" | null;
@@ -52,7 +46,14 @@ const CarDetail = () => {
 
   const { data, isLoading } = useGetCarByIdQuery({ id, params: filters });
   const car = data?.data.payload?.car;
-  const carWashings = data?.data.payload?.carWashings;
+
+  const { data: carWashing } = useGetByCarIdQuery({
+    id: car?._id,
+    params: filters,
+  },
+    { skip: !car?._id }
+  );
+  const carWashings = carWashing?.data.payload;
   const totalItems = data?.data.total;
 
   const handleOpenModal = (type: ModalType) => setModalType(type);
@@ -85,7 +86,11 @@ const CarDetail = () => {
 
   return (
     <>
-      <div className={`flex flex-col gap-4  ${role === Role.EMPLOYEE ? "my-4" : "p-4"}`}>
+      <div
+        className={`flex flex-col gap-4  ${
+          role === Role.EMPLOYEE ? "my-4" : "p-4"
+        }`}
+      >
         {isError && role === Role.EMPLOYEE && (
           <Alert
             message="Oylik belgilanmagan. Avval oylikni belgilating"
@@ -161,8 +166,8 @@ const CarDetail = () => {
                 format="YYYY-MM-DD"
                 onChange={handleFilterChange}
               />
-              <Button type="default"  onClick={clearFilters}>
-                <PiBroom className="text-xl"/>
+              <Button type="default" onClick={clearFilters}>
+                <PiBroom className="text-xl" />
               </Button>
             </div>
           </div>

@@ -4,13 +4,15 @@ import React, { useCallback, useMemo } from "react";
 import { PiBroom } from "react-icons/pi";
 import { useParamsHook } from "../../../hooks/useParamsHook";
 import { useGetUserExpenseQuery } from "../../../redux/api/expense";
-import { useParams } from "react-router-dom";
 import Expense from "../../expense/Expense";
 
 const { RangePicker } = DatePicker;
 
-const UserExpenseHistory = () => {
-  const { id } = useParams();
+interface UserExpenseHistoryProps {
+  userId: string; // Majburiy userId prop
+}
+
+const UserExpenseHistory: React.FC<UserExpenseHistoryProps> = ({ userId }) => {
   const { getParam, setParam, removeParam, removeParams } = useParamsHook();
 
   const fromDate = getParam("fromDate") || "";
@@ -20,7 +22,7 @@ const UserExpenseHistory = () => {
 
   const filters = useMemo(
     () => ({
-      userId: id,
+      userId,
       fromDate,
       toDate,
       page,
@@ -54,7 +56,7 @@ const UserExpenseHistory = () => {
   );
 
   const { data, isLoading } = useGetUserExpenseQuery(filters);
-  
+
   return (
     <div>
       <div className="flex justify-between items-center flex-wrap gap-4">

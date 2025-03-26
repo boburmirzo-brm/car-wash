@@ -21,7 +21,12 @@ const Login: React.FC = () => {
     signInUser(values)
       .unwrap()
       .then((response) => {
-        dispatch(login(response?.data?.access_token));
+        dispatch(
+          login({
+            access_token: response?.data?.access_token,
+            id: response?.data?.id,
+          })
+        );
         dispatch(setRole(response?.data?.role));
         if (response?.data?.role == "EMPLOYEE") {
           navigate(`/EMPLOYEE`);
