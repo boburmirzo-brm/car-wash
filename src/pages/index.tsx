@@ -7,6 +7,7 @@ import ActiveEmployees from "./employees/active-employees/ActiveEmployees";
 import CustomerCar from "./customer-car/CustomerCar";
 import Customers from "./customer-car/customers/Customers";
 import Cars from "./customer-car/cars/Cars";
+import CarWashingHistory from "../components/car-washing/CarWashingHistory";
 // Dashboard
 const Dashboard = lazy(() => import("./dashboard/Dashboard"));
 const Admins = lazy(() => import("./admins/Admins"));
@@ -15,8 +16,8 @@ const UserDetail = lazy(() => import("./user/detail/UserDetail"));
 const Profile = lazy(() => import("./profile/Profile"));
 const Bonus = lazy(() => import("./bonus/Bonus"));
 const ExpenseHistory = lazy(() => import("./expense/ExpenseHistory"));
-const UserExpenseHistory = lazy(
-  () => import("./user/expense/UserExpenseHistory")
+const ExpenseHistoryWrapper = lazy(
+  () => import("./expense/ExpenseHistoryWrapper")
 );
 const CarWashingDone = lazy(
   () => import("./dashboard/car-washing-done/CarWashingDone")
@@ -152,7 +153,7 @@ const AppRouter = () => {
                           path: "expense-history",
                           element: (
                             <Suspense>
-                              <UserExpenseHistory />
+                              <ExpenseHistoryWrapper />
                             </Suspense>
                           ),
                         },
@@ -267,6 +268,24 @@ const AppRouter = () => {
                           <EmployeeProfile />
                         </Suspense>
                       ),
+                      children: [
+                        {
+                          path: "",
+                          element: (
+                            <Suspense>
+                              <CarWashingHistory />
+                            </Suspense>
+                          ),
+                        },
+                        {
+                          path: "expense",
+                          element: (
+                            <Suspense>
+                              <ExpenseHistoryWrapper />
+                            </Suspense>
+                          ),
+                        },
+                      ],
                     },
                   ],
                 },
