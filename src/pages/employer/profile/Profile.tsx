@@ -11,8 +11,9 @@ import { logout } from "@/redux/features/auth.slice";
 import { TbUserShield } from "react-icons/tb";
 import { useGetSalaryByIdQuery } from "@/redux/api/salary";
 import { SalaryType } from "@/constant";
-import CarWashingHistory from "../../../components/car-washing/CarWashingHistory";
 import Box from "@/components/ui/Box";
+import { NavLink, Outlet } from "react-router-dom";
+import BonusList from "../../bonus/BonusList";
 
 const { Title } = Typography;
 
@@ -22,6 +23,7 @@ const Profile = () => {
     skip: !data?.user?.id,
   });
   const [isEditing, setIsEditing] = useState(false);
+  const [isShow, setIsShow] = useState(false);
   const dispatch = useDispatch();
 
   const handleClose = useCallback((isBack?: boolean | undefined) => {
@@ -32,9 +34,9 @@ const Profile = () => {
     }
   }, []);
 
-  useEffect(()=>{
-    window.scrollTo(0,0)
-  }, [])
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const user = data?.user || {};
   const handleLogout = () => {
@@ -42,7 +44,7 @@ const Profile = () => {
   };
 
   return (
-    <div className="flex flex-col gap-4 items-center py-4 ">
+    <div className="flex flex-col gap-4 py-4 ">
       {isError && (
         <Alert
           message={"Oylik belgilanmagan. Avval oylikni belgilating"}
@@ -50,7 +52,7 @@ const Profile = () => {
           type="error"
         />
       )}
-      <Box >
+      <Box>
         {isLoading ? (
           <Skeleton active />
         ) : (
@@ -89,11 +91,19 @@ const Profile = () => {
                 {user.budget?.toLocaleString() || "0"} UZS
               </Title>
               {!isError && (
-                <Tag color="green" >
-                  {salary?.data?.payload?.amount?.toLocaleString()}{" "}
-                  {salary?.data?.payload?.type === SalaryType.PERCENT
-                    ? "%"
-                    : "so'm"}
+                <Tag
+                  onClick={() => setIsShow(!isShow)}
+                  color="green"
+                  className="cursor-pointer"
+                >
+                  {isShow
+                    ? `${salary?.data?.payload?.amount?.toLocaleString()}
+                    ${
+                      salary?.data?.payload?.type === SalaryType.PERCENT
+                        ? "%"
+                        : "so'm"
+                    }`
+                    : "****"}
                 </Tag>
               )}
               <TelPopUp phoneNumber={user.tel_primary} />
@@ -120,13 +130,36 @@ const Profile = () => {
         )}
       </Box>
 
-      <Box >
-        {isLoading ? (
-          <Skeleton active />
-        ) : (
-          <CarWashingHistory />
-        )}
+      <Box>
+        <BonusList />
       </Box>
+
+      <div className="mx-4 flex gap-6 border-b border-gray-200 pb-[0.5px]">
+        <NavLink
+          className={({ isActive }) =>
+            `custom-tab-link hover:text-black text-gray-600 ${
+              isActive ? "active" : ""
+            }`
+          }
+          end
+          to={"/employee/profile"}
+        >
+          Car Washing
+        </NavLink>
+        <NavLink
+          className={({ isActive }) =>
+            `custom-tab-link hover:text-black text-gray-600 ${
+              isActive ? "active" : ""
+            }`
+          }
+          to={"/employee/profile/expense"}
+        >
+          Expense
+        </NavLink>
+      </div>
+      <div className="p-4">
+        <Outlet />
+      </div>
 
       <UserPopup
         open={isEditing}

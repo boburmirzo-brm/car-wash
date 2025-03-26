@@ -7,7 +7,14 @@ const invalidateCustomerTag = async (
 ) => {
   try {
     await queryFulfilled;
-    dispatch(extendedApi.util.invalidateTags(["CAR_WASHING", "AUTH", "CAR", "CUSTOMER"]));
+    dispatch(
+      extendedApi.util.invalidateTags([
+        "CAR_WASHING",
+        "AUTH",
+        "CAR",
+        "CUSTOMER",
+      ])
+    );
   } catch (error) {
     console.error("Error:", error);
   }
@@ -35,6 +42,15 @@ const extendedApi = mainApi.injectEndpoints({
     getByEmployeeId: build.query<any, any>({
       query: ({ userId, fromDate, toDate, page, limit }) => ({
         url: `car-washing/employee/${userId}`,
+        method: "GET",
+        params: { fromDate, toDate, page, limit },
+      }),
+      providesTags: ["CAR_WASHING"],
+    }),
+
+    getByCarId: build.query<any, any>({
+      query: ({ id, fromDate, toDate, page, limit }) => ({
+        url: `car-washing/car/${id}`,
         method: "GET",
         params: { fromDate, toDate, page, limit },
       }),
@@ -110,7 +126,8 @@ export const {
   useDeleteCarWashingMutation,
   useGetMyWashingsQuery,
   useUpdateCarWashingChangeMutation,
-  useGetByEmployeeIdQuery
+  useGetByEmployeeIdQuery,
+  useGetByCarIdQuery
 } = extendedApi;
 
 export default extendedApi;

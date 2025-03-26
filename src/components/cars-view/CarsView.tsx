@@ -1,16 +1,15 @@
-import { ICar } from "@/types";
 import React, { FC } from "react";
 import { useNavigate } from "react-router-dom";
 import CarNumber from "./CarNumber";
 import { MdOutlineLocalCarWash } from "react-icons/md";
 import Box from "../ui/Box";
 
-const CarsView: FC<{ data: ICar[] }> = ({ data }) => {
-  const navigate = useNavigate();
+const CarsView: FC<{ data: any }> = ({ data }) => {
+  const navigate = useNavigate();  
 
   return (
     <div className="space-y-4 my-4">
-      {data?.map((car: ICar) => (
+      {data?.map((car: any) => (
         <Box
           onClick={() => navigate(`/car/${car._id}`)}
           className="cursor-pointer hover:shadow-lg transition-shadow"

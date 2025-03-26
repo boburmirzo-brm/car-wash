@@ -51,37 +51,37 @@ const CarWashing: FC<Props> = ({ data, profile }) => {
                 {item?.carId?.name}
               </span>
             </Link>
-            <Link  to={`/car/${item?.carId?._id}`}>
+            <Link to={`/car/${item?.carId?._id}`}>
               <CarNumber plateNumber={item?.carId?.plateNumber} />
             </Link>
           </div>
 
           {(role === Role.ADMIN || role === Role.OWNER || profile) && (
-              <div className="flex justify-between items-center bg-gray-100 p-3 rounded-md mt-3">
-                <div>
-                  {(role === Role.ADMIN || role === Role.OWNER) && (
-                    <p className="flex items-center gap-2 text-gray-700 text-sm">
-                      <AiOutlineUser className="text-lg" />
-                      <Link
-                        className="hover:underline"
-                        to={`/employees/user/${item?.employerId?._id}`}
-                      >
-                        {item?.employerId?.l_name} {item?.employerId?.f_name}
-                      </Link>
-                    </p>
-                  )}
-                  <p className="flex items-center gap-2 text-gray-700 text-sm font-medium">
-                    <TbCoins className="text-lg" />
-                    <span>
-                      {item?.employerSalary?.toLocaleString() || "0"} UZS
-                    </span>
+            <div className="flex justify-between items-center bg-gray-100 p-3 rounded-md mt-3">
+              <div>
+                {(role === Role.ADMIN || role === Role.OWNER) && (
+                  <p className="flex items-center gap-2 text-gray-700 text-sm">
+                    <AiOutlineUser className="text-lg" />
+                    <Link
+                      className="hover:underline"
+                      to={`/employees/user/${item?.employerId?._id}`}
+                    >
+                      {item?.employerId?.l_name} {item?.employerId?.f_name}
+                    </Link>
                   </p>
-                </div>
-                <strong className="text-lg text-gray-900 font-semibold">
-                  {item?.washAmount?.toLocaleString() || "0"} UZS
-                </strong>
+                )}
+                <p className="flex items-center gap-2 text-gray-700 text-sm font-medium">
+                  <TbCoins className="text-lg" />
+                  <span>
+                    {item?.employerSalary?.toLocaleString() || "0"} UZS
+                  </span>
+                </p>
               </div>
-            )}
+              <strong className="text-lg text-gray-900 font-semibold">
+                {item?.washAmount?.toLocaleString() || "0"} UZS
+              </strong>
+            </div>
+          )}
           {item?.comment && (
             <div className="text-gray-600 text-sm mt-3 flex items-center gap-2">
               <FaRegCommentDots className="text-lg" />

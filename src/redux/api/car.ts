@@ -35,6 +35,14 @@ const extendedApi = mainApi.injectEndpoints({
       // `/cars/${id}?fromDate=${filters.fromDate}&toDate=${filters.toDate}&page=${filters.page}&limit=${filters.limit}`,
       providesTags: ["CAR"],
     }),
+    getByCustomerId: build.query<any, any>({
+      query: ({ id, params }) => ({
+        url: `/cars/customer/${id}`,
+        method: "GET",
+        params,
+      }),
+      providesTags: ["CAR"],
+    }),
     createCar: build.mutation<any, any>({
       query: (body) => ({
         url: "/cars",
@@ -71,6 +79,7 @@ const extendedApi = mainApi.injectEndpoints({
 export const {
   useGetCarsQuery,
   useGetCarByIdQuery,
+  useGetByCustomerIdQuery,
   useCreateCarMutation,
   useUpdateCarMutation,
   useDeleteCarMutation,
