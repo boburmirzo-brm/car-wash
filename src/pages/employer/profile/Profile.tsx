@@ -13,6 +13,8 @@ import { useGetSalaryByIdQuery } from "@/redux/api/salary";
 import { SalaryType } from "@/constant";
 import CarWashingHistory from "../../../components/car-washing/CarWashingHistory";
 import Box from "@/components/ui/Box";
+import { GiftOutlined, UsergroupAddOutlined } from "@ant-design/icons";
+import { useGetAllBonusQuery } from "../../../redux/api/bonus";
 
 const { Title } = Typography;
 
@@ -22,7 +24,9 @@ const Profile = () => {
     skip: !data?.user?.id,
   });
   const [isEditing, setIsEditing] = useState(false);
+  const [isShow, setIsShow] = useState(false);
   const dispatch = useDispatch();
+  const { data: data_bonus } = useGetAllBonusQuery({});
 
   const handleClose = useCallback((isBack?: boolean | undefined) => {
     setIsEditing(false);
@@ -32,9 +36,9 @@ const Profile = () => {
     }
   }, []);
 
-  useEffect(()=>{
-    window.scrollTo(0,0)
-  }, [])
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const user = data?.user || {};
   const handleLogout = () => {
@@ -50,7 +54,7 @@ const Profile = () => {
           type="error"
         />
       )}
-      <Box >
+      <Box>
         {isLoading ? (
           <Skeleton active />
         ) : (
@@ -89,11 +93,19 @@ const Profile = () => {
                 {user.budget?.toLocaleString() || "0"} UZS
               </Title>
               {!isError && (
-                <Tag color="green" >
-                  {salary?.data?.payload?.amount?.toLocaleString()}{" "}
-                  {salary?.data?.payload?.type === SalaryType.PERCENT
-                    ? "%"
-                    : "so'm"}
+                <Tag
+                  onClick={() => setIsShow(!isShow)}
+                  color="green"
+                  className="cursor-pointer"
+                >
+                  {isShow
+                    ? `${salary?.data?.payload?.amount?.toLocaleString()}
+                    ${
+                      salary?.data?.payload?.type === SalaryType.PERCENT
+                        ? "%"
+                        : "so'm"
+                    }`
+                    : "****"}
                 </Tag>
               )}
               <TelPopUp phoneNumber={user.tel_primary} />
@@ -120,13 +132,65 @@ const Profile = () => {
         )}
       </Box>
 
-      <Box >
-        {isLoading ? (
-          <Skeleton active />
-        ) : (
-          <CarWashingHistory />
-        )}
-      </Box>
+      {data_bonus?.length ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {data_bonus.map((bonus: any, index: number) => {
+            const key = bonus?._id
+              ? `bonus-${bonus?._id}`
+              : `bonus-fallback-${index}`;
+
+            return (
+              <Box key={key} className="relative w-[600px]">
+                <div>
+                  <div className="mb-4 space-y-2">
+                    <div className="flex items-center justify-between gap-2">
+                      <div className="flex items-center gap-3 flex-1 border-b border-gray-200 pb-2">
+                        <GiftOutlined className="text-2xl " />
+                        <span className="text-lg font-semibold">
+                          {bonus?.freeCounter}
+                        </span>
+                      </div>
+                    </div>
+                    <p className="text-gray-600">
+                      Bitta mashina <b>{bonus?.freeCounter - 1}</b> marta kelib
+                      yuvdirilsa <b>{bonus?.freeCounter}</b> - bepul bo'ladi. Va
+                      bu har gal davom etadi yani{" "}
+                      <b>
+                        {bonus?.freeCounter}, {bonus.freeCounter * 2},{" "}
+                        {bonus.freeCounter * 3}...
+                      </b>{" "}
+                      va hakazo.
+                    </p>
+                  </div>
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-3 border-b border-gray-200 pb-2">
+                      <UsergroupAddOutlined className="text-2xl text-green-500" />
+                      <span className="text-lg font-semibold">
+                        {bonus?.friendPercent} %
+                      </span>
+                    </div>
+                    <p className="text-gray-600">
+                      Bir mijoz do'stini boshlab kelsa va do'sti avval kelmagan
+                      yani yangi mijoz bo'lsa, do'stini olib kelgan mijozga{" "}
+                      <b>{bonus?.friendPercent} %</b> bonus taqdim etiladi.
+                    </p>
+                  </div>
+                </div>
+                <div className=" mt-5 text-gray-600 text-sm">
+                  <span>
+                    {bonus?.createdAt?.dateFormat()}{" "}
+                    {bonus?.createdAt?.timeFormat()}
+                  </span>
+                </div>
+              </Box>
+            );
+          })}
+        </div>
+      ) : (
+        <p className="text-gray-500">Hech qanday bonus topilmadi.</p>
+      )}
+
+      <Box>{isLoading ? <Skeleton active /> : <CarWashingHistory />}</Box>
 
       <UserPopup
         open={isEditing}
