@@ -34,7 +34,7 @@ const CustomerCar = () => {
           Mashinalar
         </NavLink>
       </div>
-      <div className="">
+      <div>
         <Outlet />
       </div>
     </div>

@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useEffect } from "react";
+import React, { useCallback, useState } from "react";
 import { Typography, Tag, Button, Popconfirm, Skeleton, Alert } from "antd";
 // import { UserOutlined } from "@ant-design/icons";
 import { useCheckTokenQuery } from "@/redux/api/auth";
@@ -13,7 +13,6 @@ import { useGetSalaryByIdQuery } from "@/redux/api/salary";
 import { SalaryType } from "@/constant";
 import Box from "@/components/ui/Box";
 import { NavLink, Outlet } from "react-router-dom";
-import BonusList from "../../bonus/BonusList";
 
 const { Title } = Typography;
 
@@ -34,9 +33,9 @@ const Profile = () => {
     }
   }, []);
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
+  // useEffect(() => {
+  //   window.scrollTo(0, 0);
+  // }, []);
 
   const user = data?.user || {};
   const handleLogout = () => {
@@ -110,7 +109,6 @@ const Profile = () => {
               <div className="flex gap-1.5">
                 <Button onClick={() => setIsEditing(true)} type="default">
                   <FaRegEdit className="text-lg" />
-                  {/* <span>Tahrirlash</span> */}
                 </Button>
                 <Popconfirm
                   title="Tizimdan chiqish"
@@ -128,10 +126,6 @@ const Profile = () => {
             </div>
           </div>
         )}
-      </Box>
-
-      <Box>
-        <BonusList />
       </Box>
 
       <div className="mx-4 flex gap-6 border-b border-gray-200 pb-[0.5px]">

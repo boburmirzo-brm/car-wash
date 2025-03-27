@@ -18,7 +18,7 @@ import { PiBroom } from "react-icons/pi";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux";
 import { Role } from "@/constant";
-import { useGetByCarIdQuery } from "../../../redux/api/car-washing";
+import { useGetByCarIdQuery } from "@/redux/api/car-washing";
 
 const { RangePicker } = DatePicker;
 type ModalType = "start" | "edit" | null;
@@ -44,7 +44,7 @@ const CarDetail = () => {
     [fromDate, toDate, page]
   );
 
-  const { data, isLoading } = useGetCarByIdQuery({ id, params: filters });
+  const { data, isLoading } = useGetCarByIdQuery({ id });
   const car = data?.data.payload?.car;
 
   const { data: carWashing } = useGetByCarIdQuery({

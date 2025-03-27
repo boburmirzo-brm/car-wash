@@ -4,7 +4,7 @@ import { TbCoins, TbUserX } from "react-icons/tb";
 import { AiOutlineUser } from "react-icons/ai";
 import { IoCarOutline } from "react-icons/io5";
 import TelPopUp from "../tel-pop-up/TelPopUp";
-import { Role } from "@/constant";
+import { CarWashingStatus, Role } from "@/constant";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux";
 import { Link } from "react-router-dom";

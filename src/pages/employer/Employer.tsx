@@ -4,7 +4,7 @@ import { CustomEmpty } from "@/utils";
 import React from "react";
 
 const Employer = () => {
-  const { data, isError } = useGetMyWashingsQuery({});
+  const { data, isError } = useGetMyWashingsQuery(undefined);
 
   return <>{isError ? <CustomEmpty /> : <CarWashing data={data?.data} />}</>;
 };

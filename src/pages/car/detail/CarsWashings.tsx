@@ -8,6 +8,7 @@ import { TbUserShield } from "react-icons/tb";
 import CarWashingStatusTooltip from "@/components/car-washing/CarWashingStatusTooltip";
 import Box from "@/components/ui/Box";
 import { Link } from "react-router-dom";
+import { FaRegCommentDots } from "react-icons/fa";
 
 interface Props {
   data: any;
@@ -24,7 +25,10 @@ const CarsWashings: FC<Props> = ({ data, profile }) => {
           <div className="flex items-center gap-2 justify-between">
             <div className="flex items-center gap-2 ">
               <TbUserShield className="text-xl" />
-              <Link to={`/employees/user/${item?.employerId?._id}`} className="hover:underline">
+              <Link
+                to={`/employees/user/${item?.employerId?._id}`}
+                className="hover:underline"
+              >
                 {item?.employerId?.f_name} {item?.employerId?.l_name}
               </Link>
             </div>
@@ -52,7 +56,12 @@ const CarsWashings: FC<Props> = ({ data, profile }) => {
                 </strong>
               </div>
             )}
-
+          {item?.comment && (
+            <div className="text-gray-600 text-sm mt-3 flex items-center gap-2">
+              <FaRegCommentDots className="text-lg" />
+              <span>{item?.comment}</span>
+            </div>
+          )}
           <div className="flex justify-between items-center mt-3 text-gray-600 text-sm">
             <span>
               {item?.createdAt?.dateFormat()} {item?.createdAt?.timeFormat()}

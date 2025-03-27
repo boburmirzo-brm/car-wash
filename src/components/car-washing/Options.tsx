@@ -17,7 +17,6 @@ const Options: FC<Props> = ({ data, profile }) => {
   const [selected, setSelected] = useState<any>(null);
   const [open, setOpen] = useState(false);
   const [modalType, setModalType] = useState<ModalType>(null);
-  const [cancelModalOpen, setCancelModalOpen] = useState(false);
   const [updateCarWashing] = useUpdateCarWashingMutation();
   const [apiMessage, contextHolder] = message.useMessage();
 
@@ -46,8 +45,8 @@ const Options: FC<Props> = ({ data, profile }) => {
       .unwrap()
       .then(() => {
         apiMessage.warning("Mashina yuvish bekor qilindi!");
-        setCancelModalOpen(false);
-        handleClose();
+        setModalType(null);
+        handleClose(true);
       });
   };
 
@@ -62,7 +61,7 @@ const Options: FC<Props> = ({ data, profile }) => {
           <Button onClick={() => showModal("car-washing")} type="text">
             To'lov
           </Button>
-          <Button type="text" onClick={() => setCancelModalOpen(true)}>
+          <Button type="text" onClick={() => showModal("canceled")}>
             Bekor qilish
           </Button>
         </>
@@ -97,8 +96,8 @@ const Options: FC<Props> = ({ data, profile }) => {
       )}
 
       <CancelModal
-        open={cancelModalOpen}
-        onClose={() => setCancelModalOpen(false)}
+        open={modalType === "canceled"}
+        onClose={() => setModalType(null)}
         onConfirm={handleCancel}
       />
 

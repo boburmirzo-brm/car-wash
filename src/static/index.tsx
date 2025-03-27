@@ -4,6 +4,7 @@ import {
   UserOutlined,
 } from "@ant-design/icons";
 import { FaRegUser, FaRegUserCircle } from "react-icons/fa";
+import { LuUsers } from "react-icons/lu";
 import {
   MdOutlineAdminPanelSettings,
   MdOutlineDashboard,
@@ -70,8 +71,8 @@ export const SIDEBAR_LINKS = [
   {
     id: 8,
     path: "/customer-car",
-    title: "Customer",
-    icon: <FaRegUser className="text-2xl" />,
+    title: "Mijozlar",
+    icon: <LuUsers className="text-2xl" />,
   },
   {
     id: 4,

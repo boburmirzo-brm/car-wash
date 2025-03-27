@@ -1,7 +1,7 @@
 import TelPopUp from "@/components/tel-pop-up/TelPopUp";
 import { useGetCustomerByIdQuery } from "@/redux/api/customer";
 import { Button, Skeleton, Typography, Tooltip, Tabs } from "antd";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useState } from "react";
 import { FaRegEdit } from "react-icons/fa";
 import { MdAttachMoney } from "react-icons/md";
 // import { PlusOutlined } from "@ant-design/icons";
@@ -29,9 +29,9 @@ const CustomerDetail = () => {
   const [modalType, setModalType] = useState<ModalType>(null);
   const role = useSelector((state: RootState) => state.role.value);
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
+  // useEffect(() => {
+  //   window.scrollTo(0, 0);
+  // }, []);
 
   const handleOpenModal = (type: ModalType) => {
     setModalType(type);

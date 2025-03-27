@@ -49,10 +49,10 @@ const extendedApi = mainApi.injectEndpoints({
     }),
 
     getByCarId: build.query<any, any>({
-      query: ({ id, fromDate, toDate, page, limit }) => ({
+      query: ({ id, params }) => ({
         url: `car-washing/car/${id}`,
         method: "GET",
-        params: { fromDate, toDate, page, limit },
+        params: params
       }),
       providesTags: ["CAR_WASHING"],
     }),
