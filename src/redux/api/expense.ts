@@ -7,7 +7,7 @@ const invalidateCustomerTag = async (
 ) => {
   try {
     await queryFulfilled;
-    dispatch(extendedApi.util.invalidateTags(["EXPENSE", "CUSTOMER"]));
+    dispatch(extendedApi.util.invalidateTags(["EXPENSE", "CUSTOMER", "USER"]));
   } catch (error) {
     console.error("Error:", error);
   }

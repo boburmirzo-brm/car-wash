@@ -114,6 +114,7 @@ const ExpenseHistory = () => {
         open={isModalOpen}
         onClose={handleCloseModal}
         expense={selectedExpense || undefined}
+        requiredComment={true}
         name={
           selectedExpense ? "Xarajatni tahrirlash" : "Yangi xarajat qo‘shish"
         }

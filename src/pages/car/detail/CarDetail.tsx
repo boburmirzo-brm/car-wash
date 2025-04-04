@@ -19,6 +19,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/redux";
 import { Role } from "@/constant";
 import { useGetByCarIdQuery } from "@/redux/api/car-washing";
+import { TbUser, TbUserShield } from "react-icons/tb";
 
 const { RangePicker } = DatePicker;
 type ModalType = "start" | "edit" | null;
@@ -47,10 +48,11 @@ const CarDetail = () => {
   const { data, isLoading } = useGetCarByIdQuery({ id });
   const car = data?.data.payload?.car;
 
-  const { data: carWashing } = useGetByCarIdQuery({
-    id: car?._id,
-    params: filters,
-  },
+  const { data: carWashing } = useGetByCarIdQuery(
+    {
+      id: car?._id,
+      params: filters,
+    },
     { skip: !car?._id }
   );
   const carWashings = carWashing?.data.payload;
@@ -109,14 +111,15 @@ const CarDetail = () => {
                 <div className="w-full">
                   <h3 className="text-2xl font-medium">{car?.name}</h3>
                   <Link
-                    className="text-base text-gray-800 hover:underline"
+                    className="text-base text-gray-800 hover:underline flex items-center gap-2"
                     to={`/customer/${car?.customerId._id}`}
                   >
+                    <TbUser />
                     {car?.customerId.full_name}
                   </Link>
-                  <p className="text-gray-600 text-sm mt-3">
-                    Ro'yhatdan o'tkazgan
-                    <span className="text-black">
+                  <p className="text-gray-600 text-sm mt-3 flex items-center gap-2">
+                    <TbUserShield className="text-lg" />
+                    <span>
                       {car?.employerId?.l_name?.charAt(0)}.{" "}
                       {car?.employerId?.f_name}
                     </span>
@@ -154,7 +157,6 @@ const CarDetail = () => {
           )}
         </Box>
 
-        <Box>
           <div className="flex justify-between items-start max-[600px]:gap-4 max-[600px]:flex-col">
             <div className="text-xl font-bold flex items-center gap-2 text-gray-700">
               <HistoryOutlined />
@@ -171,9 +173,11 @@ const CarDetail = () => {
               </Button>
             </div>
           </div>
-          {!carWashings?.length && <CustomEmpty />}
-          <CarsWashings profile={true} data={carWashings} />
-          <div className="flex justify-end mt-4">
+
+        {!carWashings?.length && <CustomEmpty />}
+        <CarsWashings profile={true} data={carWashings} />
+        {carWashings?.length && (
+          <div className="flex justify-end">
             <Pagination
               current={page}
               pageSize={limit}
@@ -182,7 +186,7 @@ const CarDetail = () => {
               showSizeChanger={false}
             />
           </div>
-        </Box>
+        )}
       </div>
 
       <CarPopup

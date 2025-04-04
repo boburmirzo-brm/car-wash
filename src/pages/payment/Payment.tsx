@@ -2,13 +2,13 @@ import React, { FC, useState } from "react";
 import { Button, Popover } from "antd";
 import { MoreOutlined } from "@ant-design/icons";
 import { FaRegCommentDots } from "react-icons/fa";
-import { AiOutlineUser } from "react-icons/ai";
 import { PaymentType } from "@/constant";
 import PaymentPopup from "@/components/payment-popup/PaymentPopup";
 import PaymentTypeTooltip from "@/components/payment/PaymentTypeTooltip";
-import { MdOutlineAdminPanelSettings } from "react-icons/md";
 import { Link } from "react-router-dom";
 import Box from "@/components/ui/Box";
+import { TbUser, TbUserShield } from "react-icons/tb";
+import { BsArrowDown } from "react-icons/bs";
 
 interface Props {
   data: any;
@@ -57,23 +57,26 @@ const Payment: FC<Props> = ({ data }) => {
               </Button>
             </Popover>
           </div>
+          <div className="flex items-center gap-2  text-gray-700 text-sm">
+            <TbUser className="text-lg" />
+            <Link
+              className="hover:underline"
+              to={`/customer/${item?.customerId?._id}`}
+            >
+              {item?.customerId?.full_name}
+            </Link>
+          </div>
+          <div className="size-4 flex justify-center text-green-500 ml-[1px]">
+            <BsArrowDown className=""/> 
+          </div>
           <div className="flex items-center gap-2 text-gray-700 text-sm">
-            <MdOutlineAdminPanelSettings className="text-lg" />
+            <TbUserShield className="text-lg" />
             <Link
               className="hover:underline"
               to={`/employees/user/${item?.employerId?._id}`}
               title={item?.employerId?.f_name + " " + item?.employerId?.l_name}
             >
               {item?.employerId?.l_name[0]}. {item?.employerId?.f_name}
-            </Link>
-          </div>
-          <div className="flex items-center gap-2 mt-3 text-gray-700 text-sm">
-            <AiOutlineUser className="text-lg" />
-            <Link
-              className="hover:underline"
-              to={`/customer/${item?.customerId?._id}`}
-            >
-              {item?.customerId?.full_name}
             </Link>
           </div>
 

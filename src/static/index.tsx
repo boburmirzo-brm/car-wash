@@ -3,7 +3,7 @@ import {
   AppstoreAddOutlined,
   UserOutlined,
 } from "@ant-design/icons";
-import { FaRegUser, FaRegUserCircle } from "react-icons/fa";
+import { FaRegCircleUser } from "react-icons/fa6";
 import { LuUsers } from "react-icons/lu";
 import {
   MdOutlineAdminPanelSettings,
@@ -11,7 +11,7 @@ import {
   MdOutlineDiscount,
 } from "react-icons/md";
 import { PiMoneyWavy } from "react-icons/pi";
-import { TbCoins } from "react-icons/tb";
+import { TbCoins, TbUserShield } from "react-icons/tb";
 
 export const EMPLOYEE_NAVIGATION = [
   {
@@ -48,7 +48,7 @@ export const SIDEBAR_LINKS = [
     id: 3,
     path: "/employees",
     title: "Ishchilar",
-    icon: <FaRegUserCircle className="text-2xl" />,
+    icon: <TbUserShield className="text-2xl" />,
   },
   {
     id: 5,
@@ -78,7 +78,7 @@ export const SIDEBAR_LINKS = [
     id: 4,
     path: "/profile",
     title: "Profile",
-    icon: <FaRegUser className="text-2xl" />,
+    icon: <FaRegCircleUser  className="text-2xl" />,
   },
 ];
 

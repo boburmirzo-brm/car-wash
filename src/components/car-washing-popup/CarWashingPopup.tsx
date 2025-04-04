@@ -60,7 +60,6 @@ const CarWashingPopup: React.FC<Props> = ({
   const priceInputRef = useRef<InputRef>(null);
   const navigate = useNavigate();
   useModalNavigation(open, onClose);
-  console.log(profile);
 
   useEffect(() => {
     if (open) {
@@ -69,8 +68,6 @@ const CarWashingPopup: React.FC<Props> = ({
       }, 100);
     }
   }, [open]);
-
-  console.log(prevData);
 
   const handleSave = (values: {
     washAmount: number;
@@ -229,23 +226,18 @@ const CarWashingPopup: React.FC<Props> = ({
             <Form.Item<FieldType> label="Izoh" name="comment">
               <TextArea rows={2} />
             </Form.Item>
-
-            <Form.Item<FieldType> label="To'lov turi" name="paymentType">
-              <Radio.Group
-                // value={value}
-                options={[
-                  { value: PaymentType.CASH, label: "Naqd" },
-                  { value: PaymentType.CARD, label: "Karta" },
-                ]}
-              />
-              {/* <Select
-            style={{ width: "100%" }}
-            options={[
-              { value: "CASH", label: "Naxt" },
-              { value: "CARD", label: "Karta" },
-            ]}
-          /> */}
-            </Form.Item>
+            {
+              !profile &&
+              <Form.Item<FieldType> label="To'lov turi" name="paymentType">
+                <Radio.Group
+                  // value={value}
+                  options={[
+                    { value: PaymentType.CASH, label: "Naqd" },
+                    { value: PaymentType.CARD, label: "Karta" },
+                  ]}
+                />
+              </Form.Item>
+            }
 
             {!(
               prevData?.customerId?.full_name === "Noma'lum" ||

@@ -3,10 +3,10 @@ import { Button, Popover } from "antd";
 import { MoreOutlined } from "@ant-design/icons";
 import PaymentPopup from "../payment-popup/PaymentPopup";
 import { FaRegCommentDots } from "react-icons/fa";
-import { AiOutlineUser } from "react-icons/ai";
 import { useCheckTokenQuery } from "@/redux/api/auth";
 import PaymentTypeTooltip from "./PaymentTypeTooltip";
 import Box from "../ui/Box";
+import { TbUserShield } from "react-icons/tb";
 
 interface Props {
   data: any[];
@@ -55,7 +55,7 @@ const PaymentView: FC<Props> = ({ data }) => {
             )}
           </div>
           <p className="flex items-center gap-2 text-gray-700 text-sm">
-            <AiOutlineUser className="text-lg" />
+            <TbUserShield className="text-lg" />
             <span>
               {item?.employerId?.l_name[0]}. {item?.employerId?.f_name}
             </span>

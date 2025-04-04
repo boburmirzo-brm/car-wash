@@ -6,7 +6,7 @@ import { FaRegEdit } from "react-icons/fa";
 import { MdAttachMoney } from "react-icons/md";
 // import { PlusOutlined } from "@ant-design/icons";
 import { useParams, useNavigate, useLocation, Outlet } from "react-router-dom";
-import { TbUser, TbUserX } from "react-icons/tb";
+import { TbUser, TbUserShield, TbUserX } from "react-icons/tb";
 // import CarsView from "@/components/cars-view/CarsView";
 import PaymentPopup from "@/components/payment-popup/PaymentPopup";
 import CustomerPopup from "@/components/customer-popup/CustomerPopup";
@@ -66,8 +66,12 @@ const CustomerDetail = () => {
 
   return (
     <>
-      <div className={`flex flex-col gap-4  ${role === Role.EMPLOYEE ? "my-4" : "p-4"}`}>
-        <Box >
+      <div
+        className={`flex flex-col gap-4  ${
+          role === Role.EMPLOYEE ? "my-4" : "p-4"
+        }`}
+      >
+        <Box>
           {isLoading ? (
             <Skeleton active />
           ) : (
@@ -84,9 +88,9 @@ const CustomerDetail = () => {
                   <h3 className="text-2xl font-medium">
                     {customer?.full_name}
                   </h3>
-                  <p className="text-gray-600 mt-3">
-                    Ro'yhatdan o'tkazgan{" "}
-                    <span className="text-black">
+                  <p className="text-gray-600 mt-3 flex items-center gap-2">
+                    <TbUserShield className="text-lg" />
+                    <span className="">
                       {customer?.employerId?.l_name?.charAt(0)}.{" "}
                       {customer?.employerId?.f_name}
                     </span>
@@ -136,32 +140,14 @@ const CustomerDetail = () => {
             </div>
           )}
         </Box>
-        <Box >
-          <Tabs
-            defaultActiveKey={activeTab}
-            activeKey={activeTab}
-            items={items}
-            onChange={onChange}
-          />
-          <Outlet context={{ cars, customerId: customer?._id }} />
-          {/* <div className="flex justify-between">
-            <Title level={4}>Mijoz mashinalari</Title>
-            <Button
-              onClick={() => handleOpenModal("car")}
-              loading={isLoading}
-              type="primary"
-            >
-              <PlusOutlined />
-            </Button>
-          </div>
-          {isLoading ? (
-            <Skeleton active />
-          ) : cars?.length ? (
-            <CarsView data={cars || []} />
-          ) : (
-            <CustomEmpty />
-          )} */}
-        </Box>
+        <Tabs
+          defaultActiveKey={activeTab}
+          activeKey={activeTab}
+          items={items}
+          onChange={onChange}
+        />
+
+        <Outlet context={{ cars, customerId: customer?._id }} />
       </div>
       <PaymentPopup
         open={modalType === "payment"}

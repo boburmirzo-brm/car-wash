@@ -8,8 +8,12 @@ import { Alert, Button, Popconfirm, Skeleton, Tag, Tooltip } from "antd";
 import Title from "antd/es/typography/Title";
 import React, { useCallback, useState } from "react";
 import { FaRegEdit } from "react-icons/fa";
-import { MdAttachMoney, MdOutlinePercent } from "react-icons/md";
-import { TbUser } from "react-icons/tb";
+import {
+  MdAttachMoney,
+  MdOutlineAdminPanelSettings,
+  MdOutlinePercent,
+} from "react-icons/md";
+import { TbUserShield } from "react-icons/tb";
 import { NavLink, Outlet, useParams } from "react-router-dom";
 import ExpensePopup from "../../../components/expense-popup/ExpensePopup";
 import { LuUserMinus, LuUserPlus } from "react-icons/lu";
@@ -64,7 +68,7 @@ const UserDetail = () => {
             <div className="flex flex-col md:flex-row items-center md:items-start justify-between gap-4 md:gap-6 ">
               <div className="flex md:items-center flex-row-reverse w-full  md:flex-row gap-3">
                 <div>
-                  <TbUser className="text-7xl text-gray-600" />
+                  <TbUserShield className="text-7xl text-gray-600" />
                 </div>
                 <div className="w-full ">
                   <h3 className="text-2xl font-medium">
@@ -75,10 +79,11 @@ const UserDetail = () => {
                   <Tag color={user?.is_active ? "green" : "red"}>
                     {user?.is_active ? "Faol" : "Ishdan bo'shatilgan"}
                   </Tag>
+                  <br />
                   {user?.role !== Role.ADMIN && (
-                    <p className="text-gray-600 text-sm mt-3">
-                      Ro'yhatdan o'tkazgan{" "}
-                      <span className="text-black">
+                    <p className="text-gray-600 text-sm mt-3 flex items-center gap-2">
+                      <MdOutlineAdminPanelSettings />
+                      <span>
                         {user?.adminId?.l_name?.charAt(0)}.{" "}
                         {user?.adminId?.f_name}
                       </span>
@@ -175,34 +180,37 @@ const UserDetail = () => {
           </>
         )}
       </div>
+      {user?.role === Role.EMPLOYEE && (
+        <>
+          <div className="border-b border-gray-200 pb-[0.5px] flex gap-6 mt-4">
+            <NavLink
+              to={`/employees/user/${id}`}
+              className={({ isActive }) =>
+                `custom-tab-link hover:text-black text-gray-600 ${
+                  isActive ? "active" : ""
+                }`
+              }
+              end
+            >
+              Yuvgan mashinalari
+            </NavLink>
+            <NavLink
+              to={`/employees/user/${id}/expense-history`}
+              className={({ isActive }) =>
+                `custom-tab-link hover:text-black text-gray-600 ${
+                  isActive ? "active" : ""
+                }`
+              }
+            >
+              Olgan maoshlari
+            </NavLink>
+          </div>
+          <div className="py-4">
+            <Outlet />
+          </div>
+        </>
+      )}
 
-      <div className="border-b border-gray-200 pb-[0.5px] flex gap-6 mt-4">
-        <NavLink
-          to={`/employees/user/${id}`}
-          className={({ isActive }) =>
-            `custom-tab-link hover:text-black text-gray-600 ${
-              isActive ? "active" : ""
-            }`
-          }
-          end
-        >
-          Yuvgan mashinalari
-        </NavLink>
-        <NavLink
-          to={`/employees/user/${id}/expense-history`}
-          className={({ isActive }) =>
-            `custom-tab-link hover:text-black text-gray-600 ${
-              isActive ? "active" : ""
-            }`
-          }
-        >
-          Olgan maoshlari
-        </NavLink>
-      </div>
-
-      <div className="py-4">
-        <Outlet />
-      </div>
       <UserPopup
         currentRole={Role.ADMIN}
         open={modalType === "edit"}

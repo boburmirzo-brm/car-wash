@@ -4,10 +4,9 @@ import { useCheckTokenQuery } from "@/redux/api/auth";
 import UserPopup from "@/components/user-popup/UserPopup";
 import { FaRegEdit } from "react-icons/fa";
 import TelPopUp from "@/components/tel-pop-up/TelPopUp";
-import { MdLogout } from "react-icons/md";
+import { MdLogout, MdOutlineAdminPanelSettings } from "react-icons/md";
 import { useDispatch } from "react-redux";
 import { logout } from "@/redux/features/auth.slice";
-import { TbUserShield } from "react-icons/tb";
 import Box from "@/components/ui/Box";
 
 const Profile = () => {
@@ -37,7 +36,7 @@ const Profile = () => {
           <div className="flex flex-col md:flex-row items-center md:items-start justify-between gap-4 md:gap-6 ">
             <div className="flex w-full md:items-center flex-row-reverse md:flex-row gap-3">
               <div>
-                <TbUserShield className="text-8xl text-gray-600" />
+                <MdOutlineAdminPanelSettings className="text-8xl text-gray-600" />
               </div>
               <div className="w-full ">
                 <h3 className="text-2xl font-medium">{user.f_name}</h3>

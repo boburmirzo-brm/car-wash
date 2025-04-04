@@ -7,7 +7,7 @@ import {
   InputRef,
   message,
   Radio,
-  Select,
+  // Select,
 } from "antd";
 import type { FormProps } from "antd";
 import { NumericFormat } from "react-number-format";
@@ -17,7 +17,7 @@ import {
   useCreateExpenseMutation,
   useUpdateExpenseMutation,
 } from "../../redux/api/expense";
-import { useGetUsersQuery } from "../../redux/api/user";
+// import { useGetUsersQuery } from "../../redux/api/user";
 
 interface FieldType {
   amount?: string;
@@ -31,6 +31,7 @@ interface Props {
   onClose: () => void;
   employerId?: string | null;
   name: string;
+  requiredComment?:boolean;
   expense?: {
     _id: string;
     amount: number;
@@ -48,12 +49,13 @@ const ExpensePopup: FC<Props> = ({
   employerId,
   expense,
   name,
+  requiredComment
 }) => {
   const [form] = Form.useForm();
   const [createExpense, { isLoading: isCreating }] = useCreateExpenseMutation();
   const [updateExpense, { isLoading: isUpdating }] = useUpdateExpenseMutation();
-  const { data } = useGetUsersQuery();
-  const users = data?.data?.payload || [];
+  // const { data } = useGetUsersQuery();
+  // const users = data?.data?.payload || [];
 
   const [apiMessage, contextHolder] = message.useMessage();
   const priceInputRef = useRef<InputRef>(null);
@@ -64,16 +66,6 @@ const ExpensePopup: FC<Props> = ({
       setTimeout(() => {
         priceInputRef.current?.focus();
       }, 100);
-      // form.setFieldsValue(
-      //   expense
-      //     ? {
-      //         amount: expense.amount.toString(),
-      //         comment: expense.comment,
-      //         type: expense.type,
-      //         employerId: expense.employerId || employerId,
-      //       }
-      //     : { type: PaymentType.CASH, employerId }
-      // );
     }
   }, [open, expense, employerId]);
 
@@ -92,7 +84,7 @@ const ExpensePopup: FC<Props> = ({
       amount,
       comment: values.comment || "",
       type: values.type as PaymentType,
-      employerId: values.employerId || null,
+      employerId: employerId || null,
     };
 
     try {
@@ -152,7 +144,7 @@ const ExpensePopup: FC<Props> = ({
           />
         </Form.Item>
 
-        <Form.Item<FieldType> label="Ishchi tanlang" name="employerId">
+        {/* <Form.Item<FieldType> label="Ishchi tanlang" name="employerId">
           <Select placeholder="Ishchini tanlang" allowClear>
             {users.map(
               (user: { _id: string; f_name: string; l_name: string }) => (
@@ -162,9 +154,13 @@ const ExpensePopup: FC<Props> = ({
               )
             )}
           </Select>
-        </Form.Item>
+        </Form.Item> */}
 
-        <Form.Item<FieldType> label="Izoh" name="comment">
+        <Form.Item<FieldType>
+          label="Izoh"
+          name="comment"
+          rules={[{ required: requiredComment, message: "Izoh kiriting!" }]}
+        >
           <TextArea rows={2} />
         </Form.Item>
 

@@ -1,44 +1,13 @@
-import { Button, Tag, DatePicker } from "antd";
+import { Tag } from "antd";
 import Title from "antd/es/typography/Title";
-import React, { useCallback, useMemo } from "react";
+import React from "react";
 import { useStatsQuery } from "@/redux/api/stats";
 import Box from "@/components/ui/Box";
 import { NavLink, Outlet } from "react-router-dom";
-import { useParamsHook } from "@/hooks/useParamsHook";
-import { PiBroom } from "react-icons/pi";
-
-const { RangePicker } = DatePicker;
 
 const Dashboard = () => {
-  const { getParam, setParam, removeParam, removeParams } = useParamsHook();
+  const { data } = useStatsQuery({});
 
-  const fromDate = getParam("fromDate") || "";
-  const toDate = getParam("toDate") || "";
-
-  const filters = useMemo(
-    () => ({
-      fromDate,
-      toDate,
-    }),
-    [fromDate, toDate]
-  );
-  const { data } = useStatsQuery(filters);
-  const handleFilterChange = useCallback(
-    (dates: any) => {
-      if (dates) {
-        setParam("fromDate", dates[0].format("YYYY-MM-DD"));
-        setParam("toDate", dates[1].format("YYYY-MM-DD"));
-      } else {
-        removeParam("fromDate");
-        removeParam("toDate");
-      }
-    },
-    [setParam, removeParam]
-  );
-
-  const clearFilters = useCallback(() => {
-    removeParams(["fromDate", "toDate", "page"]);
-  }, [removeParams]);
   return (
     <>
       <div className="p-4 flex flex-col gap-4">
@@ -46,16 +15,6 @@ const Dashboard = () => {
           <Title level={4} style={{ marginBottom: 0 }}>
             Statistika
           </Title>
-          <div className="flex items-center gap-2">
-            <RangePicker
-              popupClassName="custom-range-picker-dropdown"
-              format="YYYY-MM-DD"
-              onChange={handleFilterChange}
-            />
-            <Button type="default" onClick={clearFilters}>
-              <PiBroom className="text-xl" />
-            </Button>
-          </div>
         </Box>
         <div className="grid lg:grid-cols-3 xl:grid-cols-5 md:grid-cols-2 grid-cols-2 gap-3">
           <Box>

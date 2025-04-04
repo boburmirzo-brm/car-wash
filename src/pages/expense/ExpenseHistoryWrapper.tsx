@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import React, { Suspense } from "react";
+import React from "react";
 import UserExpenseHistory from "../user/expense/UserExpenseHistory";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux";
@@ -11,9 +11,7 @@ const ExpenseHistoryWrapper = () => {
   const userId = id || employeeId; 
 
   return (
-    <Suspense>
       <UserExpenseHistory userId={userId} />
-    </Suspense>
   );
 };
 

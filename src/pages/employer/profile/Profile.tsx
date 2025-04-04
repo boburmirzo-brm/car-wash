@@ -128,7 +128,7 @@ const Profile = () => {
         )}
       </Box>
 
-      <div className="mx-4 flex gap-6 border-b border-gray-200 pb-[0.5px]">
+      <div className="flex gap-6 border-b border-gray-200 pb-[0.5px]">
         <NavLink
           className={({ isActive }) =>
             `custom-tab-link hover:text-black text-gray-600 ${
@@ -138,7 +138,7 @@ const Profile = () => {
           end
           to={"/employee/profile"}
         >
-          Car Washing
+          Yuvilgan mashinlar
         </NavLink>
         <NavLink
           className={({ isActive }) =>
@@ -148,10 +148,10 @@ const Profile = () => {
           }
           to={"/employee/profile/expense"}
         >
-          Expense
+          Maosh
         </NavLink>
       </div>
-      <div className="p-4">
+      <div >
         <Outlet />
       </div>
 

@@ -55,7 +55,7 @@ const CarWashingHistory = () => {
   );
 
   return (
-    <div className="my-4 space-y-4">
+    <div className=" space-y-4">
       <div className="flex justify-between items-start max-[600px]:gap-4 max-[600px]:flex-col">
         <div className="text-xl font-bold flex items-center gap-2 text-gray-700">
           <HistoryOutlined />

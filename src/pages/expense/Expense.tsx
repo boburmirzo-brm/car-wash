@@ -4,12 +4,15 @@ import { MoreOutlined } from "@ant-design/icons";
 import ExpensePopup from "@/components/expense-popup/ExpensePopup";
 import { ExpenseType } from "@/types";
 import { FaRegCommentDots } from "react-icons/fa";
-import { AiOutlineUser } from "react-icons/ai";
-import { PaymentType } from "@/constant";
+import { PaymentType, Role } from "@/constant";
 import PaymentTypeTooltip from "@/components/payment/PaymentTypeTooltip";
 import { Link } from "react-router-dom";
 import { MdOutlineAdminPanelSettings } from "react-icons/md";
 import Box from "@/components/ui/Box";
+import { TbUserShield } from "react-icons/tb";
+import { BsArrowDown } from "react-icons/bs";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux";
 
 interface ExpenseItemType extends Omit<ExpenseType, "type"> {
   type: PaymentType;
@@ -20,16 +23,17 @@ interface Props {
   padding?: string;
 }
 
-const ExpenseView: FC<Props> = ({ data, padding="p-4" }) => {
+const ExpenseView: FC<Props> = ({ data, padding = "px-4" }) => {
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [selectedExpense, setSelectedExpense] =
     useState<ExpenseItemType | null>(null);
   const [openPopover, setOpenPopover] = useState<string | null>(null);
+  const role = useSelector((state: RootState) => state.role.value);
 
   const handleEdit = (item: ExpenseType) => {
     const formattedItem: ExpenseItemType = {
       ...item,
-      employerId: item.employerId._id || null,
+      employerId: item?.employerId?._id || null,
       type: item.type as PaymentType,
     };
     setSelectedExpense(formattedItem);
@@ -45,44 +49,52 @@ const ExpenseView: FC<Props> = ({ data, padding="p-4" }) => {
             <strong className="text-lg text-gray-900 font-semibold">
               {item?.amount?.toLocaleString()} UZS
             </strong>
-            <Popover
-              content={
-                <Button onClick={() => handleEdit(item)} type="text">
-                  Tahrirlash
+            {role !== Role.EMPLOYEE && (
+              <Popover
+                content={
+                  <Button onClick={() => handleEdit(item)} type="text">
+                    Tahrirlash
+                  </Button>
+                }
+                trigger="click"
+                placement="bottomRight"
+                open={openPopover === item._id}
+                onOpenChange={(visible) =>
+                  setOpenPopover(visible ? item._id : null)
+                }
+              >
+                <Button type="text">
+                  <MoreOutlined />
                 </Button>
-              }
-              trigger="click"
-              placement="bottomRight"
-              open={openPopover === item._id}
-              onOpenChange={(visible) =>
-                setOpenPopover(visible ? item._id : null)
-              }
-            >
-              <Button type="text">
-                <MoreOutlined />
-              </Button>
-            </Popover>
+              </Popover>
+            )}
           </div>
-          <div className="flex items-center gap-2 text-gray-700 text-sm mb-3">
+          <div className="flex items-center gap-2 text-gray-700 text-sm ">
             <MdOutlineAdminPanelSettings className="text-lg " />
             <span>
               {item?.adminId?.l_name?.[0]}. {item?.adminId?.f_name}
             </span>
           </div>
+
           {item?.employerId && (
-            <div className="flex items-center gap-2 text-gray-700 text-sm">
-              <AiOutlineUser className="text-lg " />
-              <Link
-                className="hover:underline"
-                to={`/employees/user/${item?.employerId?._id}`}
-              >
-                {item?.employerId?.l_name?.[0]}. {item?.employerId?.f_name}
-              </Link>
-            </div>
+            <>
+              <div className="size-4 flex justify-center text-gray-500 ml-[1px]">
+                <BsArrowDown className="" />
+              </div>
+              <div className="flex items-center gap-2 text-gray-700 text-sm">
+                <TbUserShield className="text-lg " />
+                <Link
+                  className="hover:underline"
+                  to={`/employees/user/${item?.employerId?._id}`}
+                >
+                  {item?.employerId?.l_name?.[0]}. {item?.employerId?.f_name}
+                </Link>
+              </div>
+            </>
           )}
 
           {item?.comment && (
-            <div className="text-gray-600 text-sm  flex items-center gap-2">
+            <div className="text-gray-600 text-sm  flex items-center gap-2 mt-1">
               <FaRegCommentDots className="text-lg" />
               <span>{item?.comment}</span>
             </div>
@@ -102,7 +114,7 @@ const ExpenseView: FC<Props> = ({ data, padding="p-4" }) => {
         <ExpensePopup
           open={isEditing}
           onClose={() => setIsEditing(false)}
-          employerId={selectedExpense?.employerId?._id}
+          employerId={selectedExpense?.employerId}
           name="Xarajatni tahrirlash"
           expense={selectedExpense}
         />

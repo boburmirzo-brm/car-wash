@@ -1,7 +1,6 @@
 import React, { FC } from "react";
 import Options from "./Options";
-import { TbCoins, TbUserX } from "react-icons/tb";
-import { AiOutlineUser } from "react-icons/ai";
+import { TbCoins, TbUserShield, TbUserX } from "react-icons/tb";
 import { IoCarOutline } from "react-icons/io5";
 import TelPopUp from "../tel-pop-up/TelPopUp";
 import { Role } from "@/constant";
@@ -61,7 +60,7 @@ const CarWashing: FC<Props> = ({ data, profile }) => {
               <div>
                 {(role === Role.ADMIN || role === Role.OWNER) && (
                   <p className="flex items-center gap-2 text-gray-700 text-sm">
-                    <AiOutlineUser className="text-lg" />
+                    <TbUserShield className="text-lg" />
                     <Link
                       className="hover:underline"
                       to={`/employees/user/${item?.employerId?._id}`}

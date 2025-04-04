@@ -4,7 +4,7 @@ import React from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import "./style.css";
 import { MdLogout } from "react-icons/md";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { logout } from "@/redux/features/auth.slice";
 import { SIDEBAR_LINKS } from "@/static";
 

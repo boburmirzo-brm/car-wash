@@ -19,7 +19,7 @@ const CarsWashings: FC<Props> = ({ data, profile }) => {
   const role = useSelector((state: RootState) => state.role.value);
 
   return (
-    <div className="my-4 space-y-4">
+    <div className=" space-y-4">
       {data?.map((item: any) => (
         <Box key={item._id}>
           <div className="flex items-center gap-2 justify-between">
