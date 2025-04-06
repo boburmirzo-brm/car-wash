@@ -4,19 +4,16 @@ import UserPopup from "@/components/user-popup/UserPopup";
 import { Role, SalaryType } from "@/constant";
 import { useGetSalaryByIdQuery } from "@/redux/api/salary";
 import { useGetUserByIdQuery, useUpdateUserMutation } from "@/redux/api/user";
-import { Alert, Button, Popconfirm, Skeleton, Tag, Tooltip } from "antd";
+import { Alert, Skeleton, Tag, Tooltip } from "antd";
 import Title from "antd/es/typography/Title";
 import React, { useCallback, useState } from "react";
-import { FaRegEdit } from "react-icons/fa";
 import {
-  MdAttachMoney,
   MdOutlineAdminPanelSettings,
-  MdOutlinePercent,
 } from "react-icons/md";
 import { TbUserShield } from "react-icons/tb";
 import { NavLink, Outlet, useParams } from "react-router-dom";
 import ExpensePopup from "../../../components/expense-popup/ExpensePopup";
-import { LuUserMinus, LuUserPlus } from "react-icons/lu";
+import Options from "./Options";
 
 type ModalType = "expense" | "edit" | "salary" | null;
 
@@ -127,7 +124,7 @@ const UserDetail = () => {
                 )}
                 <TelPopUp phoneNumber={user?.tel_primary || ""} />
                 <TelPopUp phoneNumber={user?.tel_secondary || ""} />
-                <div className="flex gap-1.5">
+                {/* <div className="flex gap-1.5">
                   <Popconfirm
                     title={user?.is_active ? "Ishdan olish" : "Ishga qaytarish"}
                     description={
@@ -174,7 +171,15 @@ const UserDetail = () => {
                     <MdAttachMoney className="text-lg" />
                     <span>To'lov</span>
                   </Button>
-                </div>
+                </div> */}
+
+                <Options
+                  isActive={user?.is_active ?? false}
+                  onToggleStatus={handleToggleUserStatus}
+                  onEdit={() => handleOpenModal("edit")}
+                  onSalary={() => handleOpenModal("salary")}
+                  onExpense={() => handleOpenModal("expense")}
+                />
               </div>
             </div>
           </>

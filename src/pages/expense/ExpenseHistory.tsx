@@ -7,6 +7,7 @@ import { useGetAllExpenseQuery } from "../../redux/api/expense";
 import Expense from "./Expense";
 import ExpensePopup from "../../components/expense-popup/ExpensePopup";
 import { PiBroom } from "react-icons/pi";
+import { useStatsQuery } from "../../redux/api/stats";
 
 const { RangePicker } = DatePicker;
 
@@ -29,6 +30,13 @@ const ExpenseHistory = () => {
     }),
     [fromDate, toDate, page]
   );
+  const filtersStats = useMemo(
+    () => ({
+      fromDate,
+      toDate
+    }),
+    [fromDate, toDate]
+  );
 
   const handleFilterChange = useCallback(
     (dates: any) => {
@@ -48,6 +56,9 @@ const ExpenseHistory = () => {
   }, [removeParams]);
 
   const { data, isError, isFetching } = useGetAllExpenseQuery(filters);
+  const {data:statsData} = useStatsQuery(filtersStats)
+  console.log(statsData?.data?.payload.totalExpenseSum);
+  
   const totalItems = data?.data?.total || 0;
 
   const handlePageChange = useCallback(
@@ -73,9 +84,7 @@ const ExpenseHistory = () => {
           <HistoryOutlined />
           <span>Xarajat</span>
         </div>
-        <div
-          className="flex flex-wrap items-center gap-4 max-[700px]:order-3"
-        >
+        <div className="flex flex-wrap items-center gap-4 max-[700px]:order-3">
           <div className="flex gap-2 items-center">
             <RangePicker
               popupClassName="custom-range-picker-dropdown "
@@ -91,7 +100,9 @@ const ExpenseHistory = () => {
           </Button>
         </div>
         <div className="min-[700px]:w-full text-right max-[700px]:order-2">
-          <h3 className="text-2xl font-bold">1,360,000 UZS</h3>
+          <h3 className="text-2xl font-bold">
+            {statsData?.data?.payload.totalExpenseSum.toLocaleString()} UZS
+          </h3>
         </div>
       </div>
 

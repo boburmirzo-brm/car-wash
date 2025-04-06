@@ -6,6 +6,7 @@ import { CustomEmpty, MiniLoading } from "@/utils";
 import { useGetAllPaymentQuery } from "../../redux/api/payment";
 import Payment from "./Payment";
 import { PiBroom } from "react-icons/pi";
+import { useStatsQuery } from "../../redux/api/stats";
 
 const { RangePicker } = DatePicker;
 
@@ -26,6 +27,13 @@ const PaymentHistory = () => {
     }),
     [fromDate, toDate, page]
   );
+  const filtersStats = useMemo(
+    () => ({
+      fromDate,
+      toDate,
+    }),
+    [fromDate, toDate]
+  );
 
   const handleFilterChange = useCallback(
     (dates: any) => {
@@ -45,6 +53,9 @@ const PaymentHistory = () => {
   }, [removeParams]);
 
   const { data, isError, isFetching } = useGetAllPaymentQuery(filters);
+  const { data: statsData } = useStatsQuery(filtersStats);
+  console.log(statsData?.data?.payload.totalExpenseSum);
+  
   const totalItems = data?.data?.total || 0;
 
   const handlePageChange = useCallback(
@@ -72,7 +83,10 @@ const PaymentHistory = () => {
           </Button>
         </div>
         <div className="min-[600px]:w-full text-right max-[600px]:order-2">
-          <h3 className="text-2xl font-bold">1,200,000 UZS</h3>
+          <h3 className="text-2xl font-bold">
+            {" "}
+            {statsData?.data?.payload.totalAmount.toLocaleString()} UZS
+          </h3>
         </div>
       </div>
 

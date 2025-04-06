@@ -5,6 +5,7 @@ import { Button, DatePicker, Pagination, Skeleton } from "antd";
 import React, { useCallback, useMemo } from "react";
 import { PiBroom } from "react-icons/pi";
 import { useParamsHook } from "../../../hooks/useParamsHook";
+import { CustomEmpty } from "../../../utils";
 
 const { RangePicker } = DatePicker;
 
@@ -51,7 +52,7 @@ const CarWahingProgress = () => {
     [setParam]
   );
 
-  const { data, isLoading } = useGetCarWashingsQuery(filters);
+  const { data, isLoading, isError } = useGetCarWashingsQuery(filters);
 
   return (
     <div>
@@ -75,7 +76,11 @@ const CarWahingProgress = () => {
           <Skeleton active />
         </Box>
       )}
-      <CarWashing data={data?.data} />
+      {isError ? (
+        <CustomEmpty />
+      ) : (
+        <CarWashing data={data?.data} />
+      )}
 
       <div className="flex justify-end">
         <Pagination
