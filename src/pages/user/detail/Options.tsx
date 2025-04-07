@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Button, Popconfirm, Popover } from "antd";
 import { FaRegEdit } from "react-icons/fa";
 import { LuUserMinus, LuUserPlus } from "react-icons/lu";
-import { MdAttachMoney, MdOutlinePercent } from "react-icons/md";
+import { MdOutlinePercent } from "react-icons/md";
 import { MoreOutlined } from "@ant-design/icons";
 
 interface OptionsProps {
@@ -18,7 +18,6 @@ const Options: React.FC<OptionsProps> = ({
   onToggleStatus,
   onEdit,
   onSalary,
-  onExpense,
 }) => {
   const [open, setOpen] = useState(false);
 
@@ -76,7 +75,7 @@ const Options: React.FC<OptionsProps> = ({
         <span>Oylik</span>
       </Button>
 
-      <Button
+      {/* <Button
         onClick={() => {
           onExpense();
           setOpen(false);
@@ -86,7 +85,7 @@ const Options: React.FC<OptionsProps> = ({
       >
         <MdAttachMoney className="text-lg" />
         <span>To'lov</span>
-      </Button>
+      </Button> */}
     </div>
   );
 
