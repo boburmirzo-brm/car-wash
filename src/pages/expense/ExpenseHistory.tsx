@@ -33,7 +33,7 @@ const ExpenseHistory = () => {
   const filtersStats = useMemo(
     () => ({
       fromDate,
-      toDate
+      toDate,
     }),
     [fromDate, toDate]
   );
@@ -56,9 +56,9 @@ const ExpenseHistory = () => {
   }, [removeParams]);
 
   const { data, isError, isFetching } = useGetAllExpenseQuery(filters);
-  const {data:statsData} = useStatsQuery(filtersStats)
+  const { data: statsData } = useStatsQuery(filtersStats);
   console.log(statsData?.data?.payload.totalExpenseSum);
-  
+
   const totalItems = data?.data?.total || 0;
 
   const handlePageChange = useCallback(
@@ -94,10 +94,10 @@ const ExpenseHistory = () => {
             <Button type="default" onClick={clearFilters}>
               <PiBroom className="text-xl" />
             </Button>
+            <Button onClick={handleAddExpense} type="primary">
+              <PlusOutlined />
+            </Button>
           </div>
-          <Button onClick={handleAddExpense} type="primary">
-            <PlusOutlined /> Xarajat qo‘shish
-          </Button>
         </div>
         <div className="min-[700px]:w-full text-right max-[700px]:order-2">
           <h3 className="text-2xl font-bold">

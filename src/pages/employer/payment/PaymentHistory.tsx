@@ -71,19 +71,7 @@ const EmployeePaymentHistory = () => {
         <div className="text-xl font-bold flex items-center gap-2 text-gray-700">
           <HistoryOutlined />
           <span>Tarix:</span>
-          <Title
-            level={4}
-            type={
-              data?.data.totalAmount === 0
-                ? "secondary"
-                : data?.data.totalAmount > 0
-                ? "success"
-                : "danger"
-            }
-            style={{ marginBottom: 0 }}
-          >
-            {data?.data.totalAmount?.toLocaleString() || "0"} UZS
-          </Title>
+          <div className="whitespace-nowrap">{data?.data.totalAmount?.toLocaleString() || "0"} UZS</div>
         </div>
 
         <div className="flex gap-2">

@@ -22,7 +22,7 @@ const Options: React.FC<OptionsProps> = ({
   const [open, setOpen] = useState(false);
 
   const content = (
-    <div className="flex flex-col gap-1 min-w-[160px]">
+    <div className="flex flex-col gap-1  min-w-[160px]">
       <Popconfirm
         title={isActive ? "Ishdan olish" : "Ishga qaytarish"}
         description={
@@ -40,7 +40,8 @@ const Options: React.FC<OptionsProps> = ({
         <Button
           type="text"
           danger
-          className="flex items-center gap-2 justify-start w-full"
+          style={{justifyContent: "flex-start"}}
+          className="flex  gap-2  w-full"
         >
           {isActive ? (
             <LuUserMinus className="text-lg" />
@@ -57,7 +58,8 @@ const Options: React.FC<OptionsProps> = ({
           setOpen(false);
         }}
         type="text"
-        className="flex items-center gap-2 justify-start w-full"
+        style={{justifyContent: "flex-start"}}
+        className="flex  gap-2  w-full"
       >
         <FaRegEdit className="text-lg" />
         <span>Tahrirlash</span>
@@ -69,23 +71,12 @@ const Options: React.FC<OptionsProps> = ({
           setOpen(false);
         }}
         type="text"
-        className="flex items-center gap-2 justify-start w-full"
+        style={{justifyContent: "flex-start"}}
+        className="flex  gap-2  w-full"
       >
         <MdOutlinePercent className="text-lg" />
         <span>Oylik</span>
       </Button>
-
-      {/* <Button
-        onClick={() => {
-          onExpense();
-          setOpen(false);
-        }}
-        type="text"
-        className="flex items-center gap-2 justify-start w-full"
-      >
-        <MdAttachMoney className="text-lg" />
-        <span>To'lov</span>
-      </Button> */}
     </div>
   );
 

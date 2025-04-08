@@ -138,7 +138,7 @@ const Profile = () => {
           end
           to={"/employee/profile"}
         >
-          Yuvilgan mashinlar
+          Ishlarim
         </NavLink>
         <NavLink
           className={({ isActive }) =>

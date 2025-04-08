@@ -48,7 +48,7 @@ const UserDetail = () => {
 
   return (
     <div className="p-4">
-      <div className="shadow bg-white md:p-6 p-4 rounded-md border border-gray-100 w-full">
+      <div className="shadow bg-white md:p-6 p-4 rounded-md border border-gray-100 w-full relative">
         {isLoading ? (
           <Skeleton active />
         ) : (
@@ -62,7 +62,7 @@ const UserDetail = () => {
             )}
             <div className="flex flex-col md:flex-row items-center md:items-start justify-between gap-4 md:gap-6 ">
               <div className="flex md:items-center flex-row-reverse w-full  md:flex-row gap-3">
-                <div>
+                <div className="max-md:mt-8">
                   <TbUserShield className="text-7xl text-gray-600" />
                 </div>
                 <div className="w-full ">
@@ -89,14 +89,14 @@ const UserDetail = () => {
                     placement="bottom"
                     title={user?.createdAt.timeFormat()}
                   >
-                    <span className="text-gray-600">
+                    <span className="text-gray-600 text-sm">
                       {user?.createdAt.dateFormat()}
                     </span>
                   </Tooltip>
                 </div>
               </div>
 
-              <div className="flex w-full flex-col items-end gap-1.5">
+              <div className="flex w-full flex-col items-end gap-1.5 ">
                 {user?.role !== Role.ADMIN && (
                   <div className="flex items-center">
                     <Title
@@ -112,18 +112,20 @@ const UserDetail = () => {
                     >
                       {(user?.budget || 0)?.toLocaleString() || "0"} UZS
                     </Title>
-                    <Options
-                      isActive={user?.is_active ?? false}
-                      onToggleStatus={handleToggleUserStatus}
-                      onEdit={() => handleOpenModal("edit")}
-                      onSalary={() => handleOpenModal("salary")}
-                      onExpense={() => handleOpenModal("expense")}
-                    />
+                    <div className=" max-md:absolute top-4 right-4">
+                      <Options
+                        isActive={user?.is_active ?? false}
+                        onToggleStatus={handleToggleUserStatus}
+                        onEdit={() => handleOpenModal("edit")}
+                        onSalary={() => handleOpenModal("salary")}
+                        onExpense={() => handleOpenModal("expense")}
+                      />
+                    </div>
                   </div>
                 )}
                 {!isError && (
-                  <div className="mr-8">
-                    <Tag color="green">
+                  <div >
+                    <Tag style={{marginRight:0}} color="green">
                       {salary?.data?.payload?.amount?.toLocaleString()}{" "}
                       {salary?.data?.payload?.type === SalaryType.PERCENT
                         ? "%"
@@ -131,7 +133,7 @@ const UserDetail = () => {
                     </Tag>
                   </div>
                 )}
-                <div className="mr-8">
+                <div >
                   <TelPopUp phoneNumber={user?.tel_primary || ""} />
                   <TelPopUp phoneNumber={user?.tel_secondary || ""} />
                 </div>
