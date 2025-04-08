@@ -1,6 +1,6 @@
 import PaymentView from "./PaymentView";
 import { useGetPaymentByEmployeeIdQuery } from "@/redux/api/payment";
-import { Pagination, Button, DatePicker, Typography } from "antd";
+import { Pagination, Button, DatePicker } from "antd";
 import React, { useCallback, useMemo } from "react";
 import { useParamsHook } from "../../../hooks/useParamsHook";
 import { HistoryOutlined } from "@ant-design/icons";
@@ -9,7 +9,6 @@ import { PiBroom } from "react-icons/pi";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../redux";
 
-const { Title } = Typography;
 const { RangePicker } = DatePicker;
 
 const EmployeePaymentHistory = () => {
