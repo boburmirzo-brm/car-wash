@@ -150,8 +150,18 @@ const Profile = () => {
         >
           Maosh
         </NavLink>
+        <NavLink
+          className={({ isActive }) =>
+            `custom-tab-link hover:text-black text-gray-600 ${
+              isActive ? "active" : ""
+            }`
+          }
+          to={"/employee/profile/payment"}
+        >
+          To'lov
+        </NavLink>
       </div>
-      <div >
+      <div>
         <Outlet />
       </div>
 

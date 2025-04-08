@@ -1,16 +1,19 @@
-import { Pagination, Button, DatePicker } from "antd";
+import PaymentView from "./PaymentView";
+import { useGetPaymentByEmployeeIdQuery } from "@/redux/api/payment";
+import { Pagination, Button, DatePicker, Typography } from "antd";
 import React, { useCallback, useMemo } from "react";
-import { useParamsHook } from "../../hooks/useParamsHook";
+import { useParamsHook } from "../../../hooks/useParamsHook";
 import { HistoryOutlined } from "@ant-design/icons";
 import { CustomEmpty, MiniLoading } from "@/utils";
-import { useGetAllPaymentQuery } from "../../redux/api/payment";
-import Payment from "./Payment";
 import { PiBroom } from "react-icons/pi";
-import { useStatsQuery } from "../../redux/api/stats";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../redux";
 
+const { Title } = Typography;
 const { RangePicker } = DatePicker;
 
-const PaymentHistory = () => {
+const EmployeePaymentHistory = () => {
+  const id = useSelector((state: RootState) => state.auth.id);
   const { getParam, setParam, removeParam, removeParams } = useParamsHook();
 
   const fromDate = getParam("fromDate") || "";
@@ -26,13 +29,6 @@ const PaymentHistory = () => {
       limit,
     }),
     [fromDate, toDate, page]
-  );
-  const filtersStats = useMemo(
-    () => ({
-      fromDate,
-      toDate,
-    }),
-    [fromDate, toDate]
   );
 
   const handleFilterChange = useCallback(
@@ -52,14 +48,18 @@ const PaymentHistory = () => {
     removeParams(["fromDate", "toDate", "page"]);
   }, [removeParams]);
 
-  const { data, isError, isFetching } = useGetAllPaymentQuery(filters);
-  const { data: statsData } = useStatsQuery(filtersStats);
-  console.log(statsData?.data?.payload.totalExpenseSum);
-  
+  const { data, isError, isFetching } = useGetPaymentByEmployeeIdQuery(
+    {
+      id,
+      params: filters,
+    },
+    { skip: !id }
+  );
+
   const totalItems = data?.data?.total || 0;
 
   const handlePageChange = useCallback(
-    (newPage: any) => {
+    (newPage: number) => {
       setParam("page", newPage.toString());
     },
     [setParam]
@@ -67,12 +67,26 @@ const PaymentHistory = () => {
 
   return (
     <>
-      <div className="flex justify-between items-center flex-wrap gap-4 p-4">
+      <div className="flex justify-between items-start max-[600px]:gap-4 max-[600px]:flex-col">
         <div className="text-xl font-bold flex items-center gap-2 text-gray-700">
           <HistoryOutlined />
-          <span>Kirim</span>
+          <span>Tarix:</span>
+          <Title
+            level={4}
+            type={
+              data?.data.totalAmount === 0
+                ? "secondary"
+                : data?.data.totalAmount > 0
+                ? "success"
+                : "danger"
+            }
+            style={{ marginBottom: 0 }}
+          >
+            {data?.data.totalAmount?.toLocaleString() || "0"} UZS
+          </Title>
         </div>
-        <div className="flex items-center gap-2 max-[600px]:order-3">
+
+        <div className="flex gap-2">
           <RangePicker
             popupClassName="custom-range-picker-dropdown"
             format="YYYY-MM-DD"
@@ -82,16 +96,9 @@ const PaymentHistory = () => {
             <PiBroom className="text-xl" />
           </Button>
         </div>
-        <div className="min-[600px]:w-full text-right max-[600px]:order-2">
-          <h3 className="text-2xl font-bold">
-            {" "}
-            {statsData?.data?.payload.totalAmount.toLocaleString()} UZS
-          </h3>
-        </div>
       </div>
-
       {isError && <CustomEmpty />}
-      {!isError && <Payment data={data?.data?.payload || []} />}
+      {!isError && <PaymentView data={data?.data?.payload || []} />}
       {isFetching && <MiniLoading />}
       {!isError && totalItems > limit && (
         <div className="flex justify-end mt-4">
@@ -108,4 +115,4 @@ const PaymentHistory = () => {
   );
 };
 
-export default React.memo(PaymentHistory);
+export default React.memo(EmployeePaymentHistory);

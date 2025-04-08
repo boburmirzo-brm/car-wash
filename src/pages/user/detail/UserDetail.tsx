@@ -4,19 +4,14 @@ import UserPopup from "@/components/user-popup/UserPopup";
 import { Role, SalaryType } from "@/constant";
 import { useGetSalaryByIdQuery } from "@/redux/api/salary";
 import { useGetUserByIdQuery, useUpdateUserMutation } from "@/redux/api/user";
-import { Alert, Button, Popconfirm, Skeleton, Tag, Tooltip } from "antd";
+import { Alert, Button, Skeleton, Tag, Tooltip } from "antd";
 import Title from "antd/es/typography/Title";
 import React, { useCallback, useState } from "react";
-import { FaRegEdit } from "react-icons/fa";
-import {
-  MdAttachMoney,
-  MdOutlineAdminPanelSettings,
-  MdOutlinePercent,
-} from "react-icons/md";
+import { MdAttachMoney, MdOutlineAdminPanelSettings } from "react-icons/md";
 import { TbUserShield } from "react-icons/tb";
 import { NavLink, Outlet, useParams } from "react-router-dom";
 import ExpensePopup from "../../../components/expense-popup/ExpensePopup";
-import { LuUserMinus, LuUserPlus } from "react-icons/lu";
+import Options from "./Options";
 
 type ModalType = "expense" | "edit" | "salary" | null;
 
@@ -103,78 +98,50 @@ const UserDetail = () => {
 
               <div className="flex w-full flex-col items-end gap-1.5">
                 {user?.role !== Role.ADMIN && (
-                  <Title
-                    level={3}
-                    type={
-                      user?.budget === 0
-                        ? "secondary"
-                        : (user?.budget || 0) > 0
-                        ? "success"
-                        : "danger"
-                    }
-                    style={{ marginBottom: 0 }}
-                  >
-                    {(user?.budget || 0)?.toLocaleString() || "0"} UZS
-                  </Title>
+                  <div className="flex items-center">
+                    <Title
+                      level={3}
+                      type={
+                        user?.budget === 0
+                          ? "secondary"
+                          : (user?.budget || 0) > 0
+                          ? "success"
+                          : "danger"
+                      }
+                      style={{ marginBottom: 0 }}
+                    >
+                      {(user?.budget || 0)?.toLocaleString() || "0"} UZS
+                    </Title>
+                    <Options
+                      isActive={user?.is_active ?? false}
+                      onToggleStatus={handleToggleUserStatus}
+                      onEdit={() => handleOpenModal("edit")}
+                      onSalary={() => handleOpenModal("salary")}
+                      onExpense={() => handleOpenModal("expense")}
+                    />
+                  </div>
                 )}
                 {!isError && (
-                  <Tag color="green">
-                    {salary?.data?.payload?.amount?.toLocaleString()}{" "}
-                    {salary?.data?.payload?.type === SalaryType.PERCENT
-                      ? "%"
-                      : "so'm"}
-                  </Tag>
+                  <div className="mr-8">
+                    <Tag color="green">
+                      {salary?.data?.payload?.amount?.toLocaleString()}{" "}
+                      {salary?.data?.payload?.type === SalaryType.PERCENT
+                        ? "%"
+                        : "so'm"}
+                    </Tag>
+                  </div>
                 )}
-                <TelPopUp phoneNumber={user?.tel_primary || ""} />
-                <TelPopUp phoneNumber={user?.tel_secondary || ""} />
-                <div className="flex gap-1.5">
-                  <Popconfirm
-                    title={user?.is_active ? "Ishdan olish" : "Ishga qaytarish"}
-                    description={
-                      user?.is_active
-                        ? "Chindan ham ishdan olmoqchimisiz?"
-                        : "Foydalanuvchini ishga qaytarmoqchimisiz?"
-                    }
-                    onConfirm={handleToggleUserStatus}
-                    okText="Ha"
-                    cancelText="Yo'q"
-                  >
-                    <Button
-                      type="default"
-                      danger
-                      className="flex items-center gap-2"
-                    >
-                      {user?.is_active ? (
-                        <LuUserMinus className="text-lg" />
-                      ) : (
-                        <LuUserPlus className="text-lg" />
-                      )}
-                      <span>
-                        {user?.is_active ? "Ishdan olish" : "Ishga qaytarish"}
-                      </span>
-                    </Button>
-                  </Popconfirm>
-                  <Button
-                    onClick={() => handleOpenModal("edit")}
-                    type="default"
-                  >
-                    <FaRegEdit className="text-lg" />
-                  </Button>
-                  <Button
-                    onClick={() => handleOpenModal("salary")}
-                    type="default"
-                  >
-                    <MdOutlinePercent className="text-lg" />
-                    <span>Oylik</span>
-                  </Button>
-                  <Button
-                    onClick={() => handleOpenModal("expense")}
-                    type="default"
-                  >
-                    <MdAttachMoney className="text-lg" />
-                    <span>To'lov</span>
-                  </Button>
+                <div className="mr-8">
+                  <TelPopUp phoneNumber={user?.tel_primary || ""} />
+                  <TelPopUp phoneNumber={user?.tel_secondary || ""} />
                 </div>
+                <Button
+                  onClick={() => handleOpenModal("expense")}
+                  type="default"
+                >
+                  <MdAttachMoney className="text-lg" />
+                  <span>To'lov</span>
+                </Button>
               </div>
             </div>
           </>

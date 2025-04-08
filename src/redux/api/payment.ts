@@ -32,6 +32,15 @@ const extendedApi = mainApi.injectEndpoints({
       providesTags: ["PAYMENT"],
     }),
 
+    getPaymentByEmployeeId: build.query<any, any>({
+      query: ({ id, params }) => ({
+        url: `/payments/employee/${id}`,
+        method: "GET",
+        params,
+      }),
+      providesTags: ["PAYMENT"],
+    }),
+
     createPayment: build.mutation<any, any>({
       query: (body) => ({
         url: `/payments`,
@@ -61,6 +70,7 @@ const extendedApi = mainApi.injectEndpoints({
 export const {
   useCreatePaymentMutation,
   useGetPaymentByCustomerIdQuery,
+  useGetPaymentByEmployeeIdQuery,
   useUpdatePaymentMutation,
   useGetAllPaymentQuery
 } = extendedApi;

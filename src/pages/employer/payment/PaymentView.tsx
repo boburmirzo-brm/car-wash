@@ -4,9 +4,9 @@ import { MoreOutlined } from "@ant-design/icons";
 import { FaRegCommentDots } from "react-icons/fa";
 import { useCheckTokenQuery } from "@/redux/api/auth";
 import { TbUser, TbUserShield } from "react-icons/tb";
-import PaymentTypeTooltip from "@/components/payment/PaymentTypeTooltip";
-import PaymentPopup from "@/components/payment-popup/PaymentPopup";
-import Box from "@/components/ui/Box";
+import PaymentTypeTooltip from "../../../components/payment/PaymentTypeTooltip";
+import PaymentPopup from "../../../components/payment-popup/PaymentPopup";
+import Box from "../../../components/ui/Box";
 import { BsArrowDown } from "react-icons/bs";
 
 interface Props {

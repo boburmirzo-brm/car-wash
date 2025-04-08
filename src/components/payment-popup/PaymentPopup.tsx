@@ -41,10 +41,15 @@ const PaymentPopup: FC<Props> = ({
   const priceInputRef = useRef<InputRef>(null);
   useModalNavigation(open, onClose);
 
-  const toNumber = (value: string | undefined | null): number => {
-    if (!value) return 0;
-    return Number(value.replace(/\s/g, ""));
+  const toNumber = (value?: string | number): number => {
+    if (typeof value === "string") {
+      console.log("kirdi");
+      
+      return Number(value.replace(/\s/g, "")); // faqat string uchun
+    }
+    return Number(value) || 0; // Agar number bo'lsa, uni to'g'ridan-to'g'ri raqamga aylantiradi
   };
+
 
   useEffect(() => {
     if (open) {
@@ -62,7 +67,7 @@ const PaymentPopup: FC<Props> = ({
   }, [open, payment]);
 
   const onFinish: FormProps<FieldType>["onFinish"] = (values) => {
-    const amount = toNumber(values.amount);
+    const amount = toNumber(values.amount);    
 
     if (!amount) {
       apiMessage.error("Summani to‘g‘ri kiriting!");
