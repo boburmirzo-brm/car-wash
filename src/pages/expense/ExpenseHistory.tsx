@@ -91,7 +91,7 @@ const ExpenseHistory = () => {
         </div>
         <div className="min-[700px]:w-full text-right max-[700px]:order-2">
           <h3 className="text-2xl font-bold">
-            {data?.data?.payload.totalAmount.toLocaleString()} UZS
+            {data?.data?.totalAmount.toLocaleString()} UZS
           </h3>
         </div>
       </div>
