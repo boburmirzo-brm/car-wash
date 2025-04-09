@@ -7,7 +7,6 @@ import { useGetAllExpenseQuery } from "../../redux/api/expense";
 import Expense from "./Expense";
 import ExpensePopup from "../../components/expense-popup/ExpensePopup";
 import { PiBroom } from "react-icons/pi";
-import { useStatsQuery } from "../../redux/api/stats";
 
 const { RangePicker } = DatePicker;
 
@@ -30,13 +29,6 @@ const ExpenseHistory = () => {
     }),
     [fromDate, toDate, page]
   );
-  const filtersStats = useMemo(
-    () => ({
-      fromDate,
-      toDate,
-    }),
-    [fromDate, toDate]
-  );
 
   const handleFilterChange = useCallback(
     (dates: any) => {
@@ -56,8 +48,6 @@ const ExpenseHistory = () => {
   }, [removeParams]);
 
   const { data, isError, isFetching } = useGetAllExpenseQuery(filters);
-  const { data: statsData } = useStatsQuery(filtersStats);
-  console.log(statsData?.data?.payload.totalExpenseSum);
 
   const totalItems = data?.data?.total || 0;
 
@@ -101,7 +91,7 @@ const ExpenseHistory = () => {
         </div>
         <div className="min-[700px]:w-full text-right max-[700px]:order-2">
           <h3 className="text-2xl font-bold">
-            {statsData?.data?.payload.totalExpenseSum.toLocaleString()} UZS
+            {data?.data?.payload.totalAmount.toLocaleString()} UZS
           </h3>
         </div>
       </div>
