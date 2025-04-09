@@ -124,8 +124,8 @@ const UserDetail = () => {
                   </div>
                 )}
                 {!isError && (
-                  <div >
-                    <Tag style={{marginRight:0}} color="green">
+                  <div>
+                    <Tag style={{ marginRight: 0 }} color="green">
                       {salary?.data?.payload?.amount?.toLocaleString()}{" "}
                       {salary?.data?.payload?.type === SalaryType.PERCENT
                         ? "%"
@@ -133,7 +133,7 @@ const UserDetail = () => {
                     </Tag>
                   </div>
                 )}
-                <div >
+                <div>
                   <TelPopUp phoneNumber={user?.tel_primary || ""} />
                   <TelPopUp phoneNumber={user?.tel_secondary || ""} />
                 </div>
@@ -172,6 +172,16 @@ const UserDetail = () => {
               }
             >
               Olgan maoshlari
+            </NavLink>
+            <NavLink
+              to={`/employees/user/${id}/payments`}
+              className={({ isActive }) =>
+                `custom-tab-link hover:text-black text-gray-600 ${
+                  isActive ? "active" : ""
+                }`
+              }
+            >
+              Olgan to'lovlari
             </NavLink>
           </div>
           <div className="py-4">

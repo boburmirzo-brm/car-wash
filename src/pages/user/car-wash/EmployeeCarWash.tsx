@@ -60,6 +60,9 @@ const CarWahingProgress = () => {
       <div className="flex justify-between items-center flex-wrap gap-4 ">
         <div className="text-xl font-bold flex items-center gap-2 text-gray-700">
           <span>Car Wash History</span>
+          <div className="whitespace-nowrap">
+            {data?.data.totalAmount?.toLocaleString() || "0"} UZS
+          </div>
         </div>
         <div className="flex items-center gap-2">
           <RangePicker

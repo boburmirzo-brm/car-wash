@@ -165,6 +165,14 @@ const AppRouter = () => {
                             </Suspense>
                           ),
                         },
+                        {
+                          path: "payments",
+                          element: (
+                            <Suspense>
+                              <EmployeePaymentHistory />
+                            </Suspense>
+                          ),
+                        },
                       ],
                     },
                     {

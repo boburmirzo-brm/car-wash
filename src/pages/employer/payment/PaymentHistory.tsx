@@ -8,11 +8,13 @@ import { CustomEmpty, MiniLoading } from "@/utils";
 import { PiBroom } from "react-icons/pi";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../redux";
+import { useParams } from "react-router-dom";
 
 const { RangePicker } = DatePicker;
 
 const EmployeePaymentHistory = () => {
-  const id = useSelector((state: RootState) => state.auth.id);
+  const { id } = useParams<{ id?: string }>();
+  const employeeId = useSelector((state: RootState) => state.auth.id);
   const { getParam, setParam, removeParam, removeParams } = useParamsHook();
 
   const fromDate = getParam("fromDate") || "";
@@ -49,10 +51,10 @@ const EmployeePaymentHistory = () => {
 
   const { data, isError, isFetching } = useGetPaymentByEmployeeIdQuery(
     {
-      id,
+      id: id || employeeId,
       params: filters,
     },
-    { skip: !id }
+    { skip: !(id || employeeId)}
   );
 
   const totalItems = data?.data?.total || 0;
@@ -70,7 +72,9 @@ const EmployeePaymentHistory = () => {
         <div className="text-xl font-bold flex items-center gap-2 text-gray-700">
           <HistoryOutlined />
           <span>Tarix:</span>
-          <div className="whitespace-nowrap">{data?.data.totalAmount?.toLocaleString() || "0"} UZS</div>
+          <div className="whitespace-nowrap">
+            {data?.data.totalAmount?.toLocaleString() || "0"} UZS
+          </div>
         </div>
 
         <div className="flex gap-2">
