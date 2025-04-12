@@ -138,7 +138,7 @@ const Profile = () => {
           end
           to={"/employee/profile"}
         >
-          Ishlarim
+          Ish
         </NavLink>
         <NavLink
           className={({ isActive }) =>
@@ -158,7 +158,7 @@ const Profile = () => {
           }
           to={"/employee/profile/payment"}
         >
-          To'lov
+          Kirim
         </NavLink>
       </div>
       <div>

@@ -6,6 +6,7 @@ import React, { useCallback, useMemo } from "react";
 import { PiBroom } from "react-icons/pi";
 import { useParamsHook } from "../../../hooks/useParamsHook";
 import { useParams } from "react-router-dom";
+import { HistoryOutlined } from "@ant-design/icons";
 
 const { RangePicker } = DatePicker;
 
@@ -20,7 +21,6 @@ const CarWahingProgress = () => {
 
   const filters = useMemo(
     () => ({
-      userId: id,
       fromDate,
       toDate,
       page,
@@ -53,18 +53,19 @@ const CarWahingProgress = () => {
     [setParam]
   );
 
-  const { data, isLoading } = useGetByEmployeeIdQuery(filters);
+  const { data, isLoading, isError } = useGetByEmployeeIdQuery({
+    id: id,
+    params: filters,
+  });
 
   return (
-    <div>
+    <>
       <div className="flex justify-between items-center flex-wrap gap-4 ">
         <div className="text-xl font-bold flex items-center gap-2 text-gray-700">
-          <span>Car Wash History</span>
-          <div className="whitespace-nowrap">
-            {data?.data.totalAmount?.toLocaleString() || "0"} UZS
-          </div>
+          <HistoryOutlined />
+          <span>Kirim</span>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 max-[600px]:order-3">
           <RangePicker
             popupClassName="custom-range-picker-dropdown"
             format="YYYY-MM-DD"
@@ -73,6 +74,11 @@ const CarWahingProgress = () => {
           <Button type="default" onClick={clearFilters}>
             <PiBroom className="text-xl" />
           </Button>
+        </div>
+        <div className="min-[600px]:w-full text-right max-[600px]:order-2">
+          <h3 className="text-2xl font-bold">
+            {isError ? "0" : data?.data?.totalAmount.toLocaleString()} UZS
+          </h3>
         </div>
       </div>
       {isLoading && (
@@ -90,7 +96,7 @@ const CarWahingProgress = () => {
           onChange={handlePageChange}
         />
       </div>
-    </div>
+    </>
   );
 };
 

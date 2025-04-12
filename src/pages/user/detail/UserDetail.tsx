@@ -161,7 +161,7 @@ const UserDetail = () => {
               }
               end
             >
-              Yuvgan mashinalari
+              Ishlari
             </NavLink>
             <NavLink
               to={`/employees/user/${id}/expense-history`}
@@ -171,17 +171,17 @@ const UserDetail = () => {
                 }`
               }
             >
-              Olgan maoshlari
+              Maosh
             </NavLink>
             <NavLink
-              to={`/employees/user/${id}/payments`}
+              to={`/employees/user/${id}/payment-history`}
               className={({ isActive }) =>
                 `custom-tab-link hover:text-black text-gray-600 ${
                   isActive ? "active" : ""
                 }`
               }
             >
-              Olgan to'lovlari
+              Kirim
             </NavLink>
           </div>
           <div className="py-4">

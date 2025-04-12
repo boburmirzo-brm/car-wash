@@ -1,10 +1,15 @@
 import React from "react";
-import { useGetAllPaymentQuery } from "../../redux/api/payment";
-import Payment from "./Payment";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux";
+import { useParams } from "react-router-dom";
+import { useGetPaymentByEmployeeIdQuery } from "@/redux/api/payment";
+import Payment from "@/pages/payment/Payment";
 import DateWithPagination from "@/components/ui/DateWithPagination";
 import useFilter from "@/hooks/useFilter";
 
-const PaymentHistory = () => {
+const EmployeePaymentHistory = () => {
+  const { id } = useParams<{ id?: string }>();
+  const employeeId = useSelector((state: RootState) => state.auth.id);
   const {
     clearFilters,
     filters,
@@ -14,12 +19,18 @@ const PaymentHistory = () => {
     page,
   } = useFilter();
 
-  const { data, isError, isFetching } = useGetAllPaymentQuery(filters);
+  const { data, isError, isFetching } = useGetPaymentByEmployeeIdQuery(
+    {
+      id: id || employeeId,
+      params: filters,
+    },
+    { skip: !(id || employeeId) }
+  );
 
   const totalItems = data?.data?.total || 0;
 
   return (
-    <div className="p-4">
+    <>
       <DateWithPagination
         clearFilters={clearFilters}
         handleFilterChange={handleFilterChange}
@@ -30,12 +41,12 @@ const PaymentHistory = () => {
         totalItems={totalItems}
         limit={limit}
         page={page}
-        title="To'lovlar"
+        title="Kirim"
       >
         <Payment data={data?.data?.payload || []} />
       </DateWithPagination>
-    </div>
+    </>
   );
 };
 
-export default React.memo(PaymentHistory);
+export default React.memo(EmployeePaymentHistory);

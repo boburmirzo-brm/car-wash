@@ -17,7 +17,7 @@ interface Props {
 const Payment: FC<Props> = ({ data }) => {
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [selectedPayment, setSelectedPayment] = useState<any>(null);
-
+  
   const [openPopover, setOpenPopover] = useState<string | null>(null);
 
   const handleEdit = (item: any) => {
@@ -32,7 +32,7 @@ const Payment: FC<Props> = ({ data }) => {
   };
 
   return (
-    <div className="space-y-4 px-4">
+    <div className={`space-y-4 `}>
       {data?.map((item: any, index: number) => (
         <Box key={item?._id || index}>
           <div className="flex items-center justify-between">

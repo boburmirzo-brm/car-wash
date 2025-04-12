@@ -24,11 +24,11 @@ const extendedApi = mainApi.injectEndpoints({
       providesTags: ["EXPENSE"],
     }),
 
-    getUserExpense: build.query<any, any>({
-      query: ({ userId, fromDate, toDate, page, limit }) => ({
-        url: `/expense/user/${userId}`,
+    getExpenseByEmployeeId: build.query<any, any>({
+      query: ({id, params}) => ({
+        url: `/expense/user/${id}`,
         method: "GET",
-        params: { fromDate, toDate, page, limit }, // To‘g‘ri format
+        params
       }),
       providesTags: ["EXPENSE"],
     }),
@@ -63,7 +63,7 @@ export const {
   useGetAllExpenseQuery,
   useCreateExpenseMutation,
   useUpdateExpenseMutation,
-  useGetUserExpenseQuery
+  useGetExpenseByEmployeeIdQuery
 } = extendedApi;
 
 export default extendedApi;

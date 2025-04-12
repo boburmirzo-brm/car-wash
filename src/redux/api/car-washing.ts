@@ -40,10 +40,10 @@ const extendedApi = mainApi.injectEndpoints({
     }),
 
     getByEmployeeId: build.query<any, any>({
-      query: ({ userId, fromDate, toDate, page, limit }) => ({
-        url: `car-washing/employee/${userId}`,
+      query: ({ id, params }) => ({
+        url: `car-washing/employee/${id}`,
         method: "GET",
-        params: { fromDate, toDate, page, limit },
+        params,
       }),
       providesTags: ["CAR_WASHING"],
     }),
