@@ -11,7 +11,7 @@ const Header = () => {
         <nav className="h-[60px] max-[500px]:h-[50px] flex items-center justify-between">
           <Link to={"/EMPLOYEE"} className="text-primary font-bold">
             {/* <img className="w-[50px]" src={logo} alt="logo" /> */}
-            <span className="font-medium text-xl">CarWash</span>
+            <span className="font-bold text-xl">AvtoLeader</span>
           </Link>
           <Avatar className="cursor-pointer" onClick={() => window.location.reload()} icon={<ReloadOutlined />} />
         </nav>

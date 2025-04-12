@@ -1,78 +1,63 @@
-import { useState, useCallback } from "react";
-import { Button, Popover } from "antd";
-import { PlusOutlined, MoreOutlined } from "@ant-design/icons";
-import BonusPopup from "../../components/bonus-popup/BonusPopup";
-import BonusList from "./BonusList"; 
+import Box from "@/components/ui/Box";
+import { GiftOutlined, UsergroupAddOutlined } from "@ant-design/icons";
+import Title from "antd/es/typography/Title";
 import { useGetAllBonusQuery } from "../../redux/api/bonus";
+import { MiniLoading } from "@/utils";
 
-const Bonus = () => {
-  const [isEditing, setIsEditing] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedBonus, setSelectedBonus] = useState<any>(null);
-  const [openPopover, setOpenPopover] = useState<string | null>(null);
+const BonusList = () => {
   const { data } = useGetAllBonusQuery({});
-
-  const handleOpen = useCallback(() => setIsModalOpen(true), []);
-  const handleClose = useCallback(() => {
-    setIsModalOpen(false);
-    setIsEditing(false);
-    setSelectedBonus(null);
-  }, []);
-
-  const handleEdit = (bonus: any) => {
-    setSelectedBonus(bonus);
-    setIsEditing(true);
-    setOpenPopover(null);
-  };
-
+  if(!data){
+    return <MiniLoading/>
+  }
+  const bonus = data[0];
   return (
-    <div>
-      <div className="flex justify-end mb-4">
-        {data?.length >= 1 ? (
-          ""
-        ) : (
-          <Button onClick={handleOpen} type="primary">
-            <PlusOutlined />
-          </Button>
-        )}
+    <div className="p-4">
+      <Box className="mb-4">
+        <div className="flex justify-between items-center">
+          <Title style={{ marginBottom: 0 }} level={4}>
+            Bonus
+          </Title>
+        </div>
+      </Box>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <Box className="relative">
+          <div>
+            <div className="mb-4 space-y-2">
+              <div className="flex items-center gap-3 flex-1 border-b border-gray-200 pb-2">
+                <GiftOutlined className="text-2xl" />
+                <span className="text-lg font-semibold">
+                  {bonus?.freeCounter}
+                </span>
+              </div>
+              <p className="text-gray-600">
+                Bitta mashina <b>{bonus?.freeCounter - 1}</b> marta kelib
+                yuvdirilsa
+                <b> {bonus?.freeCounter}</b> - bepul bo'ladi.
+              </p>
+            </div>
+            <div className="space-y-2">
+              <div className="flex items-center gap-3 border-b border-gray-200 pb-2">
+                <UsergroupAddOutlined className="text-2xl text-green-500" />
+                <span className="text-lg font-semibold">
+                  {bonus?.friendPercent} %
+                </span>
+              </div>
+              <p className="text-gray-600">
+                Bir mijoz do'stini olib kelsa, unga{" "}
+                <b>{bonus?.friendPercent} %</b> bonus taqdim etiladi.
+              </p>
+            </div>
+          </div>
+          <div className="mt-5 text-gray-600 text-sm">
+            <span>
+              {bonus?.createdAt?.dateFormat()} {bonus?.createdAt?.timeFormat()}
+            </span>
+          </div>
+        </Box>
       </div>
-
-      {/* BonusList faqat bonuslarni ko‘rsatadi */}
-      <BonusList />
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-        {data?.map((bonus: any) => (
-          <Popover
-            key={bonus?._id}
-            content={
-              <Button onClick={() => handleEdit(bonus)} type="text">
-                Tahrirlash
-              </Button>
-            }
-            trigger="click"
-            placement="bottomRight"
-            open={openPopover === bonus?._id}
-            onOpenChange={(visible) =>
-              setOpenPopover(visible ? bonus?._id : null)
-            }
-          >
-            <Button type="text">
-              <MoreOutlined />
-            </Button>
-          </Popover>
-        ))}
-      </div>
-
-      {isModalOpen && <BonusPopup open={isModalOpen} onClose={handleClose} />}
-      {isEditing && selectedBonus && (
-        <BonusPopup
-          open={isEditing}
-          onClose={handleClose}
-          bonus={selectedBonus}
-        />
-      )}
     </div>
   );
 };
 
-export default Bonus;
+export default BonusList;

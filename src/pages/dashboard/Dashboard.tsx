@@ -3,10 +3,15 @@ import Title from "antd/es/typography/Title";
 import React from "react";
 import { useStatsQuery } from "@/redux/api/stats";
 import Box from "@/components/ui/Box";
-import { NavLink, Outlet } from "react-router-dom";
+import { Outlet } from "react-router-dom";
+import Tabs from "@/components/ui/Tabs";
+import { fromToTime } from "@/helper";
+import { useCheckTokenQuery } from "@/redux/api/auth";
 
 const Dashboard = () => {
-  const { data } = useStatsQuery({});
+  const { data: profile } = useCheckTokenQuery(undefined);
+  const { from, to } = fromToTime(profile?.user?.time || "", 5);
+  const { data } = useStatsQuery({ fromDate: from, toDate: to });
 
   return (
     <>
@@ -63,20 +68,14 @@ const Dashboard = () => {
           </Box>
         </div>
       </div>
-      <div className="mx-4 flex gap-6 border-b border-gray-200 pb-[0.5px]">
-        <NavLink
-          className={`hover:text-black text-gray-600 custom-tab-link`}
-          to={"/"}
-        >
-          Jarayonda
-        </NavLink>
-        <NavLink
-          className={`hover:text-black text-gray-600 custom-tab-link`}
-          to={"/car-washing-done"}
-        >
-          Tayyor
-        </NavLink>
-      </div>
+      <Tabs
+        className="mx-4"
+        items={[
+          { title: "Jarayonda", path: "/", id: 0 },
+          { title: "Tayyor", path: "/car-washing-done", id: 1 },
+        ]}
+      />
+
       <div className="p-4">
         <Outlet />
       </div>

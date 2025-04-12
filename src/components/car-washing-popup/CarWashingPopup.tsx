@@ -22,6 +22,8 @@ import { NumericFormat } from "react-number-format";
 import TextArea from "antd/es/input/TextArea";
 import { toNumber } from "@/helper";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+import { MSAW, MSBW } from "@/static";
 
 type FieldType = {
   washAmount?: string;
@@ -109,7 +111,8 @@ const CarWashingPopup: React.FC<Props> = ({
         })
           .unwrap()
           .then(() => {
-            apiMessage.success("Mashina ma'lumoti yangilandi!");
+            // apiMessage.success("Mashina ma'lumoti yangilandi!");
+            toast.success(MSAW[Math.floor(Math.random() * MSAW.length)]);
             setError(null);
             onClose();
           })
@@ -147,7 +150,8 @@ const CarWashingPopup: React.FC<Props> = ({
       })
         .unwrap()
         .then(() => {
-          apiMessage.success("Mashina yuvish boashlandi! +++");
+          // apiMessage.success("Mashina yuvish boashlandi!");
+          toast.success(MSBW[Math.floor(Math.random() * MSBW.length)]);
           form.resetFields();
           setError(null);
           onClose(true);
@@ -226,8 +230,7 @@ const CarWashingPopup: React.FC<Props> = ({
             <Form.Item<FieldType> label="Izoh" name="comment">
               <TextArea rows={2} />
             </Form.Item>
-            {
-              !profile &&
+            {!profile && (
               <Form.Item<FieldType> label="To'lov turi" name="paymentType">
                 <Radio.Group
                   // value={value}
@@ -237,7 +240,7 @@ const CarWashingPopup: React.FC<Props> = ({
                   ]}
                 />
               </Form.Item>
-            }
+            )}
 
             {!(
               prevData?.customerId?.full_name === "Noma'lum" ||

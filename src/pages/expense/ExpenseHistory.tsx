@@ -1,5 +1,5 @@
 import { Button } from "antd";
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 // import { useParamsHook } from "../../hooks/useParamsHook";
 import { PlusOutlined } from "@ant-design/icons";
 // import { CustomEmpty, MiniLoading } from "@/utils";
@@ -64,7 +64,8 @@ const ExpenseHistory = () => {
   //   [setParam]
   // );
 
-  const { data, isError, isFetching } = useGetAllExpenseQuery(filters);
+  const { data, isError, isFetching, isLoading } =
+    useGetAllExpenseQuery(filters);
 
   const totalItems = data?.data?.total || 0;
 
@@ -73,9 +74,10 @@ const ExpenseHistory = () => {
     setIsModalOpen(true);
   };
 
-  const handleCloseModal = () => {
+  const handleClose = useCallback((isBack?: boolean | undefined) => {
     setIsModalOpen(false);
-  };
+    if (!isBack) window.history.back();
+  }, []);
 
   return (
     <div className="p-4">
@@ -85,6 +87,7 @@ const ExpenseHistory = () => {
         handlePageChange={handlePageChange}
         totalAmount={data?.data?.totalAmount || 0}
         isError={isError}
+        isLoading={isLoading}
         isFetching={isFetching}
         totalItems={totalItems}
         limit={limit}
@@ -142,7 +145,7 @@ const ExpenseHistory = () => {
 
       <ExpensePopup
         open={isModalOpen}
-        onClose={handleCloseModal}
+        onClose={handleClose}
         expense={selectedExpense || undefined}
         requiredComment={true}
         name={

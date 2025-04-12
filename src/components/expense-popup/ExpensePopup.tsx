@@ -7,7 +7,6 @@ import {
   InputRef,
   message,
   Radio,
-  // Select,
 } from "antd";
 import type { FormProps } from "antd";
 import { NumericFormat } from "react-number-format";
@@ -17,7 +16,7 @@ import {
   useCreateExpenseMutation,
   useUpdateExpenseMutation,
 } from "../../redux/api/expense";
-// import { useGetUsersQuery } from "../../redux/api/user";
+import { toNumber } from "@/helper";
 
 interface FieldType {
   amount?: string;
@@ -54,9 +53,6 @@ const ExpensePopup: FC<Props> = ({
   const [form] = Form.useForm();
   const [createExpense, { isLoading: isCreating }] = useCreateExpenseMutation();
   const [updateExpense, { isLoading: isUpdating }] = useUpdateExpenseMutation();
-  // const { data } = useGetUsersQuery();
-  // const users = data?.data?.payload || [];
-
   const [apiMessage, contextHolder] = message.useMessage();
   const priceInputRef = useRef<InputRef>(null);
   useModalNavigation(open, onClose);
@@ -68,10 +64,6 @@ const ExpensePopup: FC<Props> = ({
       }, 100);
     }
   }, [open, expense, employerId]);
-
-  const toNumber = (value?: string): number => {
-    return value ? Number(value.replace(/\s/g, "")) : 0;
-  };
 
   const onFinish: FormProps<FieldType>["onFinish"] = async (values) => {
     const amount = toNumber(values.amount);

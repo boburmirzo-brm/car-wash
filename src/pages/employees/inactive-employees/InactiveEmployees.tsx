@@ -7,8 +7,9 @@ import Box from "@/components/ui/Box";
 import { CustomEmpty } from "@/utils";
 
 const InactiveEmployees = () => {
-  // Faqat is_active=false bo'lgan ishchilarni olish
-  const { data, isLoading } = useGetEmployeesQuery({ is_active: false });
+  const { data, isLoading, isError } = useGetEmployeesQuery({
+    is_active: false,
+  });
 
   return (
     <div className="py-4">
@@ -18,7 +19,7 @@ const InactiveEmployees = () => {
             Bo'shagan ishchilar
           </Title>
         </div>
-
+        {isError && <CustomEmpty />}
         {isLoading ? (
           <Skeleton active />
         ) : (

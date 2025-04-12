@@ -21,10 +21,11 @@ const ExpenseHistory: React.FC = () => {
     page,
   } = useFilter();
 
-  const { data, isFetching, isError } = useGetExpenseByEmployeeIdQuery({
-    id: userId,
-    params: filters,
-  });
+  const { data, isFetching, isError, isLoading } =
+    useGetExpenseByEmployeeIdQuery({
+      id: userId,
+      params: filters,
+    });
 
   const totalItems = data?.data?.total || 0;
 
@@ -35,6 +36,7 @@ const ExpenseHistory: React.FC = () => {
       handlePageChange={handlePageChange}
       totalAmount={data?.data?.totalAmount || 0}
       isError={isError}
+      isLoading={isLoading}
       isFetching={isFetching}
       totalItems={totalItems}
       limit={limit}

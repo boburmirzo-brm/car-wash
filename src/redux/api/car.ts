@@ -18,7 +18,7 @@ const invalidateCustomerTag = async (
 
 const extendedApi = mainApi.injectEndpoints({
   endpoints: (build: EndpointBuilder<any, any, any>) => ({
-    getCars: build.query<IPayload<ICar>, { filter?: string } | void>({
+    getCars: build.query<IPayload<ICar>, any | void>({
       query: (params) => ({
         url: "/cars",
         method: "GET",

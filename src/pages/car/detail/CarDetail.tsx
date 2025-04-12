@@ -1,27 +1,24 @@
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useGetCarByIdQuery } from "@/redux/api/car";
 import { useGetSalaryByIdQuery } from "@/redux/api/salary";
 import { useCheckTokenQuery } from "@/redux/api/auth";
-import { useParamsHook } from "../../../hooks/useParamsHook";
-import { Alert, Button, Pagination, Skeleton, Tooltip, DatePicker } from "antd";
+import { Alert, Button, Skeleton, Tooltip } from "antd";
 import { IoCarOutline, IoPlayOutline } from "react-icons/io5";
 import { FaRegEdit } from "react-icons/fa";
-import { HistoryOutlined } from "@ant-design/icons";
 import CarPopup from "@/components/car-popup/CarPopup";
 import CarWashingPopup from "@/components/car-washing-popup/CarWashingPopup";
 import CarNumber from "@/components/cars-view/CarNumber";
 import CarsWashings from "./CarsWashings";
-import { CustomEmpty } from "@/utils";
 import Box from "@/components/ui/Box";
-import { PiBroom } from "react-icons/pi";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux";
 import { Role } from "@/constant";
 import { useGetByCarIdQuery } from "@/redux/api/car-washing";
 import { TbUser, TbUserShield } from "react-icons/tb";
+import useFilter from "@/hooks/useFilter";
+import DateWithPagination from "@/components/ui/DateWithPagination";
 
-const { RangePicker } = DatePicker;
 type ModalType = "start" | "edit" | null;
 
 const CarDetail = () => {
@@ -32,31 +29,37 @@ const CarDetail = () => {
   });
 
   const [modalType, setModalType] = useState<ModalType>(null);
-  const { getParam, setParam, removeParam, removeParams } = useParamsHook();
   const role = useSelector((state: RootState) => state.role.value);
 
-  const fromDate = getParam("fromDate") || "";
-  const toDate = getParam("toDate") || "";
-  const page = parseInt(getParam("page") || "1", 10);
-  const limit = 20;
+  const {
+    clearFilters,
+    filters,
+    handleFilterChange,
+    handlePageChange,
+    limit,
+    page,
+  } = useFilter();
 
-  const filters = useMemo(
-    () => ({ fromDate, toDate, page, limit }),
-    [fromDate, toDate, page]
-  );
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const { data, isLoading } = useGetCarByIdQuery({ id });
   const car = data?.data.payload?.car;
 
-  const { data: carWashing } = useGetByCarIdQuery(
+  const {
+    data: carWashing,
+    isFetching,
+    isLoading: isLoadingWashing,
+    isError: isErrorWashing,
+  } = useGetByCarIdQuery(
     {
       id: car?._id,
       params: filters,
     },
     { skip: !car?._id }
   );
-  const carWashings = carWashing?.data.payload;
-  const totalItems = data?.data.total;
+  const carWashings = carWashing?.data;
 
   const handleOpenModal = (type: ModalType) => setModalType(type);
   const handleClose = useCallback((isBack?: boolean) => {
@@ -64,34 +67,10 @@ const CarDetail = () => {
     if (!isBack) window.history.back();
   }, []);
 
-  const handleFilterChange = useCallback(
-    (dates: any) => {
-      if (dates) {
-        setParam("fromDate", dates[0].format("YYYY-MM-DD"));
-        setParam("toDate", dates[1].format("YYYY-MM-DD"));
-      } else {
-        removeParam("fromDate");
-        removeParam("toDate");
-      }
-    },
-    [setParam, removeParam]
-  );
-
-  const clearFilters = useCallback(() => {
-    removeParams(["fromDate", "toDate", "page"]);
-  }, [removeParams]);
-
-  const handlePageChange = useCallback(
-    (newPage: number) => setParam("page", newPage.toString()),
-    [setParam]
-  );
-
   return (
     <>
       <div
-        className={`flex flex-col gap-4  ${
-          role === Role.EMPLOYEE ? "my-4" : "p-4"
-        }`}
+        className={`flex flex-col  ${role === Role.EMPLOYEE ? "my-4" : "p-4"}`}
       >
         {isError && role === Role.EMPLOYEE && (
           <Alert
@@ -101,7 +80,7 @@ const CarDetail = () => {
           />
         )}
 
-        <Box>
+        <Box className="mb-4">
           {isLoading ? (
             <Skeleton active />
           ) : (
@@ -157,36 +136,21 @@ const CarDetail = () => {
           )}
         </Box>
 
-          <div className="flex justify-between items-start max-[600px]:gap-4 max-[600px]:flex-col">
-            <div className="text-xl font-bold flex items-center gap-2 text-gray-700">
-              <HistoryOutlined />
-              <span>Tarix</span>
-            </div>
-            <div className="flex gap-2">
-              <RangePicker
-                popupClassName="custom-range-picker-dropdown"
-                format="YYYY-MM-DD"
-                onChange={handleFilterChange}
-              />
-              <Button type="default" onClick={clearFilters}>
-                <PiBroom className="text-xl" />
-              </Button>
-            </div>
-          </div>
-
-        {!carWashings?.length && <CustomEmpty />}
-        <CarsWashings profile={true} data={carWashings} />
-        {carWashings?.length && (
-          <div className="flex justify-end">
-            <Pagination
-              current={page}
-              pageSize={limit}
-              total={totalItems}
-              onChange={handlePageChange}
-              showSizeChanger={false}
-            />
-          </div>
-        )}
+        <DateWithPagination
+          clearFilters={clearFilters}
+          handleFilterChange={handleFilterChange}
+          handlePageChange={handlePageChange}
+          totalAmount={carWashings?.totalAmount || 0}
+          isError={isErrorWashing}
+          isLoading={isLoadingWashing}
+          isFetching={isFetching}
+          totalItems={carWashings?.total || 0}
+          limit={limit}
+          page={page}
+          title="Tarix"
+        >
+          <CarsWashings profile={true} data={carWashings?.payload} />
+        </DateWithPagination>
       </div>
 
       <CarPopup

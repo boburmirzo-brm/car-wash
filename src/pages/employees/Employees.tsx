@@ -7,7 +7,8 @@ import { useGetEmployeesQuery } from "@/redux/api/user";
 import UserPopup from "@/components/user-popup/UserPopup";
 import { Role } from "@/constant";
 import Box from "@/components/ui/Box";
-import { NavLink, Outlet } from "react-router-dom";
+import { Outlet } from "react-router-dom";
+import Tabs from "@/components/ui/Tabs";
 
 const Employees = () => {
   const { isLoading } = useGetEmployeesQuery({});
@@ -46,30 +47,18 @@ const Employees = () => {
           </Button>
         </div>
       </Box>
-      <div className="flex gap-6 mt-4 border-b border-gray-200 pb-[0.5px]">
-        <NavLink
-          className={({ isActive }) =>
-            `custom-tab-link hover:text-black text-gray-600 ${
-              isActive ? "active" : ""
-            }`
-          }
-          end
-          to={"/employees"}
-        >
-          Faol ishchilar
-        </NavLink>
-        <NavLink
-          className={({ isActive }) =>
-            `custom-tab-link hover:text-black text-gray-600 ${
-              isActive ? "active" : ""
-            }`
-          }
-          to={"/employees/inactive-employees"}
-        >
-          Bo'shagan ishchilar
-        </NavLink>
-      </div>
-      <div className="">
+      <Tabs
+        className="mt-4 "
+        items={[
+          { title: "Faol ishchilar", path: "", id: 0 },
+          {
+            title: "Bo'shagan ishchilar",
+            path: "/employees/inactive-employees",
+            id: 1,
+          },
+        ]}
+      />
+      <div >
         <Outlet />
       </div>
       <UserPopup

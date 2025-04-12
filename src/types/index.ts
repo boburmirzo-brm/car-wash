@@ -40,6 +40,7 @@ export interface IPayload<T> {
     total: number;
     limit: number;
     page: number;
+    totalAmount?: number;
   };
 }
 export interface IDetailPayload<T> {
@@ -184,6 +185,7 @@ export interface ExpenseType {
   amount: number;
   comment: string;
   createdAt: string;
+  updatedAt: string;
   type: PaymentType;
   employerId: any;
   adminId: any

@@ -1,37 +1,32 @@
 import TelPopUp from "@/components/tel-pop-up/TelPopUp";
 import { useGetCustomerByIdQuery } from "@/redux/api/customer";
-import { Button, Skeleton, Typography, Tooltip, Tabs } from "antd";
-import React, { useCallback, useState } from "react";
+import { Button, Skeleton, Typography, Tooltip } from "antd";
+import React, { useCallback, useEffect, useState } from "react";
 import { FaRegEdit } from "react-icons/fa";
 import { MdAttachMoney } from "react-icons/md";
-// import { PlusOutlined } from "@ant-design/icons";
-import { useParams, useNavigate, useLocation, Outlet } from "react-router-dom";
+import { useParams, Outlet } from "react-router-dom";
 import { TbUser, TbUserShield, TbUserX } from "react-icons/tb";
-// import CarsView from "@/components/cars-view/CarsView";
 import PaymentPopup from "@/components/payment-popup/PaymentPopup";
 import CustomerPopup from "@/components/customer-popup/CustomerPopup";
 import CarPopup from "@/components/car-popup/CarPopup";
-// import { CustomEmpty } from "@/utils";
-import type { TabsProps } from "antd";
 import Box from "@/components/ui/Box";
 import { Role } from "@/constant";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux";
+import Tabs from "@/components/ui/Tabs";
 
 const { Title } = Typography;
 type ModalType = "payment" | "edit" | "car" | null;
 
 const CustomerDetail = () => {
   const { id } = useParams<{ id: string }>();
-  const navigate = useNavigate();
-  const { pathname } = useLocation();
   const { data, isLoading } = useGetCustomerByIdQuery(id || "");
   const [modalType, setModalType] = useState<ModalType>(null);
   const role = useSelector((state: RootState) => state.role.value);
 
-  // useEffect(() => {
-  //   window.scrollTo(0, 0);
-  // }, []);
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const handleOpenModal = (type: ModalType) => {
     setModalType(type);
@@ -45,31 +40,10 @@ const CustomerDetail = () => {
   const customer = data?.data.payload.customer;
   const cars = data?.data.payload.cars;
 
-  const onChange = (key: string) => {
-    navigate(key);
-  };
-
-  const activeTab =
-    pathname.split("/").pop() === "payment-history" ? `payment-history` : ``;
-  const items: TabsProps["items"] = [
-    {
-      key: ``,
-      label: "Mashinalar",
-      // children: "Content of Tab Pane 1",
-    },
-    {
-      key: `payment-history`,
-      label: "To'lov tarixi",
-      // children: "Content of Tab Pane 2",
-    },
-  ];
-
   return (
     <>
       <div
-        className={`flex flex-col gap-4  ${
-          role === Role.EMPLOYEE ? "my-4" : "p-4"
-        }`}
+        className={`flex flex-col   ${role === Role.EMPLOYEE ? "my-4" : "p-4"}`}
       >
         <Box>
           {isLoading ? (
@@ -141,13 +115,15 @@ const CustomerDetail = () => {
           )}
         </Box>
         <Tabs
-          defaultActiveKey={activeTab}
-          activeKey={activeTab}
-          items={items}
-          onChange={onChange}
+          className="mt-4"
+          items={[
+            { title: "Mashinalar", path: "", id: 0 },
+            { title: "To'lov tarixi", path: "payment-history", id: 1 },
+          ]}
         />
-
-        <Outlet context={{ cars, customerId: customer?._id }} />
+        <div className="mt-4 min-h-[500px]">
+          <Outlet context={{ cars, customerId: customer?._id }} />
+        </div>
       </div>
       <PaymentPopup
         open={modalType === "payment"}

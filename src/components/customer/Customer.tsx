@@ -28,7 +28,11 @@ const Customer: FC<Props> = ({ data }) => {
 
             <span
               className={`font-semibold text-lg ${
-                customer?.budget >= 0 ? "text-green-600" : "text-red-500"
+                customer?.budget === 0
+                  ? "text-gray-600"
+                  : customer?.budget >= 0
+                  ? "text-green-600"
+                  : "text-red-500"
               }`}
             >
               {customer?.budget?.toLocaleString()} UZS

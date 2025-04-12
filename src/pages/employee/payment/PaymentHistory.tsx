@@ -19,7 +19,7 @@ const EmployeePaymentHistory = () => {
     page,
   } = useFilter();
 
-  const { data, isError, isFetching } = useGetPaymentByEmployeeIdQuery(
+  const { data, isError, isFetching, isLoading } = useGetPaymentByEmployeeIdQuery(
     {
       id: id || employeeId,
       params: filters,
@@ -37,6 +37,7 @@ const EmployeePaymentHistory = () => {
         handlePageChange={handlePageChange}
         totalAmount={data?.data?.totalAmount || 0}
         isError={isError}
+        isLoading={isLoading}
         isFetching={isFetching}
         totalItems={totalItems}
         limit={limit}

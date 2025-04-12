@@ -3,13 +3,13 @@ import { useParamsHook } from "./useParamsHook";
 import { fromToTime } from "@/helper";
 import { useCallback, useMemo } from "react";
 
-const useFilter = (beforeDays: number = 0, limitAmount: number = 20) => {
+const useFilter = (beforeDays: number = 0, allTime: boolean = false, limitAmount: number = 20) => {
   const { getParam, setParam, removeParam, removeParams } = useParamsHook();
   const { data: profile } = useCheckTokenQuery(undefined);
   const { from, to } = fromToTime(profile?.user?.time || "", beforeDays);
 
-  const fromDate = getParam("fromDate") || from;
-  const toDate = getParam("toDate") || to;
+  const fromDate = getParam("fromDate") || (allTime ? "" : from);
+  const toDate = getParam("toDate") || (allTime ? "" : to);
   const page = parseInt(getParam("page") || "1", 10);
   const limit = limitAmount;
 

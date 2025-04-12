@@ -13,6 +13,7 @@ import { TbUserShield } from "react-icons/tb";
 import { BsArrowDown } from "react-icons/bs";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux";
+import Edited from "@/components/ui/Edited";
 
 interface ExpenseItemType extends Omit<ExpenseType, "type"> {
   type: PaymentType;
@@ -71,7 +72,7 @@ const ExpenseView: FC<Props> = ({ data }) => {
           <div className="flex items-center gap-2 text-gray-700 text-sm ">
             <MdOutlineAdminPanelSettings className="text-lg " />
             <span>
-              {item?.adminId?.l_name?.[0]}. {item?.adminId?.f_name}
+              {item?.adminId?.l_name}. {item?.adminId?.f_name}
             </span>
           </div>
 
@@ -86,15 +87,15 @@ const ExpenseView: FC<Props> = ({ data }) => {
                   className="hover:underline"
                   to={`/employees/user/${item?.employerId?._id}`}
                 >
-                  {item?.employerId?.l_name?.[0]}. {item?.employerId?.f_name}
+                  {item?.employerId?.l_name} {item?.employerId?.f_name}
                 </Link>
               </div>
             </>
           )}
 
           {item?.comment && (
-            <div className="text-gray-600 text-sm  flex items-center gap-2 mt-1">
-              <FaRegCommentDots className="text-lg" />
+            <div className="text-gray-600 text-sm  flex  gap-2 mt-1">
+              <FaRegCommentDots className="text-lg min-w-4" />
               <span>{item?.comment}</span>
             </div>
           )}
@@ -102,7 +103,8 @@ const ExpenseView: FC<Props> = ({ data }) => {
             <span>
               {item?.createdAt?.dateFormat()} {item?.createdAt?.timeFormat()}
             </span>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-4">
+              <Edited createdAt={item?.createdAt} updatedAt={item?.updatedAt} />
               <PaymentTypeTooltip type={item?.type} />
             </div>
           </div>

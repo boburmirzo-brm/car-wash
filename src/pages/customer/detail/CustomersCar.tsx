@@ -6,8 +6,8 @@ import React, { useCallback, useMemo, useState } from "react";
 import { PlusOutlined } from "@ant-design/icons";
 import CarPopup from "@/components/car-popup/CarPopup";
 import { useOutletContext } from "react-router-dom";
-import { useGetByCustomerIdQuery } from "../../../redux/api/car";
-import { useParamsHook } from "../../../hooks/useParamsHook";
+import { useGetByCustomerIdQuery } from "@/redux/api/car";
+import { useParamsHook } from "@/hooks/useParamsHook";
 
 type ModalType = "payment" | "edit" | "car" | null;
 
@@ -40,17 +40,17 @@ const CustomersCar = () => {
     }),
     [page]
   );
-  
+
   const { data, isError, isFetching } = useGetByCustomerIdQuery(
     {
-      id:customerId,
+      id: customerId,
       params: filters,
     },
     { skip: !customerId }
   );
-  const cars = data?.data?.payload
+  const cars = data?.data?.payload;
 
-  const totalItems = data?.data?.total || 0;  
+  const totalItems = data?.data?.total || 0;
 
   const handlePageChange = useCallback(
     (newPage: number) => {

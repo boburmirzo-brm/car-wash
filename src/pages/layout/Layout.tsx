@@ -11,6 +11,7 @@ import { Role } from "@/constant";
 import { Loading } from "@/utils";
 import DashboardHeader from "@/components/header/DashboardHeader";
 import DashboardNavigation from "@/components/bottom-navigation/DashboardNavigation";
+import { Toaster } from "react-hot-toast";
 
 const Layout = () => {
   const dispatch = useDispatch();
@@ -28,7 +29,7 @@ const Layout = () => {
 
   const handleSidebarOpen = useCallback(() => setSidebarShow(true), []);
   const handleSidebarClose = useCallback(() => setSidebarShow(false), []);
-  
+
   const isAdminOrOwner = roleState === Role.ADMIN || roleState === Role.OWNER;
 
   return isLoading ? (
@@ -46,7 +47,9 @@ const Layout = () => {
       )}
       <main
         className={
-          isAdminOrOwner ? "flex-1 pb-[60px]" : `container mx-auto min-h-[80vh] pb-[60px]`
+          isAdminOrOwner
+            ? "flex-1 pb-[60px]"
+            : `container mx-auto min-h-[80vh] pb-[60px]`
         }
       >
         {isAdminOrOwner && <DashboardHeader />}
@@ -57,6 +60,7 @@ const Layout = () => {
       ) : (
         <BottomNavigation />
       )}
+      <Toaster position="top-center" reverseOrder={false} toastOptions={{duration: 5000}} />
     </div>
   );
 };

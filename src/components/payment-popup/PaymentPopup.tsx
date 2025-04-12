@@ -9,6 +9,7 @@ import {
 } from "@/redux/api/payment";
 import { useModalNavigation } from "@/hooks/useModalNavigation";
 import { PaymentType } from "@/constant";
+import { toNumber } from "@/helper";
 
 type FieldType = {
   amount?: string;
@@ -22,7 +23,6 @@ interface Props {
   customerId: null | string;
   name: string;
   payment?: IPaymentAmount;
-  // onlyPayment?: boolean;
 }
 
 const { TextArea } = Input;
@@ -41,33 +41,16 @@ const PaymentPopup: FC<Props> = ({
   const priceInputRef = useRef<InputRef>(null);
   useModalNavigation(open, onClose);
 
-  const toNumber = (value?: string | number): number => {
-    if (typeof value === "string") {
-      console.log("kirdi");
-      
-      return Number(value.replace(/\s/g, "")); // faqat string uchun
-    }
-    return Number(value) || 0; // Agar number bo'lsa, uni to'g'ridan-to'g'ri raqamga aylantiradi
-  };
-
-
   useEffect(() => {
     if (open) {
       setTimeout(() => {
         priceInputRef.current?.focus();
       }, 100);
-      // if (payment) {
-      //   form.setFieldsValue({
-      //     amount: payment.amount.toString(),
-      //     comment: payment.comment,
-      //     type: payment.type,
-      //   });
-      // }
     }
   }, [open, payment]);
 
   const onFinish: FormProps<FieldType>["onFinish"] = (values) => {
-    const amount = toNumber(values.amount);    
+    const amount = toNumber(values.amount);
 
     if (!amount) {
       apiMessage.error("Summani to‘g‘ri kiriting!");

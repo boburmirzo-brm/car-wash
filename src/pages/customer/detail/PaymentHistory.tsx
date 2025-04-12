@@ -1,14 +1,10 @@
-import PaymentView from "@/components/payment/PaymentView";
 import { useGetPaymentByCustomerIdQuery } from "@/redux/api/payment";
-import { Pagination,  Button, DatePicker } from "antd";
-import React, { useCallback, useMemo } from "react";
+import React from "react";
 import { useOutletContext } from "react-router-dom";
-import { useParamsHook } from "../../../hooks/useParamsHook";
-import { HistoryOutlined } from "@ant-design/icons";
-import { CustomEmpty, MiniLoading } from "@/utils";
-import { PiBroom } from "react-icons/pi";
+import useFilter from "@/hooks/useFilter";
+import DateWithPagination from "@/components/ui/DateWithPagination";
+import Payment from "@/pages/payment/Payment";
 
-const { RangePicker } = DatePicker;
 
 interface ContextType {
   cars: any;
@@ -17,41 +13,16 @@ interface ContextType {
 
 const PaymentHistory = () => {
   const { customerId } = useOutletContext<ContextType>();
-  const { getParam, setParam, removeParam, removeParams } = useParamsHook();
+  const {
+    clearFilters,
+    filters,
+    handleFilterChange,
+    handlePageChange,
+    limit,
+    page,
+  } = useFilter();
 
-  const fromDate = getParam("fromDate") || "";
-  const toDate = getParam("toDate") || "";
-  const page = parseInt(getParam("page") || "1", 10);
-  const limit = 20;
-
-  const filters = useMemo(
-    () => ({
-      fromDate,
-      toDate,
-      page,
-      limit,
-    }),
-    [fromDate, toDate, page]
-  );
-
-  const handleFilterChange = useCallback(
-    (dates: any) => {
-      if (dates) {
-        setParam("fromDate", dates[0].format("YYYY-MM-DD"));
-        setParam("toDate", dates[1].format("YYYY-MM-DD"));
-      } else {
-        removeParam("fromDate");
-        removeParam("toDate");
-      }
-    },
-    [setParam, removeParam]
-  );
-
-  const clearFilters = useCallback(() => {
-    removeParams(["fromDate", "toDate", "page"]);
-  }, [removeParams]);
-
-  const { data, isError, isFetching } = useGetPaymentByCustomerIdQuery(
+  const { data, isError, isFetching, isLoading } = useGetPaymentByCustomerIdQuery(
     {
       customerId,
       params: filters,
@@ -61,49 +32,23 @@ const PaymentHistory = () => {
 
   const totalItems = data?.data?.total || 0;
 
-  const handlePageChange = useCallback(
-    (newPage: number) => {
-      setParam("page", newPage.toString());
-    },
-    [setParam]
-  );
-
   return (
     <>
-      <div className="flex justify-between items-start max-[600px]:gap-4 max-[600px]:flex-col">
-        <div className="text-xl font-bold flex items-center gap-2 text-gray-700">
-          <HistoryOutlined />
-          <span>Tarix</span>
-        </div>
-        <div className="flex gap-2">
-          <RangePicker
-            popupClassName="custom-range-picker-dropdown"
-            format="YYYY-MM-DD"
-            onChange={handleFilterChange}
-          />
-          <Button type="default" onClick={clearFilters}>
-            <PiBroom className="text-xl"/>
-          </Button>
-        </div>
-      </div>
-      {isError && <CustomEmpty />}
-      {
-        !isError && (
-          <PaymentView data={data?.data?.payload || []} />
-        )
-      }
-      {isFetching && <MiniLoading />}
-      {!isError && totalItems > limit && (
-        <div className="flex justify-end mt-4">
-          <Pagination
-            current={page}
-            pageSize={limit}
-            total={totalItems}
-            onChange={handlePageChange}
-            showSizeChanger={false}
-          />
-        </div>
-      )}
+      <DateWithPagination
+        clearFilters={clearFilters}
+        handleFilterChange={handleFilterChange}
+        handlePageChange={handlePageChange}
+        totalAmount={data?.data?.totalAmount || 0}
+        isError={isError}
+        isLoading={isLoading}
+        isFetching={isFetching}
+        totalItems={totalItems}
+        limit={limit}
+        page={page}
+        title="To'lovlar"
+      >
+        <Payment data={data?.data?.payload || []} />
+      </DateWithPagination>
     </>
   );
 };

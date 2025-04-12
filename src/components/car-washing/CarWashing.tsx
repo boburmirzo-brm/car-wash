@@ -82,8 +82,8 @@ const CarWashing: FC<Props> = ({ data, profile }) => {
             </div>
           )}
           {item?.comment && (
-            <div className="text-gray-600 text-sm mt-3 flex items-center gap-2">
-              <FaRegCommentDots className="text-lg" />
+            <div className="text-gray-600 text-sm mt-3 flex gap-2">
+              <FaRegCommentDots className="text-lg min-w-4" />
               <span>{item?.comment}</span>
             </div>
           )}

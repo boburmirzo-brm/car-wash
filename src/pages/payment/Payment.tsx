@@ -9,6 +9,7 @@ import { Link } from "react-router-dom";
 import Box from "@/components/ui/Box";
 import { TbUser, TbUserShield } from "react-icons/tb";
 import { BsArrowDown } from "react-icons/bs";
+import Edited from "@/components/ui/Edited";
 
 interface Props {
   data: any;
@@ -76,13 +77,13 @@ const Payment: FC<Props> = ({ data }) => {
               to={`/employees/user/${item?.employerId?._id}`}
               title={item?.employerId?.f_name + " " + item?.employerId?.l_name}
             >
-              {item?.employerId?.l_name[0]}. {item?.employerId?.f_name}
+              {item?.employerId?.l_name} {item?.employerId?.f_name}
             </Link>
           </div>
 
           {item?.comment && (
-            <div className="text-gray-600 text-sm  flex items-center gap-2">
-              <FaRegCommentDots className="text-lg" />
+            <div className="text-gray-600 text-sm  flex  gap-2">
+              <FaRegCommentDots className="text-lg min-w-4" />
               <span>{item?.comment}</span>
             </div>
           )}
@@ -90,7 +91,8 @@ const Payment: FC<Props> = ({ data }) => {
             <span>
               {item?.createdAt?.dateFormat()} {item?.createdAt?.timeFormat()}
             </span>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-4">
+              <Edited createdAt={item?.createdAt} updatedAt={item?.updatedAt} />
               <PaymentTypeTooltip type={item?.type} />
             </div>
           </div>

@@ -7,7 +7,7 @@ import Box from "@/components/ui/Box";
 import { CustomEmpty } from "@/utils";
 
 const ActiveEmployees = () => {
-  const { data, isLoading } = useGetEmployeesQuery({ is_active: true });
+  const { data, isLoading, isError } = useGetEmployeesQuery({ is_active: true });
 
   return (
     <div className="py-4">
@@ -17,7 +17,7 @@ const ActiveEmployees = () => {
             Faol ishchilar
           </Title>
         </div>
-
+        {isError && <CustomEmpty />}
         {isLoading ? (
           <Skeleton active />
         ) : (

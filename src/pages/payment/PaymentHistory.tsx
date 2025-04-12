@@ -14,7 +14,8 @@ const PaymentHistory = () => {
     page,
   } = useFilter();
 
-  const { data, isError, isFetching } = useGetAllPaymentQuery(filters);
+  const { data, isError, isFetching, isLoading } =
+    useGetAllPaymentQuery(filters);
 
   const totalItems = data?.data?.total || 0;
 
@@ -26,6 +27,7 @@ const PaymentHistory = () => {
         handlePageChange={handlePageChange}
         totalAmount={data?.data?.totalAmount || 0}
         isError={isError}
+        isLoading={isLoading}
         isFetching={isFetching}
         totalItems={totalItems}
         limit={limit}

@@ -40,8 +40,15 @@
   position: absolute;
   bottom: -2px;
   left: 0;
-  width: 100%;
+  width: 0;
   height: 2.5px;
   background: var(--color-primary);
   border-radius: 2px 2px 0 0;
+  animation: tabAnimation 0.25s ease-in-out forwards;
+}
+
+@keyframes tabAnimation {
+  to {
+    width: 100%;
+  }
 }
