@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { ReloadOutlined } from "@ant-design/icons";
 import { FaRegMoon, FaRegSun } from "react-icons/fa6";
+import FullScreen from "./FullScreen";
 
 const Header = () => {
   const [theme, setTheme] = useState<"light" | "dark">("light");
@@ -38,14 +39,15 @@ const Header = () => {
             <span className="font-bold text-xl">AvtoLeader</span>
           </Link>
           <div className="flex gap-2">
+            <FullScreen />
             <button
-              className="cursor-pointer flex justify-center items-center border size-8 rounded-full border-border text-text-muted"
+              className="cursor-pointer flex justify-center hover:bg-bg items-center size-8 rounded-full  text-text-muted"
               onClick={handleChangeTheme}
             >
               {theme === "dark" ? <FaRegSun /> : <FaRegMoon />}
             </button>
             <button
-              className="cursor-pointer border size-8 rounded-full border-border text-text-muted"
+              className="cursor-pointer hover:bg-bg size-8 rounded-full  text-text-muted"
               onClick={() => window.location.reload()}
             >
               <ReloadOutlined />

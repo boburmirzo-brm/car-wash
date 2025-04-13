@@ -3,6 +3,8 @@ import React, { useEffect, useState } from "react";
 import { ReloadOutlined } from "@ant-design/icons";
 import { useCheckTokenQuery } from "@/redux/api/auth";
 import { FaRegMoon, FaRegSun } from "react-icons/fa6";
+import { MdFullscreen, MdFullscreenExit } from "react-icons/md";
+import FullScreen from "./FullScreen";
 
 const DashboardHeader = () => {
   const { data } = useCheckTokenQuery(undefined);
@@ -32,6 +34,7 @@ const DashboardHeader = () => {
     }
   };
 
+
   return (
     <div className="w-full h-[60px] border-b sticky top-0 left-0 z-50 bg-sidebar text-text border-border px-4 flex items-center justify-between">
       <div className="flex items-center gap-2 ">
@@ -39,14 +42,15 @@ const DashboardHeader = () => {
         <h2>{data?.user?.f_name}</h2>
       </div>
       <div className="flex gap-2">
+        <FullScreen/>
         <button
-          className="cursor-pointer flex justify-center items-center border size-8 rounded-full border-border text-text-muted"
+          className="cursor-pointer flex justify-center items-center hover:bg-bg size-8 rounded-full  text-text-muted"
           onClick={handleChangeTheme}
         >
           {theme === "dark" ? <FaRegSun /> : <FaRegMoon />}
         </button>
         <button
-          className="cursor-pointer border size-8 rounded-full border-border text-text-muted"
+          className="cursor-pointer  size-8 rounded-full hover:bg-bg text-text-muted"
           onClick={() => window.location.reload()}
         >
           <ReloadOutlined />
