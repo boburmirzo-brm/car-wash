@@ -37,9 +37,9 @@ const Login: React.FC = () => {
   };
 
   return (
-    <section className="w-full min-h-screen p-4 flex items-center justify-center">
-      <div className="max-w-[450px] w-full border p-4 border-border rounded-[6px]">
-        <p className="text-2xl mb-5 text-gray-800">Ro'yhatdan o'tish</p>
+    <section className="w-full bg-bg min-h-screen p-4 flex items-center justify-center">
+      <div className="max-w-[450px] bg-white dark:bg-slate-900 w-full border p-4 border-border rounded-[6px]">
+        <p className="text-2xl mb-5 text-text">Ro'yhatdan o'tish</p>
         <Form
           name="basic"
           layout="vertical"

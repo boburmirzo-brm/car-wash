@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useGetCarsQuery } from "../../../redux/api/car";
 import CarsView from "../../../components/cars-view/CarsView";
 import useFilter from "@/hooks/useFilter";
@@ -13,6 +13,9 @@ const Cars = () => {
     limit,
     page,
   } = useFilter(0, true);
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [page]);
 
   const { data, isLoading, isError, isFetching } = useGetCarsQuery(filters);
   const cars = data?.data?.payload || [];

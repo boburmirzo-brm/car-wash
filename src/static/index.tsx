@@ -4,7 +4,7 @@ import {
   UserOutlined,
 } from "@ant-design/icons";
 import { FaRegCircleUser } from "react-icons/fa6";
-import { LuUsers } from "react-icons/lu";
+import { LuChartColumn, LuUsers } from "react-icons/lu";
 import {
   MdOutlineAdminPanelSettings,
   MdOutlineDashboard,
@@ -12,6 +12,38 @@ import {
 } from "react-icons/md";
 import { PiMoneyWavy } from "react-icons/pi";
 import { TbCoins, TbUserShield } from "react-icons/tb";
+import { theme } from "antd";
+
+export const themeLight = {
+  algorithm: theme.defaultAlgorithm,
+  token: {
+    colorPrimary: "#314158",
+    colorBgBase: "#ffffff",
+    colorTextBase: "#1f2937",
+    colorSuccess: "#52c41a",
+    colorWarning: "#faad14",
+    colorError: "#ff4d4f",
+    borderRadius: 4,
+    colorBgContainer: "#fff",
+  },
+};
+export const themeDark = {
+  algorithm: theme.darkAlgorithm,
+  token: {
+    colorPrimary: "#314158", // --color-primary
+    colorBgBase: "#000", // --color-bg
+    colorBgContainer: "#1E2939", // --color-card / --color-sidebar
+    // colorBgElevated: "#1E2939", // --color-card / --color-sidebar
+    colorTextBase: "#FFFFFF", // --color-text
+    colorText: "#c8d0df", // --color-text-muted (asosiy matndan tashqari)
+    colorSuccess: "#22C55E", // --color-success
+    colorWarning: "#EAB308", // --color-warning
+    colorError: "#ff4d4f", // --color-danger
+    colorBorder: "#1e2d48", // --color-border
+    // colorSplit: "#3F3F46", // --color-divider
+    borderRadius: 4,
+  },
+};
 
 export const EMPLOYEE_NAVIGATION = [
   {
@@ -37,6 +69,12 @@ export const SIDEBAR_LINKS = [
     path: "/",
     title: "Dashboard",
     icon: <MdOutlineDashboard className="text-2xl" />,
+  },
+  {
+    id: 9,
+    path: "/statistic",
+    title: "Statistika",
+    icon: <LuChartColumn className="text-2xl" />,
   },
   {
     id: 2,

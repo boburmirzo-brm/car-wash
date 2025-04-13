@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useGetAllPaymentQuery } from "../../redux/api/payment";
 import Payment from "./Payment";
 import DateWithPagination from "@/components/ui/DateWithPagination";
@@ -13,6 +13,10 @@ const PaymentHistory = () => {
     limit,
     page,
   } = useFilter();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [page]);
 
   const { data, isError, isFetching, isLoading } =
     useGetAllPaymentQuery(filters);

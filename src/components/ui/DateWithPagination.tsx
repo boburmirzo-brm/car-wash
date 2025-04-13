@@ -15,7 +15,7 @@ interface OptionsProps {
   handleFilterChange: (dates: any) => void;
 }
 
-const Options: React.FC<OptionsProps> = ({handleFilterChange}) => {
+const Options: React.FC<OptionsProps> = ({ handleFilterChange }) => {
   const [open, setOpen] = useState(false);
 
   const content = (
@@ -125,21 +125,26 @@ const DateWithPagination: FC<Props> = ({
           >
             1 Oy
           </Button>
-          <Options handleFilterChange={handleFilterChange}/>
-          {suffix === "ta" && extraOptions}
+          <Options handleFilterChange={handleFilterChange} />
+          {suffix !== "UZS" && extraOptions}
           <Button type="default" onClick={clearFilters}>
             <PiBroom className="text-xl" />
           </Button>
-          {suffix !== "ta" && extraOptions}
+          {suffix === "UZS" && extraOptions}
         </div>
-        <div className="min-[600px]:w-full text-right max-[600px]:order-2 relative">
+        <div className="min-[600px]:w-full text-right  max-[600px]:order-2 relative">
           <h3 className="text-2xl text-text font-bold mr-3">
             {isError ? "0" : totalAmount?.toLocaleString()} {suffix}
           </h3>
-          <span className="absolute -top-2.5 right-0 bg-primary block text-xs text-white  px-1 rounded-full">{totalItems}</span>
+          {!isError && (
+            <span className="absolute -top-2.5 right-0 bg-primary block text-xs text-white  px-1 rounded-full">
+              {totalItems}
+            </span>
+          )}
         </div>
       </div>
       {isError && <CustomEmpty />}
+      {isFetching && !isLoading && <MiniLoading />}
       {!isError && children}
       {isLoading && (
         <Box>

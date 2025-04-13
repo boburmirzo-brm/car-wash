@@ -32,7 +32,7 @@ const Customer: FC<Props> = ({ data }) => {
                   ? "text-text-muted"
                   : customer?.budget >= 0
                   ? "text-success"
-                  : "text-red-500"
+                  : "text-danger"
               }`}
             >
               {customer?.budget?.toLocaleString()} UZS

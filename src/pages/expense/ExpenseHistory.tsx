@@ -1,5 +1,5 @@
 import { Button } from "antd";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 // import { useParamsHook } from "../../hooks/useParamsHook";
 import { PlusOutlined } from "@ant-design/icons";
 // import { CustomEmpty, MiniLoading } from "@/utils";
@@ -68,6 +68,10 @@ const ExpenseHistory = () => {
     useGetAllExpenseQuery(filters);
 
   const totalItems = data?.data?.total || 0;
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [page]);
 
   const handleAddExpense = () => {
     setSelectedExpense(null);

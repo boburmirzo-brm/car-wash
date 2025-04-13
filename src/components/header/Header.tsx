@@ -1,35 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import { ReloadOutlined } from "@ant-design/icons";
-import { FaRegMoon, FaRegSun } from "react-icons/fa6";
 import FullScreen from "./FullScreen";
+import ThemeMode from "./ThemeMode";
 
 const Header = () => {
-  const [theme, setTheme] = useState<"light" | "dark">("light");
-
-  useEffect(() => {
-    const savedTheme = localStorage.getItem("theme") as "light" | "dark";
-    if (savedTheme === "dark") {
-      document.documentElement.classList.add("dark");
-      setTheme("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-      setTheme("light");
-    }
-  }, []);
-
-  const handleChangeTheme = () => {
-    const html = document.documentElement;
-    if (theme === "dark") {
-      html.classList.remove("dark");
-      localStorage.setItem("theme", "light");
-      setTheme("light");
-    } else {
-      html.classList.add("dark");
-      localStorage.setItem("theme", "dark");
-      setTheme("dark");
-    }
-  };
   return (
     <header className="bg-sidebar border-b border-border sticky top-0 left-0 z-40">
       <div className="container mx-auto">
@@ -40,12 +15,7 @@ const Header = () => {
           </Link>
           <div className="flex gap-2">
             <FullScreen />
-            <button
-              className="cursor-pointer flex justify-center hover:bg-bg items-center size-8 rounded-full  text-text-muted"
-              onClick={handleChangeTheme}
-            >
-              {theme === "dark" ? <FaRegSun /> : <FaRegMoon />}
-            </button>
+            <ThemeMode />
             <button
               className="cursor-pointer hover:bg-bg size-8 rounded-full  text-text-muted"
               onClick={() => window.location.reload()}

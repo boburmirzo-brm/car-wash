@@ -2,24 +2,25 @@ import { Suspense } from "@/utils";
 import React, { lazy } from "react";
 import { useRoutes } from "react-router-dom";
 
+// Dashboard
+const Dashboard = lazy(() => import("./dashboard/Dashboard"));
+const Cars = lazy(() => import("./customer-car/cars/Cars"));
+const Customers = lazy(() => import("./customer-car/customers/Customers"));
+const CustomerCar = lazy(() => import("./customer-car/CustomerCar"));
+const ActiveEmployees = lazy(
+  () => import("./employees/active-employees/ActiveEmployees")
+);
 const EmployeeCarWash = lazy(() => import("./user/car-wash/EmployeeCarWash"));
 const InactiveEmployees = lazy(
   () => import("./employees/inactive-employees/InactiveEmployees")
 );
-const ActiveEmployees = lazy(
-  () => import("./employees/active-employees/ActiveEmployees")
-);
-const CustomerCar = lazy(() => import("./customer-car/CustomerCar"));
-const Customers = lazy(() => import("./customer-car/customers/Customers"));
-const Cars = lazy(() => import("./customer-car/cars/Cars"));
-// Dashboard
-const Dashboard = lazy(() => import("./dashboard/Dashboard"));
 const Admins = lazy(() => import("./admins/Admins"));
 const Employees = lazy(() => import("./employees/Employees"));
 const UserDetail = lazy(() => import("./user/detail/UserDetail"));
 const Profile = lazy(() => import("./profile/Profile"));
 const Bonus = lazy(() => import("./bonus/Bonus"));
 const ExpenseHistory = lazy(() => import("./expense/ExpenseHistory"));
+const Statistic = lazy(() => import("./statistic/Statistic"));
 const CarWashingDone = lazy(
   () => import("./dashboard/car-washing-done/CarWashingDone")
 );
@@ -206,6 +207,14 @@ const AppRouter = () => {
                       element: (
                         <Suspense>
                           <Bonus />
+                        </Suspense>
+                      ),
+                    },
+                    {
+                      path: "/statistic",
+                      element: (
+                        <Suspense>
+                          <Statistic />
                         </Suspense>
                       ),
                     },

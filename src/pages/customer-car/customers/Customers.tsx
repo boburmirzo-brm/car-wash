@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from "react";
+import React, { useCallback, useEffect, useMemo } from "react";
 import { useGetCustomersQuery } from "@/redux/api/customer";
 import { useParamsHook } from "@/hooks/useParamsHook";
 import { Select } from "antd";
@@ -19,6 +19,10 @@ const Customers = () => {
     limit,
     page,
   } = useFilter(0, true);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [page]);
 
   const sortBy = getParam("sortBy");
   const sortOrder = getParam("sortOrder");

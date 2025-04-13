@@ -38,9 +38,10 @@
   --color-text: #1F2937;
   --color-text-muted: #6A7282;
   --color-primary: #314158;
+  --color-tab: #314158;
   --color-success: #10B981;
   --color-warning: #FACC15;
-  --color-danger: crimson;
+  --color-danger: #ff4d4f;
   --color-border: #E5E7EB;
   --color-divider: #D1D5DB;
 }
@@ -52,11 +53,14 @@
   --color-text: #FFFFFF;
   --color-text-muted: #99A1AF;
   --color-primary: #314158;
+  --color-tab: #99A1AF;
   --color-success: #22C55E;
   --color-warning: #EAB308;
-  --color-danger: crimson;
+  --color-danger: #ff4d4f;
   --color-border: #1e2d48;
   --color-divider: #3F3F46;
+  --color-asdad: #06162e;
+  
 }
 
 .container {
@@ -77,11 +81,11 @@
 .custom-tab-link.active::before {
   content: "";
   position: absolute;
-  bottom: -2px;
+  bottom: -1px;
   left: 0;
   width: 0;
   height: 2.5px;
-  background: var(--color-primary);
+  background: var(--color-tab);
   border-radius: 2px 2px 0 0;
   animation: tabAnimation 0.25s ease-in-out forwards;
 }

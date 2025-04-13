@@ -69,7 +69,7 @@ const Sidebar: React.FC<Props> = ({ open, onClose }) => {
           okText="Ha"
           cancelText="Yo'q"
         >
-          <Button type="primary">
+          <Button type="default">
             <MdLogout className="text-lg" />
             <span>Log out</span>
           </Button>
