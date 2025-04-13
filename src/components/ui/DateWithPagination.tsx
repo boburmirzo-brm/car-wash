@@ -32,7 +32,7 @@ const Options: React.FC<OptionsProps> = ({handleFilterChange}) => {
     <Popover
       content={content}
       trigger="click"
-      placement="bottomRight"
+      placement="bottom"
       open={open}
       onOpenChange={setOpen}
     >
