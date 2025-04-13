@@ -25,9 +25,14 @@ const useFilter = (beforeDays: number = 0, allTime: boolean = false, limitAmount
 
   const handleFilterChange = useCallback(
     (dates: any) => {
-      if (dates) {
+      console.log(typeof dates[0]);
+      
+      if (typeof dates[0] === "object" && dates) {
         setParam("fromDate", dates[0].format("YYYY-MM-DD"));
         setParam("toDate", dates[1].format("YYYY-MM-DD"));
+      } else if(typeof dates[0] === "string"){
+        setParam("fromDate", dates[0]);
+        setParam("toDate", dates[1]);
       } else {
         removeParam("fromDate");
         removeParam("toDate");

@@ -14,7 +14,7 @@ const UserView: FC<Props> = ({ data }) => {
       {data?.map((user: any) => (
         <div
           key={user._id}
-          className="flex justify-between py-4 max-[500px]:p-3 border-t border-gray-300 max-[700px]:flex-col max-[700px]:items-start"
+          className="flex justify-between py-4 max-[500px]:p-3 border-t border-border max-[700px]:flex-col max-[700px]:items-start"
         >
           <div>
             <Link

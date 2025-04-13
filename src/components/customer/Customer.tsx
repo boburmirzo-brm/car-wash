@@ -31,7 +31,7 @@ const Customer: FC<Props> = ({ data }) => {
                 customer?.budget === 0
                   ? "text-text-muted"
                   : customer?.budget >= 0
-                  ? "text-green-600"
+                  ? "text-success"
                   : "text-red-500"
               }`}
             >
