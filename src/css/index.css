@@ -1,23 +1,62 @@
 @font-face {
   font-family: Roboto;
-  src: url("../assets/fonts/Roboto.ttf") format("woff2");
+  src: url("../assets/fonts/Roboto.woff2") format("woff2");
 }
 
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 * {
-  /* font-family: Roboto, sans-serif; */
-  font-family: sans-serif;
+  font-family: Roboto, sans-serif;
 }
 
 :root {
+  /* --color-primary: #314158; */
+  --color-bg: #F5F6FA;
+  --color-card: #FFFFFF;
+  --color-sidebar: #FFFFFF;
+  --color-text: #1F2937;
+  --color-text-muted: #6B7280;
   --color-primary: #314158;
+  --color-success: #10B981;
+  --color-warning: #FACC15;
+  --color-border: #E5E7EB;
+  --color-divider: #D1D5DB;
 }
+
+
 
 @theme {
   --font-roboto: Roboto, sans-serif;
-  --color-primary: #314158;
+  /* --color-primary: #314158; */
   --radius-py: 10px;
+
+  --color-bg: #F5F6FA;
+  --color-card: #FFFFFF;
+  --color-sidebar: #FFFFFF;
+  --color-text: #1F2937;
+  --color-text-muted: #6A7282;
+  --color-primary: #314158;
+  --color-success: #10B981;
+  --color-warning: #FACC15;
+  --color-danger: crimson;
+  --color-border: #E5E7EB;
+  --color-divider: #D1D5DB;
+}
+.dark {
+  /* Dark Mode ranglar */
+  --color-bg: #101828;
+  --color-card: #1E2939;
+  --color-sidebar: #1E2939;
+  --color-text: #FFFFFF;
+  --color-text-muted: #99A1AF;
+  --color-primary: #314158;
+  --color-success: #22C55E;
+  --color-warning: #EAB308;
+  --color-danger: crimson;
+  --color-border: #1e2d48;
+  --color-divider: #3F3F46;
 }
 
 .container {

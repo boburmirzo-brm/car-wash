@@ -1,7 +1,6 @@
 import UsersView from "@/components/users-view/UsersView";
 import { useGetAdminsQuery } from "@/redux/api/user";
 import { Button, Skeleton } from "antd";
-import Title from "antd/es/typography/Title";
 import React, { useCallback, useState } from "react";
 import { PlusOutlined } from "@ant-design/icons";
 import UserPopup from "@/components/user-popup/UserPopup";
@@ -21,7 +20,7 @@ const Admins = () => {
     <div className="p-4">
       <Box >
         <div className="flex justify-between mb-4">
-          <Title level={4}>Adminlar</Title>
+          <h2 className="text-text text-xl font-bold">Adminlar</h2>
           <Button onClick={handleOpen} loading={isLoading} type="primary">
             <PlusOutlined />
           </Button>

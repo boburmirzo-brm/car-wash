@@ -55,14 +55,14 @@ const CustomerDetail = () => {
                   {customer?.full_name === "Noma'lum" ? (
                     <TbUserX className="text-7xl text-yellow-500" />
                   ) : (
-                    <TbUser className="text-7xl text-gray-600" />
+                    <TbUser className="text-7xl text-text-muted" />
                   )}
                 </div>
                 <div className="w-full ">
                   <h3 className="text-2xl font-medium">
                     {customer?.full_name}
                   </h3>
-                  <p className="text-gray-600 mt-3 flex items-center gap-2">
+                  <p className="text-text-muted mt-3 flex items-center gap-2">
                     <TbUserShield className="text-lg" />
                     <span className="">
                       {customer?.employerId?.l_name?.charAt(0)}.{" "}
@@ -73,7 +73,7 @@ const CustomerDetail = () => {
                     placement="bottom"
                     title={customer?.createdAt.timeFormat()}
                   >
-                    <span className="text-gray-600">
+                    <span className="text-text-muted">
                       {customer?.createdAt.dateFormat()}
                     </span>
                   </Tooltip>

@@ -69,20 +69,20 @@ const UserDetail = () => {
             <div className="flex flex-col md:flex-row items-center md:items-start justify-between gap-4 md:gap-6 ">
               <div className="flex md:items-center flex-row-reverse w-full  md:flex-row gap-3">
                 <div className="max-md:mt-8">
-                  <TbUserShield className="text-7xl text-gray-600" />
+                  <TbUserShield className="text-7xl text-text-muted" />
                 </div>
                 <div className="w-full ">
                   <h3 className="text-2xl font-medium">
                     {user?.f_name} {user?.l_name}
                   </h3>
-                  <p className="text-gray-600 my-1">@{user?.username}</p>
-                  <p className="text-gray-600 text-sm">{user?.address}</p>
+                  <p className="text-text-muted my-1">@{user?.username}</p>
+                  <p className="text-text-muted text-sm">{user?.address}</p>
                   <Tag color={user?.is_active ? "green" : "red"}>
                     {user?.is_active ? "Faol" : "Ishdan bo'shatilgan"}
                   </Tag>
                   <br />
                   {user?.role !== Role.ADMIN && (
-                    <p className="text-gray-600 text-sm mt-3 flex items-center gap-2">
+                    <p className="text-text-muted text-sm mt-3 flex items-center gap-2">
                       <MdOutlineAdminPanelSettings />
                       <span>
                         {user?.adminId?.l_name?.charAt(0)}.{" "}
@@ -95,7 +95,7 @@ const UserDetail = () => {
                     placement="bottom"
                     title={user?.createdAt.timeFormat()}
                   >
-                    <span className="text-gray-600 text-sm">
+                    <span className="text-text-muted text-sm">
                       {user?.createdAt.dateFormat()}
                     </span>
                   </Tooltip>

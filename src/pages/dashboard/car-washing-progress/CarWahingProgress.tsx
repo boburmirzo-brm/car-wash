@@ -12,7 +12,7 @@ const CarWahingProgress = () => {
     handlePageChange,
     limit,
     page,
-  } = useFilter();
+  } = useFilter(0, true);
 
   const { data, isLoading, isError, isFetching } = useGetCarWashingsQuery({
     ...filters,

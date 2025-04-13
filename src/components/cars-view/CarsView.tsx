@@ -16,7 +16,7 @@ const CarsView: FC<{ data: any }> = ({ data }) => {
           key={car._id}
         >
           <div className="flex items-center justify-between max-[500px]:flex-col max-[500px]:items-start ">
-            <h3 className="text-base font-semibold text-gray-800 flex-1">
+            <h3 className="text-base font-semibold  flex-1">
               {car.name}
             </h3>
             <div className="flex max-[500px]:w-full max-[500px]:justify-end">

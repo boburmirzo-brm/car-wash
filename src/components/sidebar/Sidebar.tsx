@@ -17,7 +17,6 @@ interface Props {
 const Sidebar: React.FC<Props> = ({ open, onClose }) => {
   const dispatch = useDispatch();
   const role = useSelector((state: RootState) => state.role.value);
-  console.log(role);
 
   const { pathname } = useLocation();
   const isActive =
@@ -41,9 +40,9 @@ const Sidebar: React.FC<Props> = ({ open, onClose }) => {
       <div
         className={`${
           open ? "show" : ""
-        } sidebar w-[250px] h-screen overflow-auto flex flex-col text-primary p-4 bg-white border-r border-gray-200 sticky top-0 left-0  z-[52]`}
+        } sidebar w-[250px] h-screen overflow-auto flex flex-col text-primary p-4 bg-sidebar border-r border-border sticky top-0 left-0  z-[52]`}
       >
-        <div className="font-bold ">AvtoLeader</div>
+        <div className="font-bold text-text">AvtoLeader</div>
         <ul className="my-10 space-y-2 flex-1">
           {SIDEBAR_LINKS?.filter(
             (i) => role === Role.OWNER || !hidedLinksList.includes(i.path)
@@ -55,7 +54,7 @@ const Sidebar: React.FC<Props> = ({ open, onClose }) => {
                 end={false}
                 className={`${
                   link.path === "/" && isActive ? "active" : ""
-                } flex items-center gap-2 py-2 hover:bg-gray-100 px-2 rounded-md sidebar-link`}
+                } flex items-center gap-2 py-2 hover:bg-bg px-2 text-text-muted rounded-md sidebar-link`}
               >
                 {link.icon}
                 <span>{link.title}</span>
@@ -70,7 +69,7 @@ const Sidebar: React.FC<Props> = ({ open, onClose }) => {
           okText="Ha"
           cancelText="Yo'q"
         >
-          <Button type="default">
+          <Button type="primary">
             <MdLogout className="text-lg" />
             <span>Log out</span>
           </Button>

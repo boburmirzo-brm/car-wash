@@ -102,7 +102,7 @@ const ExpenseHistory = () => {
         <Expense data={data?.data?.payload || []} />
       </DateWithPagination>
       {/* <div className="flex justify-between  items-center flex-wrap gap-4 p-4">
-        <div className="text-xl font-bold flex items-center gap-2 text-gray-700">
+        <div className="text-xl font-bold flex items-center gap-2 text-text-muted">
           <HistoryOutlined />
           <span>Xarajat</span>
         </div>

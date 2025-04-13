@@ -4,6 +4,10 @@
     border-radius: 10px;
     box-shadow: 0 0 10px #e8f3ff;
 }
+.dark .bottom-navigation.active{
+    background: #101828ab;
+    box-shadow: 0 0 10px #1c1d1f;
+}
 .dashboard-navigation{
     display: none;
 }

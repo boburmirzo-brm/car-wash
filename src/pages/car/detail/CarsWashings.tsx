@@ -40,9 +40,9 @@ const CarsWashings: FC<Props> = ({ data, profile }) => {
               item?.status === CarWashingStatus.CANCELED ||
               item?.status === CarWashingStatus.PENDING
             ) && (
-              <div className="flex justify-between items-center bg-gray-100 p-3 rounded-md mt-3">
+              <div className="flex justify-between items-center bg-gray-100 dark:bg-gray-900 p-3 rounded-md mt-3">
                 <div>
-                  <p className="flex items-center gap-2 text-gray-700 text-sm font-medium">
+                  <p className="flex items-center gap-2 text-text-muted text-sm font-medium">
                     <TbCoins className="text-lg" />
                     <span>
                       {role === Role.ADMIN || role === Role.OWNER
@@ -51,18 +51,18 @@ const CarsWashings: FC<Props> = ({ data, profile }) => {
                     </span>
                   </p>
                 </div>
-                <strong className="text-lg text-gray-900 font-semibold">
+                <strong className="text-lg text-text font-semibold">
                   {item?.washAmount?.toLocaleString() || "0"} UZS
                 </strong>
               </div>
             )}
           {item?.comment && (
-            <div className="text-gray-600 text-sm mt-3 flex gap-2">
+            <div className="text-text-muted text-sm mt-3 flex gap-2">
               <FaRegCommentDots className="text-lg min-w-4" />
               <span>{item?.comment}</span>
             </div>
           )}
-          <div className="flex justify-between items-center mt-3 text-gray-600 text-sm">
+          <div className="flex justify-between items-center mt-3 text-text-muted text-sm">
             <span>
               {item?.createdAt?.dateFormat()} {item?.createdAt?.timeFormat()}
             </span>

@@ -37,7 +37,7 @@ const Layout = () => {
   ) : (
     <div
       className={
-        isAdminOrOwner ? "flex bg-[#f9f9f9] min-h-screen" : "bg-[#fdfdfd]"
+        isAdminOrOwner ? "flex bg-bg min-h-screen" : "bg-bg"
       }
     >
       {isAdminOrOwner ? (

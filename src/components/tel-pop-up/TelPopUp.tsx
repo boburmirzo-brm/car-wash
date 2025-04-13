@@ -25,10 +25,10 @@ const TelPopUp: FC<{ phoneNumber: string }> = ({ phoneNumber = "" }) => {
           type="text"
           style={{ padding: "0" }}
           onClick={handleOpenModal}
-          className="flex items-center gap-2 text-gray-700 hover:text-gray-900 transition-all"
+          className="flex items-center gap-2  transition-all"
         >
-          <span className="text-base">{phoneNumber?.telFormat()}</span>
-          <FiPhone className="text-lg" />
+          <span className="text-base text-text">{phoneNumber?.telFormat()}</span>
+          <FiPhone className="text-lg text-text" />
         </Button>
 
         <Modal
@@ -37,7 +37,7 @@ const TelPopUp: FC<{ phoneNumber: string }> = ({ phoneNumber = "" }) => {
           footer={null}
           centered
         >
-          <Text className="text-gray-600 text-center block">
+          <Text className="text-text text-center block">
             <span className="text-xl font-bold">
               {phoneNumber?.telFormat()}
             </span>

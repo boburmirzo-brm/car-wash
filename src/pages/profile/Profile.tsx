@@ -36,12 +36,12 @@ const Profile = () => {
           <div className="flex flex-col md:flex-row items-center md:items-start justify-between gap-4 md:gap-6 ">
             <div className="flex w-full md:items-center flex-row-reverse md:flex-row gap-3">
               <div>
-                <MdOutlineAdminPanelSettings className="text-8xl text-gray-600" />
+                <MdOutlineAdminPanelSettings className="text-8xl text-text-muted" />
               </div>
               <div className="w-full ">
                 <h3 className="text-2xl font-medium">{user.f_name}</h3>
                 <h4 className="text-base">{user.l_name}</h4>
-                <p className="text-gray-700 mt-2">@{user.username}</p>
+                <p className="text-text-muted mt-2">@{user.username}</p>
                 <div className="mt-2">
                   <Tag
                     color={user.is_active ? "green" : "red"}

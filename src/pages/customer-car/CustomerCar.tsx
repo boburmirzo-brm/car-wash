@@ -1,4 +1,3 @@
-import Title from "antd/es/typography/Title";
 import React from "react";
 import Box from "@/components/ui/Box";
 import { Outlet } from "react-router-dom";
@@ -8,9 +7,9 @@ const CustomerCar = () => {
   return (
     <div className="p-4">
       <Box>
-        <Title style={{ marginBottom: 0 }} level={4}>
+        <h2 className="text-text text-xl font-bold" >
           Mijoz va Mashinalar
-        </Title>
+        </h2>
       </Box>
       <Tabs
         className="mt-4"

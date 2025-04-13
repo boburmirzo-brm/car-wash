@@ -15,7 +15,7 @@ const CarWashingStatusTooltip = ({ status }: { status: string }) => {
   ) : status === CarWashingStatus.COMPLETED ? (
     <Tooltip placement="bottom" title="Muvaffaqiyatli yuvilgan">
       <div>
-        <IoMdDoneAll className="text-green-700" />
+        <IoMdDoneAll className="text-success " />
       </div>
     </Tooltip>
   ) : (

@@ -124,7 +124,7 @@ const Search:FC = () => {
                   {car.name}
                 </h3>
                 <div className="flex max-[500px]:w-full max-[500px]:justify-end">
-                  <b className="border border-gray-500 px-2 py-1 rounded-md text-xs uppercase text-gray-700">
+                  <b className="border border-gray-500 px-2 py-1 rounded-md text-xs uppercase text-text-muted">
                     {car.plateNumber?.plateNumberFormat()}
                   </b>
                 </div>

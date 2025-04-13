@@ -10,7 +10,7 @@ const Box: FC<Props> = ({ children, onClick, className }) => {
   return (
     <div
       onClick={onClick}
-      className={`shadow-md md:p-6 p-4 bg-white rounded-md border border-gray-100 w-full relative ${className}`}
+      className={`shadow-md md:p-6 p-4 bg-card rounded-md border border-border text-text w-full relative ${className}`}
     >
       {children}
     </div>

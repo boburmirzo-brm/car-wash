@@ -29,7 +29,7 @@ const UserView: FC<Props> = ({ data }) => {
               to={`/${user.role === Role.ADMIN ? "admins" : "employees"}/user/${
                 user._id
               }`}
-              className="text-gray-600 my-1 block hover:underline"
+              className="text-text-muted my-1 block hover:underline"
             >
               @{user.username}
             </Link>

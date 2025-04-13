@@ -46,7 +46,7 @@ const ExpenseView: FC<Props> = ({ data }) => {
       {data?.map((item: ExpenseType, index: number) => (
         <Box key={item?._id || index}>
           <div className="flex items-center justify-between">
-            <strong className="text-lg text-gray-900 font-semibold">
+            <strong className="text-lg text-text font-semibold">
               {item?.amount?.toLocaleString()} UZS
             </strong>
             {role !== Role.EMPLOYEE && (
@@ -69,7 +69,7 @@ const ExpenseView: FC<Props> = ({ data }) => {
               </Popover>
             )}
           </div>
-          <div className="flex items-center gap-2 text-gray-700 text-sm ">
+          <div className="flex items-center gap-2 text-text-muted text-sm ">
             <MdOutlineAdminPanelSettings className="text-lg " />
             <span>
               {item?.adminId?.l_name}. {item?.adminId?.f_name}
@@ -78,10 +78,10 @@ const ExpenseView: FC<Props> = ({ data }) => {
 
           {item?.employerId && (
             <>
-              <div className="size-4 flex justify-center text-gray-500 ml-[1px]">
+              <div className="size-4 flex justify-center text-text-muted ml-[1px]">
                 <BsArrowDown className="" />
               </div>
-              <div className="flex items-center gap-2 text-gray-700 text-sm">
+              <div className="flex items-center gap-2 text-text-muted text-sm">
                 <TbUserShield className="text-lg " />
                 <Link
                   className="hover:underline"
@@ -94,12 +94,12 @@ const ExpenseView: FC<Props> = ({ data }) => {
           )}
 
           {item?.comment && (
-            <div className="text-gray-600 text-sm  flex  gap-2 mt-1">
+            <div className="text-text-muted text-sm  flex  gap-2 mt-1">
               <FaRegCommentDots className="text-lg min-w-4" />
               <span>{item?.comment}</span>
             </div>
           )}
-          <div className="flex justify-between items-center mt-3 text-gray-600 text-sm">
+          <div className="flex justify-between items-center mt-3 text-text-muted text-sm">
             <span>
               {item?.createdAt?.dateFormat()} {item?.createdAt?.timeFormat()}
             </span>

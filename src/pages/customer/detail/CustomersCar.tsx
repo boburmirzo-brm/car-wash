@@ -1,7 +1,6 @@
 import CarsView from "@/components/cars-view/CarsView";
 import { CustomEmpty, MiniLoading } from "@/utils";
 import { Button, Pagination } from "antd";
-import Title from "antd/es/typography/Title";
 import React, { useCallback, useMemo, useState } from "react";
 import { PlusOutlined } from "@ant-design/icons";
 import CarPopup from "@/components/car-popup/CarPopup";
@@ -62,7 +61,7 @@ const CustomersCar = () => {
   return (
     <>
       <div className="flex justify-between">
-        <Title level={4}>Mijoz mashinalari</Title>
+        <h2 className="text-text text-xl font-bold">Mijoz mashinalari</h2>
         <Button onClick={() => handleOpenModal("car")} type="primary">
           <PlusOutlined />
         </Button>

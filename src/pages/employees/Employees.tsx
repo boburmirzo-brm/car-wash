@@ -1,5 +1,4 @@
 import { Button } from "antd";
-import Title from "antd/es/typography/Title";
 import React, { useCallback, useState } from "react";
 import { PlusOutlined } from "@ant-design/icons";
 import { useGetEmployeesQuery } from "@/redux/api/user";
@@ -32,9 +31,9 @@ const Employees = () => {
       <Box>
         <div className="flex justify-between items-center">
           <div className=" flex items-center gap-4">
-            <Title style={{ marginBottom: 0 }} level={4}>
+            <h2 className="text-text text-xl font-bold">
               Ishchilar
-            </Title>
+            </h2>
             {/* <Input
               placeholder="Qidirish..."
               value={value}

@@ -37,7 +37,7 @@ const Payment: FC<Props> = ({ data }) => {
       {data?.map((item: any, index: number) => (
         <Box key={item?._id || index}>
           <div className="flex items-center justify-between">
-            <strong className="text-lg text-gray-900 font-semibold">
+            <strong className="text-lg text-text font-semibold">
               {item?.amount?.toLocaleString()} UZS
             </strong>
             <Popover
@@ -58,7 +58,7 @@ const Payment: FC<Props> = ({ data }) => {
               </Button>
             </Popover>
           </div>
-          <div className="flex items-center gap-2  text-gray-700 text-sm">
+          <div className="flex items-center gap-2  text-text-muted text-sm">
             <TbUser className="text-lg" />
             <Link
               className="hover:underline"
@@ -67,10 +67,10 @@ const Payment: FC<Props> = ({ data }) => {
               {item?.customerId?.full_name}
             </Link>
           </div>
-          <div className="size-4 flex justify-center text-green-500 ml-[1px]">
+          <div className="size-4 flex justify-center text-success ml-[1px]">
             <BsArrowDown className=""/> 
           </div>
-          <div className="flex items-center gap-2 text-gray-700 text-sm">
+          <div className="flex items-center gap-2 text-text-muted text-sm">
             <TbUserShield className="text-lg" />
             <Link
               className="hover:underline"
@@ -82,12 +82,12 @@ const Payment: FC<Props> = ({ data }) => {
           </div>
 
           {item?.comment && (
-            <div className="text-gray-600 text-sm  flex  gap-2">
+            <div className="text-text-muted text-sm  flex  gap-2">
               <FaRegCommentDots className="text-lg min-w-4" />
               <span>{item?.comment}</span>
             </div>
           )}
-          <div className="flex justify-between items-center mt-3 text-gray-600 text-sm">
+          <div className="flex justify-between items-center mt-3 text-text-muted text-sm">
             <span>
               {item?.createdAt?.dateFormat()} {item?.createdAt?.timeFormat()}
             </span>

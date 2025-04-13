@@ -43,9 +43,9 @@ const DateWithPagination: FC<Props> = ({
   return (
     <>
       <div className="flex justify-between items-center flex-wrap gap-4 mb-4">
-        <div className="text-xl font-bold flex items-center gap-2 text-gray-700">
+        <div className="text-xl font-bold flex items-center gap-2 text-text">
           <HistoryOutlined />
-          <span>{title} ++++</span>
+          <span>{title}</span>
         </div>
         <div className="flex items-center gap-2 max-[600px]:order-3">
           <RangePicker
@@ -60,7 +60,7 @@ const DateWithPagination: FC<Props> = ({
           {suffix !== "ta" && extraOptions}
         </div>
         <div className="min-[600px]:w-full text-right max-[600px]:order-2">
-          <h3 className="text-2xl font-bold">
+          <h3 className="text-2xl text-text font-bold">
             {isError ? "0" : totalAmount?.toLocaleString()} {suffix}
           </h3>
         </div>

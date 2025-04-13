@@ -3,7 +3,6 @@ import { ICustomer, IPayload } from "@/types";
 import React from "react";
 import { Link, useOutletContext } from "react-router-dom";
 import { TbUserX } from "react-icons/tb";
-import Title from "antd/es/typography/Title";
 import Box from "@/components/ui/Box";
 
 interface ContextType {
@@ -16,13 +15,11 @@ const CustomerSearch = () => {
   return (
     show && (
       <>
-        <Title className="mt-4" level={4}>
-          Mijozlar
-        </Title>
+        <h2 className="mt-4 text-text text-xl font-bold">Mijozlar</h2>
         <div className="space-y-4 my-4">
           {data?.data?.payload?.map((customer: ICustomer) => (
             <Box
-              className="cursor-pointer hover:bg-gray-100"
+              className="cursor-pointer "
               key={customer._id}
             >
               <div className="flex items-center justify-between max-[500px]:flex-col max-[500px]:items-start ">

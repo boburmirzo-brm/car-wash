@@ -29,7 +29,7 @@ const Customer: FC<Props> = ({ data }) => {
             <span
               className={`font-semibold text-lg ${
                 customer?.budget === 0
-                  ? "text-gray-600"
+                  ? "text-text-muted"
                   : customer?.budget >= 0
                   ? "text-green-600"
                   : "text-red-500"
@@ -39,7 +39,7 @@ const Customer: FC<Props> = ({ data }) => {
             </span>
           </div>
           <div className="flex justify-between items-end">
-            <span className="gap-1 text-sm text-gray-600">
+            <span className="gap-1 text-sm text-text-muted">
               {customer?.createdAt?.dateFormat()}{" "}
               {customer?.createdAt?.timeFormat()}
             </span>

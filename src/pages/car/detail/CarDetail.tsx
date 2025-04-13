@@ -86,17 +86,17 @@ const CarDetail = () => {
           ) : (
             <div className="flex flex-col md:flex-row items-center md:items-start justify-between gap-4 md:gap-6">
               <div className="flex w-full md:items-center flex-row-reverse md:flex-row gap-3">
-                <IoCarOutline className="text-7xl text-gray-600" />
+                <IoCarOutline className="text-7xl text-text-muted" />
                 <div className="w-full">
                   <h3 className="text-2xl font-medium">{car?.name}</h3>
                   <Link
-                    className="text-base text-gray-800 hover:underline flex items-center gap-2"
+                    className="text-base text-text-muted hover:underline flex items-center gap-2"
                     to={`/customer/${car?.customerId._id}`}
                   >
                     <TbUser />
                     {car?.customerId.full_name}
                   </Link>
-                  <p className="text-gray-600 text-sm mt-3 flex items-center gap-2">
+                  <p className="text-text-muted text-sm mt-3 flex items-center gap-2">
                     <TbUserShield className="text-lg" />
                     <span>
                       {car?.employerId?.l_name?.charAt(0)}.{" "}
@@ -107,7 +107,7 @@ const CarDetail = () => {
                     placement="bottom"
                     title={car?.createdAt.timeFormat()}
                   >
-                    <span className="text-gray-600">
+                    <span className="text-text-muted">
                       {car?.createdAt.dateFormat()}
                     </span>
                   </Tooltip>

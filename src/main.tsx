@@ -14,6 +14,7 @@ const theme = {
     // colorSuccess: "#52c41a",
     // colorWarning: "#faad14",
     // colorError: "#ff4d4f",
+    // colorSecondary: "#f00",
     borderRadius: 4,
     colorBgContainer: "#fff",
   },

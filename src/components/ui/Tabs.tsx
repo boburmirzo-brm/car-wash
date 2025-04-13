@@ -15,11 +15,11 @@ interface Props {
 const Tabs: FC<Props> = ({ className, items }) => {
   return (
     <div
-      className={`flex gap-6 border-b border-gray-200 pb-[0.5px] ${className}`}
+      className={`flex gap-6 border-b border-border pb-[0.5px] ${className}`}
     >
       {items?.map((item: ILink) => (
         <NavLink
-          className={`hover:text-black text-gray-600 custom-tab-link`}
+          className={`hover:text-text text-text-muted custom-tab-link`}
           to={item.path}
           key={item.id}
           end={item.id === 0}

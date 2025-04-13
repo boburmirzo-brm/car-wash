@@ -28,7 +28,7 @@ const CarWashing: FC<Props> = ({ data, profile }) => {
             <div className="flex-1 flex">
               <Link
                 to={`/customer/${item?.customerId?._id}`}
-                className="hover:underline text-base font-semibold text-gray-800 flex items-center gap-2"
+                className="hover:underline text-base font-semibold text-text flex items-center gap-2"
               >
                 {item?.customerId?.full_name === "Noma'lum" && (
                   <TbUserX className="text-2xl text-yellow-500" />
@@ -43,9 +43,9 @@ const CarWashing: FC<Props> = ({ data, profile }) => {
           <div className="flex items-center justify-between mt-2">
             <Link
               to={`/car/${item?.carId?._id}`}
-              className="flex hover:underline items-center gap-2 text-gray-700 flex-1"
+              className="flex hover:underline items-center gap-2 text-text-muted flex-1"
             >
-              <IoCarOutline className="text-lg text-gray-600 line-clamp-1" />
+              <IoCarOutline className="text-lg text-text-muted line-clamp-1" />
               <span title={item?.carId?.name} className="line-clamp-1 flex-1">
                 {item?.carId?.name}
               </span>
@@ -56,10 +56,10 @@ const CarWashing: FC<Props> = ({ data, profile }) => {
           </div>
 
           {(role === Role.ADMIN || role === Role.OWNER || profile) && (
-            <div className="flex justify-between items-center bg-gray-100 p-3 rounded-md mt-3">
+            <div className="flex justify-between items-center bg-gray-100 dark:bg-gray-900 p-3 rounded-md mt-3">
               <div>
                 {(role === Role.ADMIN || role === Role.OWNER) && (
-                  <p className="flex items-center gap-2 text-gray-700 text-sm">
+                  <p className="flex items-center gap-2 text-text-muted text-sm">
                     <TbUserShield className="text-lg" />
                     <Link
                       className="hover:underline"
@@ -69,25 +69,25 @@ const CarWashing: FC<Props> = ({ data, profile }) => {
                     </Link>
                   </p>
                 )}
-                <p className="flex items-center gap-2 text-gray-700 text-sm font-medium">
+                <p className="flex items-center gap-2 text-text-muted text-sm font-medium">
                   <TbCoins className="text-lg" />
                   <span>
                     {item?.employerSalary?.toLocaleString() || "0"} UZS
                   </span>
                 </p>
               </div>
-              <strong className="text-lg text-gray-900 font-semibold">
+              <strong className="text-lg text-text font-semibold">
                 {item?.washAmount?.toLocaleString() || "0"} UZS
               </strong>
             </div>
           )}
           {item?.comment && (
-            <div className="text-gray-600 text-sm mt-3 flex gap-2">
+            <div className="text-text-muted text-sm mt-3 flex gap-2">
               <FaRegCommentDots className="text-lg min-w-4" />
               <span>{item?.comment}</span>
             </div>
           )}
-          <div className="flex justify-between items-center mt-3 text-gray-600 text-sm">
+          <div className="flex justify-between items-center mt-3 text-text-muted text-sm">
             <span>
               {item?.createdAt?.dateFormat()} {item?.createdAt?.timeFormat()}
             </span>
