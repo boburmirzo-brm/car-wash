@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import { ReloadOutlined } from "@ant-design/icons";
 import { useCheckTokenQuery } from "@/redux/api/auth";
 import { FaRegMoon, FaRegSun } from "react-icons/fa6";
-import { MdFullscreen, MdFullscreenExit } from "react-icons/md";
 import FullScreen from "./FullScreen";
 
 const DashboardHeader = () => {
