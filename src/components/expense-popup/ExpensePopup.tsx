@@ -47,7 +47,6 @@ const ExpensePopup: FC<Props> = ({
   onClose,
   employerId,
   expense,
-  name,
   requiredComment
 }) => {
   const [form] = Form.useForm();
@@ -98,7 +97,7 @@ const ExpensePopup: FC<Props> = ({
   return (
     <Modal
       title={
-        expense ? `Xarajatni tahrirlash: ${name}` : `Yangi xarajat: ${name}`
+        expense ? `Xarajatni tahrirlash` : `Yangi xarajat`
       }
       open={open}
       onCancel={() => {

@@ -126,6 +126,7 @@ const PaymentPopup: FC<Props> = ({
             thousandSeparator=" "
             fixedDecimalScale
             allowNegative={false}
+            getInputRef={priceInputRef}
             placeholder="Summani kiriting"
             onValueChange={(values) =>
               form.setFieldValue("amount", values.value)

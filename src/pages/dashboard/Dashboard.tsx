@@ -12,7 +12,7 @@ const Dashboard = () => {
   const { data } = useStatsQuery({ fromDate: from, toDate: to });
   return (
     <>
-      <StatisticView data={data?.data?.payload} />
+      <StatisticView title="Bugungi statistika" data={data?.data?.payload} />
       <Tabs
         className="mx-4"
         items={[

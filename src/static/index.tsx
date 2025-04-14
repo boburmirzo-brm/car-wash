@@ -39,7 +39,7 @@ export const themeDark = {
     colorSuccess: "#22C55E", // --color-success
     colorWarning: "#EAB308", // --color-warning
     colorError: "#ff4d4f", // --color-danger
-    colorBorder: "#1e2d48", // --color-border
+    colorBorder: "#2d3646", // --color-border
     // colorSplit: "#3F3F46", // --color-divider
     borderRadius: 4,
   },

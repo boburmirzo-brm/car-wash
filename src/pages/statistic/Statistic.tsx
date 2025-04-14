@@ -14,7 +14,7 @@ const Statistic = () => {
   const { data } = useStatsQuery({ fromDate, toDate });
   return (
     <div>
-      <StatisticView hiddenDate={true} data={data?.data?.payload} />
+      <StatisticView title="Statistika" hiddenDate={true} data={data?.data?.payload} />
     </div>
   );
 };

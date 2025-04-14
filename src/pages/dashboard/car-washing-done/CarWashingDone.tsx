@@ -31,7 +31,7 @@ const CarWashingDone = () => {
         page={page}
         title="Yuvilgan mashinalar"
       >
-        <CarWashing data={data?.data} />
+        <CarWashing data={data?.data} profile={true} />
       </DateWithPagination>
     </div>
   );

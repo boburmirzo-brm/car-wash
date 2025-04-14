@@ -11,6 +11,7 @@ import CarNumber from "../cars-view/CarNumber";
 import { FaRegCommentDots } from "react-icons/fa";
 import CarWashingStatusTooltip from "./CarWashingStatusTooltip";
 import Box from "../ui/Box";
+import { useCheckTokenQuery } from "@/redux/api/auth";
 
 interface Props {
   data: any;
@@ -19,6 +20,7 @@ interface Props {
 
 const CarWashing: FC<Props> = ({ data, profile }) => {
   const role = useSelector((state: RootState) => state.role.value);
+  const { data: profileData } = useCheckTokenQuery(undefined);
 
   return (
     <div className="my-4 space-y-4">
@@ -37,7 +39,11 @@ const CarWashing: FC<Props> = ({ data, profile }) => {
               </Link>
             </div>
             <CarWashingStatusTooltip status={item?.status} />
-            <Options profile={profile} data={item} />
+            {(role !== Role.EMPLOYEE ||
+              item?.createdAt?.split(" ")[0] ===
+                profileData?.user?.time?.split(" ")[0]) && (
+              <Options profile={profile} data={item} />
+            )}
           </div>
 
           <div className="flex items-center justify-between mt-2">

@@ -24,6 +24,7 @@ const Customers = () => {
     window.scrollTo(0, 0);
   }, [page]);
 
+  const q = getParam("q") || "";
   const sortBy = getParam("sortBy");
   const sortOrder = getParam("sortOrder");
 
@@ -55,6 +56,7 @@ const Customers = () => {
   const { data, isLoading, isError, isFetching } = useGetCustomersQuery({
     ...filters,
     ...filtersSort,
+    filter: q
   });
 
   return (

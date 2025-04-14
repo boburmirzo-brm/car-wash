@@ -4,10 +4,14 @@ import { useGetEmployeesQuery } from "@/redux/api/user";
 import UsersView from "@/components/users-view/UsersView";
 import Box from "@/components/ui/Box";
 import { CustomEmpty } from "@/utils";
+import { useParamsHook } from "@/hooks/useParamsHook";
 
 const ActiveEmployees = () => {
+  const { getParam } = useParamsHook();
+  const q = getParam("q") || "";
   const { data, isLoading, isError } = useGetEmployeesQuery({
     is_active: true,
+    filter: q
   });
 
   return (

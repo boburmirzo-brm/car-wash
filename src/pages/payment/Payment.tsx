@@ -2,7 +2,7 @@ import React, { FC, useState } from "react";
 import { Button, Popover } from "antd";
 import { MoreOutlined } from "@ant-design/icons";
 import { FaRegCommentDots } from "react-icons/fa";
-import { PaymentType } from "@/constant";
+import { PaymentType, Role } from "@/constant";
 import PaymentPopup from "@/components/payment-popup/PaymentPopup";
 import PaymentTypeTooltip from "@/components/payment/PaymentTypeTooltip";
 import { Link } from "react-router-dom";
@@ -10,6 +10,9 @@ import Box from "@/components/ui/Box";
 import { TbUser, TbUserShield } from "react-icons/tb";
 import { BsArrowDown } from "react-icons/bs";
 import Edited from "@/components/ui/Edited";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux";
+import { useCheckTokenQuery } from "@/redux/api/auth";
 
 interface Props {
   data: any;
@@ -18,7 +21,9 @@ interface Props {
 const Payment: FC<Props> = ({ data }) => {
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [selectedPayment, setSelectedPayment] = useState<any>(null);
-  
+  const role = useSelector((state: RootState) => state.role.value);
+  const { data: profileData } = useCheckTokenQuery(undefined);
+
   const [openPopover, setOpenPopover] = useState<string | null>(null);
 
   const handleEdit = (item: any) => {
@@ -40,23 +45,27 @@ const Payment: FC<Props> = ({ data }) => {
             <strong className="text-lg text-text font-semibold">
               {item?.amount?.toLocaleString()} UZS
             </strong>
-            <Popover
-              content={
-                <Button onClick={() => handleEdit(item)} type="text">
-                  Tahrirlash
+            {(role !== Role.EMPLOYEE ||
+              item?.createdAt?.split(" ")[0] ===
+                profileData?.user?.time?.split(" ")[0]) && (
+              <Popover
+                content={
+                  <Button onClick={() => handleEdit(item)} type="text">
+                    Tahrirlash
+                  </Button>
+                }
+                trigger="click"
+                placement="bottomRight"
+                open={openPopover === item._id}
+                onOpenChange={(visible) =>
+                  setOpenPopover(visible ? item._id : null)
+                }
+              >
+                <Button type="text">
+                  <MoreOutlined />
                 </Button>
-              }
-              trigger="click"
-              placement="bottomRight"
-              open={openPopover === item._id}
-              onOpenChange={(visible) =>
-                setOpenPopover(visible ? item._id : null)
-              }
-            >
-              <Button type="text">
-                <MoreOutlined />
-              </Button>
-            </Popover>
+              </Popover>
+            )}
           </div>
           <div className="flex items-center gap-2  text-text-muted text-sm">
             <TbUser className="text-lg" />
@@ -68,7 +77,7 @@ const Payment: FC<Props> = ({ data }) => {
             </Link>
           </div>
           <div className="size-4 flex justify-center text-success ml-[1px]">
-            <BsArrowDown className=""/> 
+            <BsArrowDown className="" />
           </div>
           <div className="flex items-center gap-2 text-text-muted text-sm">
             <TbUserShield className="text-lg" />

@@ -10,9 +10,10 @@ const { RangePicker } = DatePicker;
 interface Props {
   data: any;
   hiddenDate?: boolean;
+  title: string;
 }
 
-const StatisticView: FC<Props> = ({ data, hiddenDate = false }) => {
+const StatisticView: FC<Props> = ({ data, hiddenDate = false, title }) => {
   const { setParam, removeParam , removeParams} = useParamsHook();
   const navigate = useNavigate();
   const { search } = useLocation();
@@ -39,7 +40,7 @@ const StatisticView: FC<Props> = ({ data, hiddenDate = false }) => {
   return (
     <div className="p-4 flex flex-col gap-4">
       <Box className="flex items-center justify-between flex-wrap gap-4">
-        <h2 className="text-text text-xl font-bold">Statistika</h2>
+        <h2 className="text-text text-xl font-bold">{title}</h2>
         {hiddenDate && (
           <div className="flex gap-2">
             <RangePicker

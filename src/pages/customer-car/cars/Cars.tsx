@@ -3,8 +3,10 @@ import { useGetCarsQuery } from "../../../redux/api/car";
 import CarsView from "../../../components/cars-view/CarsView";
 import useFilter from "@/hooks/useFilter";
 import DateWithPagination from "@/components/ui/DateWithPagination";
+import { useParamsHook } from "@/hooks/useParamsHook";
 
 const Cars = () => {
+  const { getParam } = useParamsHook();
   const {
     clearFilters,
     filters,
@@ -16,8 +18,8 @@ const Cars = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [page]);
-
-  const { data, isLoading, isError, isFetching } = useGetCarsQuery(filters);
+  const q = getParam("q") || "";
+  const { data, isLoading, isError, isFetching } = useGetCarsQuery({...filters,  filter: q});
   const cars = data?.data?.payload || [];
 
   return (
