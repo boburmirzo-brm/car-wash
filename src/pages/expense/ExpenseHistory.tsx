@@ -6,10 +6,12 @@ import Expense from "./Expense";
 import ExpensePopup from "../../components/expense-popup/ExpensePopup";
 import useFilter from "@/hooks/useFilter";
 import DateWithPagination from "@/components/ui/DateWithPagination";
+import { useParamsHook } from "../../hooks/useParamsHook";
 
 const { Option } = Select;
 
 const ExpenseHistory = () => {
+  const { setParam, removeParam } = useParamsHook();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedExpense, setSelectedExpense] = useState(null);
   const {
@@ -40,7 +42,20 @@ const ExpenseHistory = () => {
     if (!isBack) window.history.back();
   }, []);
 
-  const handleSortChange = useCallback(() => {}, []);
+  // const handleSortChange = useCallback(() => {}, []);
+
+  const handleSortChange = useCallback(
+    (value: string) => {
+      if (value === "salary") {
+        setParam("filter", "salary");
+      } else if (value === "expense") {
+        setParam("filter", "expense");
+      } else {
+        removeParam("filter");
+      }
+    },
+    [setParam, removeParam]
+  );
 
   return (
     <div className="p-4">
@@ -59,14 +74,14 @@ const ExpenseHistory = () => {
         extraOptions={
           <>
             <Select
-              // defaultValue=""
-              // value={}
+              defaultValue=""
+              value={filters.filter}
               onChange={handleSortChange}
               className="w-40"
             >
               <Option value="">Hammasi</Option>
-              <Option value="">Xarajat</Option>
-              <Option value="">Maosh</Option>
+              <Option value="expense">Xarajat</Option>
+              <Option value="salary">Maosh</Option>
             </Select>
             <Button onClick={handleAddExpense} type="primary">
               <PlusOutlined />
