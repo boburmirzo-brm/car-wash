@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useGetExpenseByEmployeeIdQuery } from "@/redux/api/expense";
 import Expense from "@/pages/expense/Expense";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux";
 import useFilter from "@/hooks/useFilter";
@@ -11,7 +11,16 @@ const ExpenseHistory: React.FC = () => {
   const { id } = useParams<{ id?: string }>();
   const employeeId = useSelector((state: RootState) => state.auth.id);
   const userId = id || employeeId;
+  const { search } = useLocation();
+  const params = new URLSearchParams(search);
+  const filter = params.get("filter");
 
+  useEffect(() => {
+    if (filter === "admin") {
+      // filterga qarab ma'lumot olib kelish yoki filterlash
+      console.log("Admin filter ishladi");
+    }
+  }, [filter]);
   const {
     clearFilters,
     filters,
