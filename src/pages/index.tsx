@@ -1,6 +1,8 @@
 import { Suspense } from "@/utils";
 import React, { lazy } from "react";
 import { useRoutes } from "react-router-dom";
+import ActiveAdmins from "./admins/active-admins/ActiveAdmins";
+import InactiveAdmins from "./admins/inactive-admins/InactiveAdmins";
 
 // Dashboard
 const Dashboard = lazy(() => import("./dashboard/Dashboard"));
@@ -117,6 +119,24 @@ const AppRouter = () => {
                           <Admins />
                         </Suspense>
                       ),
+                      children: [
+                        {
+                          path: "",
+                          element: (
+                            <Suspense>
+                              <ActiveAdmins />
+                            </Suspense>
+                          ),
+                        },
+                        {
+                          path: "inactive-admins",
+                          element: (
+                            <Suspense>
+                              <InactiveAdmins />
+                            </Suspense>
+                          ),
+                        },
+                      ],
                     },
                     {
                       path: "/employees",
@@ -162,6 +182,14 @@ const AppRouter = () => {
                         },
                         {
                           path: "expense-history",
+                          element: (
+                            <Suspense>
+                              <EmployeeExpenseHistory />
+                            </Suspense>
+                          ),
+                        },
+                        {
+                          path: "admin-expense-history",
                           element: (
                             <Suspense>
                               <EmployeeExpenseHistory />

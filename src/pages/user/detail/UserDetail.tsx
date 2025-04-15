@@ -177,6 +177,29 @@ const UserDetail = () => {
         </>
       )}
 
+      {user?.role === Role.ADMIN && (
+        <>
+          <Tabs
+            className="mt-4"
+            items={[
+              {
+                title: "Maosh",
+                path: `/admins/user/${id}/expense-history`,
+                id: 1,
+              },
+              {
+                title: "Chiqim",
+                path: `/admins/user/${id}/admin-expense-history?filter=admin`,
+                id: 2,
+              },
+            ]}
+          />
+          <div className="py-4 min-h-[500px]">
+            <Outlet />
+          </div>
+        </>
+      )}
+
       <UserPopup
         currentRole={Role.ADMIN}
         open={modalType === "edit"}

@@ -19,8 +19,12 @@ const extendedApi = mainApi.injectEndpoints({
       query: () => "/user",
       providesTags: ["USER"],
     }),
-    getAdmins: build.query<any, void>({
-      query: () => "/user/admins",
+    getAdmins: build.query<any, any>({
+      query: (params) =>({
+        url: "/user/admins",
+        method: "GET",
+        params,
+      }),
       providesTags: ["USER"],
     }),
     getEmployees: build.query<any, any>({
