@@ -49,7 +49,11 @@ const Sidebar: React.FC<Props> = ({ open, onClose }) => {
           )?.map((link) => (
             <li key={link.id}>
               <NavLink
-                to={link.path}
+                to={
+                  role === Role.OWNER && link.path === "/profile"
+                    ? `${link.path}?filter=admin`
+                    : link.path
+                }
                 onClick={onClose}
                 end={false}
                 className={`${

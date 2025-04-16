@@ -213,6 +213,24 @@ const AppRouter = () => {
                           <Profile />
                         </Suspense>
                       ),
+                      children: [
+                        {
+                          path: "",
+                          element: (
+                            <Suspense>
+                              <EmployeeExpenseHistory />
+                            </Suspense>
+                          ),
+                        },
+                        {
+                          path: "expense-history",
+                          element: (
+                            <Suspense>
+                              <EmployeeExpenseHistory />
+                            </Suspense>
+                          ),
+                        },
+                      ],
                     },
                     {
                       path: "/expense",

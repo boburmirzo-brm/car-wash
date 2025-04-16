@@ -123,7 +123,7 @@ const DateWithPagination: FC<Props> = ({
             onClick={() => hanleChange(30)}
             type="default"
           >
-            1 Oy
+            30 Kun
           </Button>
           <Options handleFilterChange={handleFilterChange} />
           {suffix !== "UZS" && extraOptions}

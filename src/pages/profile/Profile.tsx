@@ -8,6 +8,9 @@ import { MdLogout, MdOutlineAdminPanelSettings } from "react-icons/md";
 import { useDispatch } from "react-redux";
 import { logout } from "@/redux/features/auth.slice";
 import Box from "@/components/ui/Box";
+import { Role } from "@/constant";
+import Tabs from "@/components/ui/Tabs";
+import { Outlet } from "react-router-dom";
 
 const Profile = () => {
   const { data, isLoading } = useCheckTokenQuery();
@@ -28,8 +31,8 @@ const Profile = () => {
   };
 
   return (
-    <div className="flex flex-col gap-4 items-center p-4">
-      <Box >
+    <div className="p-4">
+      <Box>
         {isLoading ? (
           <Skeleton active />
         ) : (
@@ -78,6 +81,38 @@ const Profile = () => {
           </div>
         )}
       </Box>
+      {[Role.OWNER, Role.ADMIN].includes(user?.role) && (
+        <>
+          <Tabs
+            className="mt-4"
+            items={
+              user?.role === Role.ADMIN
+                ? [
+                    {
+                      title: "Maosh",
+                      path: `/profile`,
+                      id: 0,
+                    },
+                    {
+                      title: "Chiqim",
+                      path: `/profile/expense-history?filter=admin`,
+                      id: 1,
+                    },
+                  ]
+                : [
+                    {
+                      title: "Chiqim",
+                      path: `/profile?filter=admin`,
+                      id: 0, 
+                    },
+                  ]
+            }
+          />
+          <div className="py-4 min-h-[500px]">
+            <Outlet />
+          </div>
+        </>
+      )}
 
       <UserPopup
         open={isEditing}
