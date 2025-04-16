@@ -77,7 +77,7 @@ const StatisticView: FC<Props> = ({ data, hiddenDate = false, title }) => {
 
         <Box
           className="cursor-pointer"
-          onClick={() => navigate(`/expense${search}`)}
+          onClick={() => navigate(`/expense${search}&filter=expense`)}
         >
           <div className="flex-1">
             <h3 className="sm:text-2xl text-xl  mb-2 font-medium text-text">
@@ -88,7 +88,7 @@ const StatisticView: FC<Props> = ({ data, hiddenDate = false, title }) => {
         </Box>
         <Box
           className="cursor-pointer"
-          onClick={() => navigate(`/expense${search}`)}
+          onClick={() => navigate(`/expense${search}&filter=salary`)}
         >
           <div className="flex-1">
             <h3 className="sm:text-2xl text-xl  mb-2 font-medium text-text">

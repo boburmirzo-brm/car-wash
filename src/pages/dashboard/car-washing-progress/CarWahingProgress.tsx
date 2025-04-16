@@ -32,7 +32,7 @@ const CarWahingProgress = () => {
         totalItems={data?.data?.total || 0}
         limit={limit}
         page={page}
-        title="Yuvilyotgan mashinalar"
+        title="Yuvilyotgan"
       >
         <CarWashing data={data?.data} />
       </DateWithPagination>

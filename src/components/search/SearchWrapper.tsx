@@ -8,6 +8,7 @@ const SearchWrapper = () => {
 
   const handleChangeInput = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.value) {
+      setParam("page", "1")
       setParam("q", e.target.value);
     } else {
       removeParam("q");

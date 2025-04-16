@@ -15,7 +15,10 @@ const CarWashingDone = () => {
   } = useFilter();
 
   const { data, isLoading, isError, isFetching } =
-    useGetCarWashingsQuery(filters);
+    useGetCarWashingsQuery({
+      ...filters,
+      done: "1",
+    });
   return (
     <div className="min-h-[500px]">
       <DateWithPagination
@@ -29,7 +32,7 @@ const CarWashingDone = () => {
         totalItems={data?.data?.total || 0}
         limit={limit}
         page={page}
-        title="Yuvilgan mashinalar"
+        title="Yuvilgan"
       >
         <CarWashing data={data?.data} profile={true} />
       </DateWithPagination>

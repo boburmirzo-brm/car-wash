@@ -20,7 +20,7 @@ const UserView: FC<Props> = ({ data }) => {
             <Link
               to={`/${user.role === Role.ADMIN ? "admins" : "employees"}/user/${
                 user._id
-              }`}
+              }${user.role === Role.ADMIN ? "/expense-history" : ""}`}
               className="font-medium hover:underline"
             >
               {user.f_name} {user.l_name}
@@ -28,7 +28,7 @@ const UserView: FC<Props> = ({ data }) => {
             <Link
               to={`/${user.role === Role.ADMIN ? "admins" : "employees"}/user/${
                 user._id
-              }`}
+              }${user.role === Role.ADMIN ? "/expense-history" : ""}`}
               className="text-text-muted my-1 block hover:underline"
             >
               @{user.username}

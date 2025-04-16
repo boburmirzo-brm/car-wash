@@ -104,19 +104,21 @@ const UserDetail = () => {
 
               <div className="flex w-full flex-col items-end gap-1.5 ">
                 <div className="flex items-center">
-                  <Title
-                    level={3}
-                    type={
-                      user?.budget === 0
-                        ? "secondary"
-                        : (user?.budget || 0) > 0
-                        ? "success"
-                        : "danger"
-                    }
-                    style={{ marginBottom: 0 }}
-                  >
-                    {(user?.budget || 0)?.toLocaleString() || "0"} UZS
-                  </Title>
+                  {user?.role !== Role.ADMIN && (
+                    <Title
+                      level={3}
+                      type={
+                        user?.budget === 0
+                          ? "secondary"
+                          : (user?.budget || 0) > 0
+                          ? "success"
+                          : "danger"
+                      }
+                      style={{ marginBottom: 0 }}
+                    >
+                      {(user?.budget || 0)?.toLocaleString() || "0"} UZS
+                    </Title>
+                  )}
                   <div className=" max-md:absolute top-4 right-4">
                     <Options
                       isActive={user?.is_active ?? false}
