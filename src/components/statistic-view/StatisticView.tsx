@@ -17,7 +17,6 @@ const StatisticView: FC<Props> = ({ data, hiddenDate = false, title }) => {
   const { setParam, removeParam , removeParams} = useParamsHook();
   const navigate = useNavigate();
   const { search } = useLocation();
-  console.log(search);
 
   const handleFilterChange = useCallback(
     (dates: any) => {
@@ -77,7 +76,7 @@ const StatisticView: FC<Props> = ({ data, hiddenDate = false, title }) => {
 
         <Box
           className="cursor-pointer"
-          onClick={() => navigate(`/expense${search}&filter=expense`)}
+          onClick={() => navigate(`/expense${search + (data?.totalExpense ? `&filter=expense` : "")}`)}
         >
           <div className="flex-1">
             <h3 className="sm:text-2xl text-xl  mb-2 font-medium text-text">
@@ -88,7 +87,7 @@ const StatisticView: FC<Props> = ({ data, hiddenDate = false, title }) => {
         </Box>
         <Box
           className="cursor-pointer"
-          onClick={() => navigate(`/expense${search}&filter=salary`)}
+          onClick={() => navigate(`/expense${search + (data?.totalExpense ? `&filter=salary` : "")}`)}
         >
           <div className="flex-1">
             <h3 className="sm:text-2xl text-xl  mb-2 font-medium text-text">
