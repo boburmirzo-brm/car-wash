@@ -187,12 +187,12 @@ const UserDetail = () => {
               {
                 title: "Maosh",
                 path: `/admins/user/${id}/expense-history`,
-                id: 1,
+                id: 0,
               },
               {
                 title: "Chiqim",
                 path: `/admins/user/${id}/admin-expense-history?filter=admin`,
-                id: 2,
+                id: 1,
               },
             ]}
           />
