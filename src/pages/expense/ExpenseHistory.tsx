@@ -1,12 +1,12 @@
 import { Button, Select } from "antd";
 import React, { useCallback, useEffect, useState } from "react";
 import { PlusOutlined } from "@ant-design/icons";
-import { useGetAllExpenseQuery } from "../../redux/api/expense";
+import { useGetAllExpenseQuery } from "@/redux/api/expense";
 import Expense from "./Expense";
-import ExpensePopup from "../../components/expense-popup/ExpensePopup";
+import ExpensePopup from "@/components/expense-popup/ExpensePopup";
 import useFilter from "@/hooks/useFilter";
 import DateWithPagination from "@/components/ui/DateWithPagination";
-import { useParamsHook } from "../../hooks/useParamsHook";
+import { useParamsHook } from "@/hooks/useParamsHook";
 
 const { Option } = Select;
 
@@ -56,6 +56,18 @@ const ExpenseHistory = () => {
     },
     [setParam, removeParam]
   );
+  const handleTypeChange = useCallback(
+    (value: string) => {
+      if (value === "CASH") {
+        setParam("type", "CASH");
+      } else if (value === "CARD") {
+        setParam("type", "CARD");
+      } else {
+        removeParam("type");
+      }
+    },
+    [setParam, removeParam]
+  );
 
   return (
     <div className="p-4">
@@ -82,6 +94,16 @@ const ExpenseHistory = () => {
               <Option value="">Hammasi</Option>
               <Option value="expense">Xarajat</Option>
               <Option value="salary">Maosh</Option>
+            </Select>
+            <Select
+              defaultValue=""
+              value={filters.type}
+              onChange={handleTypeChange}
+              className="w-40"
+            >
+              <Option value="">Hammasi</Option>
+              <Option value="CARD">Karta</Option>
+              <Option value="CASH">Naqt</Option>
             </Select>
             <Button onClick={handleAddExpense} type="primary">
               <PlusOutlined />
