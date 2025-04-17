@@ -12,6 +12,7 @@ const useFilter = (beforeDays: number = 0, allTime: boolean = false, limitAmount
   const toDate = getParam("toDate") || (allTime ? "" : to);
   const page = parseInt(getParam("page") || "1", 10);
   const filter = getParam("filter") || "";
+  const type = getParam("type") || "";
   const limit = limitAmount;
 
   const filters = useMemo(
@@ -21,8 +22,9 @@ const useFilter = (beforeDays: number = 0, allTime: boolean = false, limitAmount
       page,
       limit,
       filter,
+      type
     }),
-    [fromDate, toDate, page, filter]
+    [fromDate, toDate, page, filter, type]
   );
 
   const handleFilterChange = useCallback(
@@ -42,7 +44,7 @@ const useFilter = (beforeDays: number = 0, allTime: boolean = false, limitAmount
   );
 
   const clearFilters = useCallback(() => {
-    removeParams(["fromDate", "toDate", "page", "filter"]);
+    removeParams(["fromDate", "toDate", "page", "filter", "type"]);
   }, [removeParams]);
 
   const handlePageChange = useCallback(
