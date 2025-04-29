@@ -9,6 +9,7 @@ import {
   Checkbox,
   Radio,
   InputRef,
+  Select,
 } from "antd";
 import { useModalNavigation } from "@/hooks/useModalNavigation";
 import { MdOutlineLocalCarWash } from "react-icons/md";
@@ -24,6 +25,8 @@ import { toNumber } from "@/helper";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { MSAW, MSBW } from "@/static";
+import { useGetAllTariffQuery } from "../../redux/api/tariff";
+import { TariffItem } from "../../types";
 
 type FieldType = {
   washAmount?: string;
@@ -62,6 +65,21 @@ const CarWashingPopup: React.FC<Props> = ({
   const priceInputRef = useRef<InputRef>(null);
   const navigate = useNavigate();
   useModalNavigation(open, onClose);
+  const { data: tariffData, isLoading: tariffLoading } = useGetAllTariffQuery(
+    {}
+  );
+  const tariffOptions =
+    tariffData?.data?.payload?.map((item: TariffItem) => {
+      const minPrice = Math.min(...(item.faza?.map((f) => f.price) || [0]));
+      return {
+        label: `${item.class} - ${item.cars} (${
+          item.comment
+        }) - ${minPrice.toLocaleString()} so'm`,
+        value: item._id, // SELECT uchun to‘g‘ri `value`
+        price: minPrice,
+      };
+    }) || [];
+
 
   useEffect(() => {
     if (open) {
@@ -175,46 +193,94 @@ const CarWashingPopup: React.FC<Props> = ({
 
   return (
     <Modal
-      title={prevData ? `Mashina yuvish` : "Mashina yuvishni boshlash"}
+      title={prevData ? `Mashina yuvish ` : "Mashina yuvishni boshlash"}
       open={open}
       onCancel={handleClose}
       footer={null}
     >
-      <Form
-        form={form}
-        initialValues={
-          prevData
-            ? { ...prevData, paymentType: "CASH" }
-            : { paymentType: "CASH" }
-        }
-        layout="vertical"
-        onFinish={handleSave}
-      >
-        {prevData ? (
-          <>
-            <Form.Item<FieldType>
-              label={nasiya ? "Kelishilgan summa" : "Summa"}
-              name="washAmount"
-              rules={[{ required: true, message: "Summani kiriting!" }]}
-            >
-              <NumericFormat
-                className="w-full p-2 border border-gray-300 rounded-md"
-                customInput={Input}
-                thousandSeparator=" "
-                fixedDecimalScale
-                allowNegative={false}
-                placeholder="Summani kiriting"
-                getInputRef={priceInputRef}
-              />
-            </Form.Item>
+      {prevData?.isBonus ? (
+        <Form
+          form={form}
+          initialValues={
+            prevData
+              ? { ...prevData, paymentType: "CASH" }
+              : { paymentType: "CASH" }
+          }
+          layout="vertical"
+          onFinish={handleSave}
+        >
+          <Form.Item
+            label="Tariff tanlang"
+            name="tariffId"
+            rules={[{ required: true, message: "Tariffni tanlang!" }]}
+          >
+            <Select
+              loading={tariffLoading}
+              options={tariffOptions}
+              placeholder="Tariffni tanlang"
+              showSearch
+              optionFilterProp="label"
+              dropdownMatchSelectWidth={false}
+              optionLabelProp="label"
+              dropdownStyle={{ maxHeight: 250, overflowY: "auto" }}
+              style={{ width: "100%" }}
+              onChange={(selectedId) => {
+                const selectedTariff = tariffData?.data?.payload?.find(
+                  (item: TariffItem) => item._id === selectedId
+                );
 
-            {nasiya && (
+                console.log(
+                  "Selected Tariff:",
+                  selectedTariff.faza.length,
+                  "ID:",
+                  selectedId
+                );
+
+                if (selectedTariff && selectedTariff.faza.length > 0) {
+                  form.setFieldsValue({
+                    washAmount: selectedTariff.faza[0].price,
+                  });
+                }
+              }}
+            />
+          </Form.Item>
+
+          <Form.Item<FieldType> label="Izoh" name="comment">
+            <TextArea rows={2} />
+          </Form.Item>
+
+          <Form.Item style={{ margin: 0 }}>
+            <Button
+              type="primary"
+              loading={isLoading || updateLoadingChange || updateLoading}
+              block
+              htmlType="submit"
+            >
+              {isLoading || updateLoading || updateLoadingChange
+                ? "Kuting"
+                : prevData
+                ? "Saqlash"
+                : "Qani kettik"}
+            </Button>
+          </Form.Item>
+        </Form>
+      ) : (
+        <Form
+          form={form}
+          initialValues={
+            prevData
+              ? { ...prevData, paymentType: "CASH" }
+              : { paymentType: "CASH" }
+          }
+          layout="vertical"
+          onFinish={handleSave}
+        >
+          {prevData ? (
+            <>
               <Form.Item<FieldType>
-                label="To'langan summa"
-                name="paidAmount"
-                rules={[
-                  { required: true, message: "To'lov summasini kiriting!" },
-                ]}
+                label={nasiya ? "Kelishilgan summa" : "Summa"}
+                name="washAmount"
+                rules={[{ required: true, message: "Summani kiriting!" }]}
               >
                 <NumericFormat
                   className="w-full p-2 border border-gray-300 rounded-md"
@@ -223,62 +289,82 @@ const CarWashingPopup: React.FC<Props> = ({
                   fixedDecimalScale
                   allowNegative={false}
                   placeholder="Summani kiriting"
+                  getInputRef={priceInputRef}
                 />
               </Form.Item>
-            )}
 
-            <Form.Item<FieldType> label="Izoh" name="comment">
-              <TextArea rows={2} />
-            </Form.Item>
-            {!profile && (
-              <Form.Item<FieldType> label="To'lov turi" name="paymentType">
-                <Radio.Group
-                  // value={value}
-                  options={[
-                    { value: PaymentType.CASH, label: "Naqd" },
-                    { value: PaymentType.CARD, label: "Karta" },
+              {nasiya && (
+                <Form.Item<FieldType>
+                  label="To'langan summa"
+                  name="paidAmount"
+                  rules={[
+                    { required: true, message: "To'lov summasini kiriting!" },
                   ]}
-                />
-              </Form.Item>
-            )}
-
-            {!(
-              prevData?.customerId?.full_name === "Noma'lum" ||
-              !prevData?.customerId?.tel_primary
-            ) &&
-              !profile && (
-                <Form.Item<FieldType> name="nasiya" valuePropName="checked">
-                  <Checkbox>Nasiya</Checkbox>
+                >
+                  <NumericFormat
+                    className="w-full p-2 border border-gray-300 rounded-md"
+                    customInput={Input}
+                    thousandSeparator=" "
+                    fixedDecimalScale
+                    allowNegative={false}
+                    placeholder="Summani kiriting"
+                  />
                 </Form.Item>
               )}
-          </>
-        ) : (
-          <div className="text-text-muted flex justify-center py-6 text-8xl">
-            <MdOutlineLocalCarWash />
-          </div>
-        )}
 
-        {error && (
-          <div className="mb-3 mt-[-12px]">
-            <Alert message={error} type="error" />
-          </div>
-        )}
+              <Form.Item<FieldType> label="Izoh" name="comment">
+                <TextArea rows={2} />
+              </Form.Item>
+              {!profile && (
+                <Form.Item<FieldType> label="To'lov turi" name="paymentType">
+                  <Radio.Group
+                    // value={value}
+                    options={[
+                      { value: PaymentType.CASH, label: "Naqd" },
+                      { value: PaymentType.CARD, label: "Karta" },
+                    ]}
+                  />
+                </Form.Item>
+              )}
 
-        <Form.Item style={{ margin: 0 }}>
-          <Button
-            type="primary"
-            loading={isLoading || updateLoadingChange || updateLoading}
-            block
-            htmlType="submit"
-          >
-            {isLoading || updateLoading || updateLoadingChange
-              ? "Kuting"
-              : prevData
-              ? "Saqlash"
-              : "Qani kettik"}
-          </Button>
-        </Form.Item>
-      </Form>
+              {!(
+                prevData?.customerId?.full_name === "Noma'lum" ||
+                !prevData?.customerId?.tel_primary
+              ) &&
+                !profile && (
+                  <Form.Item<FieldType> name="nasiya" valuePropName="checked">
+                    <Checkbox>Nasiya</Checkbox>
+                  </Form.Item>
+                )}
+            </>
+          ) : (
+            <div className="text-text-muted flex justify-center py-6 text-8xl">
+              <MdOutlineLocalCarWash />
+            </div>
+          )}
+
+          {error && (
+            <div className="mb-3 mt-[-12px]">
+              <Alert message={error} type="error" />
+            </div>
+          )}
+
+          <Form.Item style={{ margin: 0 }}>
+            <Button
+              type="primary"
+              loading={isLoading || updateLoadingChange || updateLoading}
+              block
+              htmlType="submit"
+            >
+              {isLoading || updateLoading || updateLoadingChange
+                ? "Kuting"
+                : prevData
+                ? "Saqlash"
+                : "Qani kettik"}
+            </Button>
+          </Form.Item>
+        </Form>
+      )}
       {contextHolder}
     </Modal>
   );
