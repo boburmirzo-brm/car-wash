@@ -25,6 +25,7 @@ const BonusPopup: FC<Props> = ({ open, onClose, bonus }) => {
       if (bonus) {
         form.setFieldsValue({
           freeCounter: bonus.freeCounter.toString(),
+          freeCounterAmount: bonus.freeCounterAmount.toString(),
           friendPercent: bonus.friendPercent.toString(),
         });
       } else {
@@ -35,11 +36,18 @@ const BonusPopup: FC<Props> = ({ open, onClose, bonus }) => {
 
   const onFinish: FormProps<IBonus>["onFinish"] = (values) => {
     const formattedValues = {
-      freeCounter: Number(values.freeCounter),
-      friendPercent: Number(values.friendPercent),
+      freeCounter: Number(values.freeCounter.toString().replace(/\s/g, "")),
+      freeCounterAmount: Number(
+        values.freeCounterAmount.toString().replace(/\s/g, "")
+      ),
+      friendPercent: Number(values.friendPercent.toString().replace(/\s/g, "")),
     };
 
-    if (!formattedValues.freeCounter || !formattedValues.friendPercent) {
+    if (
+      !formattedValues.freeCounter ||
+      !formattedValues.freeCounterAmount ||
+      !formattedValues.friendPercent
+    ) {
       apiMessage.error("Barcha maydonlarni to‘ldiring!");
       return;
     }
@@ -75,6 +83,7 @@ const BonusPopup: FC<Props> = ({ open, onClose, bonus }) => {
   };
 
 
+
   return (
     <Modal
       title={bonus ? "Bonusni tahrirlash" : "Bonus qo'shish"}
@@ -100,6 +109,21 @@ const BonusPopup: FC<Props> = ({ open, onClose, bonus }) => {
             allowNegative={false}
             decimalScale={0}
             placeholder="Hisoblagich"
+          />
+        </Form.Item>
+
+        <Form.Item<IBonus>
+          label="Bonusgacha hisoblash summa"
+          name="freeCounterAmount"
+          rules={[{ required: true, message: "Summani kiriting!" }]}
+        >
+          <NumericFormat
+            className="w-full p-2 border border-gray-300 rounded-md"
+            customInput={Input}
+            thousandSeparator=" "
+            allowNegative={false}
+            decimalScale={0}
+            placeholder="Summa"
           />
         </Form.Item>
 

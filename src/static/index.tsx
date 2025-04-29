@@ -10,6 +10,7 @@ import {
   MdOutlineDashboard,
   MdOutlineDiscount,
 } from "react-icons/md";
+import { RiCoupon3Line } from "react-icons/ri";
 import { PiMoneyWavy } from "react-icons/pi";
 import { TbCoins, TbUserShield } from "react-icons/tb";
 import { theme } from "antd";
@@ -111,6 +112,12 @@ export const SIDEBAR_LINKS = [
     path: "/customer-car",
     title: "Mijozlar",
     icon: <LuUsers className="text-2xl" />,
+  },
+  {
+    id: 10,
+    path: "/tariff",
+    title: "Tariff",
+    icon: <RiCoupon3Line className="text-2xl" />,
   },
   {
     id: 8,

@@ -3,6 +3,7 @@ import React, { lazy } from "react";
 import { useRoutes } from "react-router-dom";
 import ActiveAdmins from "./admins/active-admins/ActiveAdmins";
 import InactiveAdmins from "./admins/inactive-admins/InactiveAdmins";
+import Tariff from "./tariff/Tariff";
 
 // Dashboard
 const Dashboard = lazy(() => import("./dashboard/Dashboard"));
@@ -261,6 +262,14 @@ const AppRouter = () => {
                       element: (
                         <Suspense>
                           <Statistic />
+                        </Suspense>
+                      ),
+                    },
+                    {
+                      path: "/tariff",
+                      element: (
+                        <Suspense>
+                          <Tariff />
                         </Suspense>
                       ),
                     },

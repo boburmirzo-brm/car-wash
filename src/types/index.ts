@@ -194,5 +194,31 @@ export interface ExpenseType {
 export interface IBonus {
   _id: string;
   freeCounter: number;
+  freeCounterAmount: number;
   friendPercent: number;
+}
+
+export interface AdminInfo {
+  _id: string;
+  f_name: string;
+  l_name: string;
+  tel_primary: string;
+  username: string;
+}
+
+export interface Faza {
+  _id: string;
+  number: number;
+  price: number;
+}
+
+export interface TariffItem {
+  _id: string;
+  adminId: AdminInfo;
+  class: string;
+  cars: string;
+  comment: string;
+  faza: Faza[];
+  createdAt: string;
+  updatedAt: string;
 }

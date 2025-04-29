@@ -36,7 +36,8 @@ export const mainApi = createApi({
     "EXPENSE",
     "BONUS",
     "SALARY",
-    "STATS"
+    "STATS",
+    "TARIFF"
   ],
   endpoints: () => ({}),
 });
