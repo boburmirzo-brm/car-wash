@@ -9,6 +9,7 @@ import CarWashingStatusTooltip from "@/components/car-washing/CarWashingStatusTo
 import Box from "@/components/ui/Box";
 import { Link } from "react-router-dom";
 import { FaRegCommentDots } from "react-icons/fa";
+import { FiGift } from "react-icons/fi";
 
 interface Props {
   data: any;
@@ -51,8 +52,15 @@ const CarsWashings: FC<Props> = ({ data, profile }) => {
                     </span>
                   </p>
                 </div>
-                <strong className="text-lg text-text font-semibold">
+                <strong className="text-lg text-text font-semibold flex items-center gap-2">
                   {item?.washAmount?.toLocaleString() || "0"} UZS
+                  {item?.isBonus &&
+                    item?.status === "COMPLETED" &&(
+                      <FiGift
+                        className="text-xl text-yellow-500"
+                        title="Bonus xizmat"
+                      />
+                    )}
                 </strong>
               </div>
             )}

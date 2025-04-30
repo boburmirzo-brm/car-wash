@@ -80,7 +80,6 @@ const CarWashingPopup: React.FC<Props> = ({
       };
     }) || [];
 
-
   useEffect(() => {
     if (open) {
       setTimeout(() => {
@@ -90,46 +89,46 @@ const CarWashingPopup: React.FC<Props> = ({
   }, [open]);
 
   const handleSave = (values: {
-    washAmount: number;
+    washAmount?: number;
     paidAmount?: number;
-    status: string;
-    comment: string;
+    status?: string;
+    comment?: string;
     nasiya?: boolean;
-    paymentType: string;
+    paymentType?: string;
+    tariffId?: string;
   }) => {
     if (prevData) {
-      const washAmount = toNumber(values.washAmount);
-      const paidAmount = toNumber(values.paidAmount);
+      // Handle the case when it's a bonus
+      if (prevData.isBonus) {
+        // Find the selected tariff to get the correct price
+        const selectedTariff = tariffData?.data?.payload?.find(
+          (item: TariffItem) => item._id === values.tariffId
+        );
 
-      let data: {
-        washAmount: number;
-        paidAmount: number;
-        comment?: string;
-        paymentType: string;
-        status: string;
-        // customerId: string;
-        // carId: string;
-      } = {
-        washAmount,
-        paidAmount: values.nasiya ? paidAmount : washAmount,
-        comment: values.comment,
-        paymentType: values.paymentType,
-        status: CarWashingStatus.COMPLETED,
-        // customerId: customerId || "",
-        // carId: carId || "",
-      };
-      if (!data.comment) {
-        delete data.comment;
-      }
+        // Get washAmount from the selected tariff if available
+        const washAmount =
+          selectedTariff && selectedTariff.faza.length > 0
+            ? selectedTariff.faza[0].price
+            : toNumber(values.washAmount);
 
-      if (prevData.washAmount === null) {
+        let data = {
+          washAmount,
+          paidAmount: 0, // Since it's a bonus, paid amount is 0
+          comment: values.comment,
+          paymentType: values.paymentType || "CASH",
+          status: CarWashingStatus.COMPLETED,
+        };
+
+        if (!data.comment) {
+          delete data.comment;
+        }
+
         updateCarWashing({
           id: prevData._id,
           data,
         })
           .unwrap()
           .then(() => {
-            // apiMessage.success("Mashina ma'lumoti yangilandi!");
             toast.success(MSAW[Math.floor(Math.random() * MSAW.length)]);
             setError(null);
             onClose();
@@ -142,25 +141,62 @@ const CarWashingPopup: React.FC<Props> = ({
             setError(error);
           });
       } else {
-        updateCarWashingChange({
-          id: prevData._id,
-          data,
-        })
-          .unwrap()
-          .then(() => {
-            apiMessage.success("Mashina ma'lumoti yangilandi!");
-            setError(null);
-            onClose();
+        // Handle regular (non-bonus) case
+        const washAmount = toNumber(values.washAmount);
+        const paidAmount = toNumber(values.paidAmount);
+
+        let data = {
+          washAmount,
+          paidAmount: values.nasiya ? paidAmount : washAmount,
+          comment: values.comment,
+          paymentType: values.paymentType,
+          status: CarWashingStatus.COMPLETED,
+        };
+
+        if (!data.comment) {
+          delete data.comment;
+        }
+
+        if (prevData.washAmount === null) {
+          updateCarWashing({
+            id: prevData._id,
+            data,
           })
-          .catch((err) => {
-            let error =
-              typeof err.data.message === "string"
-                ? err.data.message
-                : err.data.message[0];
-            setError(error);
-          });
+            .unwrap()
+            .then(() => {
+              toast.success(MSAW[Math.floor(Math.random() * MSAW.length)]);
+              setError(null);
+              onClose();
+            })
+            .catch((err) => {
+              let error =
+                typeof err.data.message === "string"
+                  ? err.data.message
+                  : err.data.message[0];
+              setError(error);
+            });
+        } else {
+          updateCarWashingChange({
+            id: prevData._id,
+            data,
+          })
+            .unwrap()
+            .then(() => {
+              apiMessage.success("Mashina ma'lumoti yangilandi!");
+              setError(null);
+              onClose();
+            })
+            .catch((err) => {
+              let error =
+                typeof err.data.message === "string"
+                  ? err.data.message
+                  : err.data.message[0];
+              setError(error);
+            });
+        }
       }
     } else {
+      // Create new car washing
       createCarWashing({
         carId: carId || "",
         customerId: customerId || "",
@@ -168,7 +204,6 @@ const CarWashingPopup: React.FC<Props> = ({
       })
         .unwrap()
         .then(() => {
-          // apiMessage.success("Mashina yuvish boashlandi!");
           toast.success(MSBW[Math.floor(Math.random() * MSBW.length)]);
           form.resetFields();
           setError(null);
@@ -233,13 +268,16 @@ const CarWashingPopup: React.FC<Props> = ({
                   "Selected Tariff:",
                   selectedTariff.faza.length,
                   "ID:",
-                  selectedId
+                  selectedId,
+                  "Amount:",
+                  selectedTariff.faza[0].price
                 );
 
                 if (selectedTariff && selectedTariff.faza.length > 0) {
                   form.setFieldsValue({
                     washAmount: selectedTariff.faza[0].price,
                   });
+                  console.log(selectedTariff.faza[0].price);
                 }
               }}
             />

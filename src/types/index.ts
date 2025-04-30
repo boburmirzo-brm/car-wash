@@ -81,6 +81,10 @@ interface ICarDetail {
 export interface IDetailCar {
   car: ICarDetail;
   carWashings: any;
+  freeCounter: number;
+  freeCounterAmount: number;
+  completedCountBonus: number;
+  completedAmountBonus: number;
 }
 export interface ICustomer {
   _id: string;
@@ -188,7 +192,7 @@ export interface ExpenseType {
   updatedAt: string;
   type: PaymentType;
   employerId: any;
-  adminId: any
+  adminId: any;
 }
 
 export interface IBonus {

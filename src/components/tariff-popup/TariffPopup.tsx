@@ -21,7 +21,7 @@ const TariffPopup: React.FC<Props> = ({ open, onClose, selected }) => {
 
   useEffect(() => {
     if (open) {
-      form.resetFields(); 
+      form.resetFields();
       if (selected) {
         form.setFieldsValue({
           ...selected,
@@ -36,20 +36,30 @@ const TariffPopup: React.FC<Props> = ({ open, onClose, selected }) => {
 
   const handleFinish = async (values: any) => {
     try {
+      const cleanedValues = {
+        ...values,
+        faza: values.faza.map((f: any) => ({
+          number: f.number,
+          price: Number(f.price.toString().replace(/\s/g, "")),
+        })),
+      };
+
       if (selected) {
-        await updateTariff({ id: selected._id, data: values }).unwrap();
+        await updateTariff({ id: selected._id, data: cleanedValues }).unwrap();
         message.success("Tarif yangilandi");
       } else {
-        await createTariff(values).unwrap();
+        await createTariff(cleanedValues).unwrap();
         message.success("Yangi tarif qo‘shildi");
       }
-      form.resetFields(); 
+
+      form.resetFields();
       onClose();
     } catch (error) {
       message.error("Xatolik yuz berdi");
       console.error("Tariff mutation error:", error);
     }
   };
+
 
   return (
     <Modal

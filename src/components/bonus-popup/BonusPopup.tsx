@@ -44,13 +44,14 @@ const BonusPopup: FC<Props> = ({ open, onClose, bonus }) => {
     };
 
     if (
-      !formattedValues.freeCounter ||
-      !formattedValues.freeCounterAmount ||
-      !formattedValues.friendPercent
+      values.freeCounter == null ||
+      values.freeCounterAmount == null ||
+      values.friendPercent == null
     ) {
       apiMessage.error("Barcha maydonlarni to‘ldiring!");
       return;
     }
+
 
     if (bonus) {
       const data = {
