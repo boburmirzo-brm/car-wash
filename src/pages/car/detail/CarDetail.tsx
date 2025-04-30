@@ -18,6 +18,7 @@ import { useGetByCarIdQuery } from "@/redux/api/car-washing";
 import { TbUser, TbUserShield } from "react-icons/tb";
 import useFilter from "@/hooks/useFilter";
 import DateWithPagination from "@/components/ui/DateWithPagination";
+import { BonusProgress } from "./BonusProgres";
 
 type ModalType = "start" | "edit" | null;
 
@@ -134,6 +135,23 @@ const CarDetail = () => {
               </div>
             </div>
           )}
+          {car &&
+            data?.data.payload.freeCounter !== 0 ?(
+              <div className="my-4">
+                <BonusProgress
+                  completedCountBonus={
+                    data?.data.payload.completedCountBonus || 0
+                  }
+                  completedAmountBonus={
+                    data?.data.payload.completedAmountBonus || 0
+                  }
+                  freeCounter={data?.data.payload.freeCounter || 5}
+                  freeCounterAmount={
+                    data?.data.payload.freeCounterAmount || 100000
+                  }
+                />
+              </div>
+            ) : <></>}
         </Box>
 
         <DateWithPagination

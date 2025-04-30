@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Card, Spin, Typography, message, Tooltip, FloatButton } from "antd";
+import { Card, Spin, Typography, message, FloatButton, Popover } from "antd";
 import {
   CarOutlined,
   InfoCircleOutlined,
@@ -7,16 +7,18 @@ import {
   AppstoreOutlined,
   DollarOutlined,
   PlusOutlined,
-  EditOutlined,
+  MoreOutlined,
 } from "@ant-design/icons";
-import { useGetAllTariffQuery } from "../../redux/api/tariff";
+import { useDeleteTariffMutation, useGetAllTariffQuery } from "../../redux/api/tariff";
 import { Faza, TariffItem } from "../../types";
 import TariffPopup from "../../components/tariff-popup/TariffPopup";
+import Options from "./Options";
 
 const { Title, Paragraph, Text } = Typography;
 
 const Tariff: React.FC = () => {
   const { data, isLoading, error } = useGetAllTariffQuery({});
+  const [deleteTariff] = useDeleteTariffMutation();
   const tariffs: TariffItem[] = data?.data?.payload || [];
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -31,6 +33,16 @@ const Tariff: React.FC = () => {
     setIsModalOpen(true);
   };
 
+  const handleDelete = async (id: string) => {
+    try {
+      await deleteTariff({ id }).unwrap();
+      message.success("Tarif o‘chirildi");
+    } catch {
+      message.error("O‘chirishda xatolik yuz berdi");
+    }
+  };
+
+
   return (
     <Spin spinning={isLoading} tip="Yuklanmoqda...">
       <div className="p-4 grid gap-4 md:grid-cols-2">
@@ -43,12 +55,26 @@ const Tariff: React.FC = () => {
                 borderRadius: 16,
                 boxShadow: "0 4px 20px rgba(0,0,0,0.1)",
               }}
-              actions={[
-                <Tooltip title="Tahrirlash" key="edit">
-                  <EditOutlined onClick={() => openModal(tariff)} />
-                </Tooltip>,
-              ]}
             >
+              <div className="absolute right-2 top-2 z-10">
+                <Popover
+                  content={
+                    <Options
+                      onEdit={() => openModal(tariff)}
+                      onDelete={() => handleDelete(tariff._id)}
+                    />
+                  }
+                  trigger="click"
+                  placement="bottomLeft"
+                >
+                  <MoreOutlined
+                    style={{
+                      fontSize: 20,
+                      cursor: "pointer",
+                    }}
+                  />
+                </Popover>
+              </div>
               <div className="mb-4 space-y-3">
                 <div className="flex items-center gap-3 border-b border-border pb-2">
                   <CarOutlined className="text-2xl text-blue-500" />

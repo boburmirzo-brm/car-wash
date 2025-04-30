@@ -2,6 +2,7 @@ import React, { FC } from "react";
 import Options from "./Options";
 import { TbCoins, TbUserShield, TbUserX } from "react-icons/tb";
 import { IoCarOutline } from "react-icons/io5";
+import { FiGift } from "react-icons/fi"; // 💡 BONUS ikonkasi
 import TelPopUp from "../tel-pop-up/TelPopUp";
 import { Role } from "@/constant";
 import { useSelector } from "react-redux";
@@ -82,17 +83,25 @@ const CarWashing: FC<Props> = ({ data, profile }) => {
                   </span>
                 </p>
               </div>
-              <strong className="text-lg text-text font-semibold">
+              <strong className="text-lg text-text font-semibold flex items-center gap-2">
                 {item?.washAmount?.toLocaleString() || "0"} UZS
+                {item?.isBonus && item?.status === "COMPLETED" && (
+                  <FiGift
+                    className="text-xl text-yellow-500"
+                    title="Bonus xizmat"
+                  />
+                )}
               </strong>
             </div>
           )}
+
           {item?.comment && (
             <div className="text-text-muted text-sm mt-3 flex gap-2">
               <FaRegCommentDots className="text-lg min-w-4" />
               <span>{item?.comment}</span>
             </div>
           )}
+
           <div className="flex justify-between items-center mt-3 text-text-muted text-sm">
             <span>
               {item?.createdAt?.dateFormat()} {item?.createdAt?.timeFormat()}

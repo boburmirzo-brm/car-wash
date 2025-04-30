@@ -46,6 +46,15 @@ const extendedApi = mainApi.injectEndpoints({
         await invalidateCustomerTag(queryFulfilled, dispatch);
       },
     }),
+    deleteTariff: build.mutation<any, { id: string }>({
+      query: ({ id }) => ({
+        url: `/tariff/${id}`, 
+        method: "DELETE",
+      }),
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+        await invalidateCustomerTag(queryFulfilled, dispatch);
+      },
+    }),
   }),
   overrideExisting: false,
 });
@@ -54,6 +63,7 @@ export const {
   useCreateTariffMutation,
   useUpdateTariffMutation,
   useGetAllTariffQuery,
+  useDeleteTariffMutation
 } = extendedApi;
 
 export default extendedApi;

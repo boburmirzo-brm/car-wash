@@ -33,7 +33,7 @@ const extendedApi = mainApi.injectEndpoints({
         // params,
       }),
       // `/cars/${id}?fromDate=${filters.fromDate}&toDate=${filters.toDate}&page=${filters.page}&limit=${filters.limit}`,
-      providesTags: ["CAR"],
+      providesTags: ["CAR","BONUS"],
     }),
     getByCustomerId: build.query<any, any>({
       query: ({ id, params }) => ({
