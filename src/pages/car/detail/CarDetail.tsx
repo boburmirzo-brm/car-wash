@@ -147,7 +147,7 @@ const CarDetail = () => {
                   }
                   freeCounter={data?.data.payload.freeCounter || 5}
                   freeCounterAmount={
-                    data?.data.payload.freeCounterAmount || 100000
+                    data?.data.payload.freeCounterAmount || 0
                   }
                 />
               </div>

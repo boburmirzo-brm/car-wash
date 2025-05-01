@@ -76,6 +76,7 @@ export const BonusProgress = ({
             </Tooltip>
           </div>
 
+          {targetAmount !== 0 ? 
           <div>
             <div className="flex items-center gap-2 mb-1 text-text-muted">
               <FaMoneyBillWave />
@@ -99,7 +100,8 @@ export const BonusProgress = ({
                 }
               />
             </Tooltip>
-          </div>
+          </div> : <></>
+          }
         </div>
       )}
     </Card>

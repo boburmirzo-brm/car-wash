@@ -18,6 +18,7 @@ const Dashboard = () => {
         items={[
           { title: "Jarayonda", path: "/", id: 0 },
           { title: "Tayyor", path: "/car-washing-done", id: 1 },
+          { title: "Bonus", path: "/car-washing-bonus", id: 2 },
         ]}
       />
 
