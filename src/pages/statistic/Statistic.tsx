@@ -1,9 +1,10 @@
-import StatisticView from "@/components/statistic-view/StatisticView";
+// import StatisticView from "@/components/statistic-view/StatisticView";
 import { fromToTime } from "@/helper";
 import { useParamsHook } from "@/hooks/useParamsHook";
 import { useCheckTokenQuery } from "@/redux/api/auth";
 import { useStatsQuery } from "@/redux/api/stats";
 import React from "react";
+import StatisticBarChar from "../../components/statistic-view/StatisticBarChar";
 
 const Statistic = () => {
   const { getParam } = useParamsHook();
@@ -12,9 +13,11 @@ const Statistic = () => {
   const fromDate = getParam("fromDate") || from;
   const toDate = getParam("toDate") || to;
   const { data } = useStatsQuery({ fromDate, toDate });
+  console.log();
+  
   return (
     <div>
-      <StatisticView title="Statistika" hiddenDate={true} data={data?.data?.payload} />
+      <StatisticBarChar title="Statistika" hiddenDate={true} data={data?.data?.payload} />
     </div>
   );
 };
