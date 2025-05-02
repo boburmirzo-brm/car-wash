@@ -14,6 +14,7 @@ import { Role } from "@/constant";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux";
 import Tabs from "@/components/ui/Tabs";
+import { useGetCustomerInvitationsQuery } from "../../../redux/api/invitation";
 
 const { Title } = Typography;
 type ModalType = "payment" | "edit" | "car" | null;
@@ -23,7 +24,10 @@ const CustomerDetail = () => {
   const { data, isLoading } = useGetCustomerByIdQuery(id || "");
   const [modalType, setModalType] = useState<ModalType>(null);
   const role = useSelector((state: RootState) => state.role.value);
+  const { data:invitations } = useGetCustomerInvitationsQuery(id || "");
 
+  console.log(invitations?.data?.payload);
+  
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);

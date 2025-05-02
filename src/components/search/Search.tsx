@@ -66,7 +66,11 @@ const Search: FC<Props> = ({ hideBottom = false }) => {
         </div>
       )}
 
-      <CustomerPopup open={isModalOpen} onClose={handleClose} />
+      <CustomerPopup
+        open={isModalOpen}
+        onClose={handleClose}
+        invitation={true}
+      />
     </div>
   );
 };
