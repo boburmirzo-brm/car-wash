@@ -14,7 +14,7 @@ import { Role } from "@/constant";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux";
 import Tabs from "@/components/ui/Tabs";
-import { useGetCustomerInvitationsQuery } from "../../../redux/api/invitation";
+import Invitations from "./Invitations";
 
 const { Title } = Typography;
 type ModalType = "payment" | "edit" | "car" | null;
@@ -24,10 +24,7 @@ const CustomerDetail = () => {
   const { data, isLoading } = useGetCustomerByIdQuery(id || "");
   const [modalType, setModalType] = useState<ModalType>(null);
   const role = useSelector((state: RootState) => state.role.value);
-  const { data:invitations } = useGetCustomerInvitationsQuery(id || "");
 
-  console.log(invitations?.data?.payload);
-  
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -53,8 +50,8 @@ const CustomerDetail = () => {
           {isLoading ? (
             <Skeleton active />
           ) : (
-            <div className="flex flex-col md:flex-row items-center md:items-start justify-between gap-4 md:gap-6 ">
-              <div className="flex w-full md:items-center flex-row-reverse md:flex-row gap-3">
+            <div className="flex flex-col flex-wrap md:flex-row items-center md:items-start justify-between gap-x-4 md:gap-x-6 ">
+              <div className="flex  md:flex-1 w-full md:items-center flex-row-reverse md:flex-row gap-3">
                 <div>
                   {customer?.full_name === "Noma'lum" ? (
                     <TbUserX className="text-7xl text-yellow-500" />
@@ -84,7 +81,7 @@ const CustomerDetail = () => {
                 </div>
               </div>
 
-              <div className="flex w-full flex-col items-end gap-1.5">
+              <div className="flex  md:flex-1 w-full flex-col items-end gap-1.5">
                 <Title
                   level={3}
                   type={
@@ -115,6 +112,7 @@ const CustomerDetail = () => {
                   </Button>
                 </div>
               </div>
+              <Invitations id={customer?._id} />
             </div>
           )}
         </Box>

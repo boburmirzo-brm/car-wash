@@ -12,7 +12,7 @@ import { FileTextOutlined } from "@ant-design/icons";
 const Order = () => {
   const { getParam } = useParamsHook();
   let value = getParam("q") || "";
-  const searchValue = useDebounce(value);
+  const searchValue = useDebounce(value.replace(/\s/gi, ""));
   const { pathname } = useLocation();
   const currentPathname = pathname.endsWith("/customer") ? "customer" : "";
 

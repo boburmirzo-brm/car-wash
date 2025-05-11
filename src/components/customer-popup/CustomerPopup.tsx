@@ -21,6 +21,7 @@ import { useModalNavigation } from "@/hooks/useModalNavigation";
 import { checkErrorMessage } from "@/helper";
 import { useDebounce } from "@/hooks/useDebounce";
 import { useCreateInvitationMutation } from "../../redux/api/invitation";
+import { FiX } from "react-icons/fi";
 
 interface Props {
   open: boolean;
@@ -44,16 +45,17 @@ const CustomerPopup: React.FC<Props> = ({
     useUpdateCustomerMutation();
   const [showSearch, setShowSearch] = useState(false);
   const [search, setSearch] = useState("");
-  const [selectedCustomerId, setSelectedCustomerId] = useState<string | null>(
-    null
-  );
+  const [selectedCustomer, setSelectedCustomer] = useState<any>(null);
   const debouncedSearch = useDebounce(search, 400);
 
-  const { data: customerData, isLoading: customersLoading } =
-    useGetCustomersQuery(
-      { filter: debouncedSearch },
-      { skip: !showSearch || !debouncedSearch.trim() }
-    );
+  const {
+    data: customerData,
+    isLoading: customersLoading,
+    error: customersError,
+  } = useGetCustomersQuery(
+    { filter: debouncedSearch },
+    { skip: !showSearch || !debouncedSearch.trim() }
+  );
   const customersData = customerData?.data?.payload;
 
   const navigate = useNavigate();
@@ -63,12 +65,15 @@ const CustomerPopup: React.FC<Props> = ({
 
   const handleSave = async (values: {
     full_name: string;
-    tel_primary?: string;
+    tel_primary?: string | null;
   }) => {
     try {
       values.tel_primary =
         values.tel_primary && values.tel_primary.replace(/\s/gi, "");
       !values.tel_primary && delete values.tel_primary;
+
+      values.tel_primary =
+        values.tel_primary === "+998_________" ? null : values.tel_primary;
 
       if (prevData) {
         if (values.tel_primary) {
@@ -89,23 +94,15 @@ const CustomerPopup: React.FC<Props> = ({
         form.resetFields();
         setError(null);
 
-        console.log("Invitation yuborilmoqda:", {
-          fromId: newCustomerId,
-          toId: selectedCustomerId,
-        });
-
-        if (invitation && selectedCustomerId) {
+        if (invitation && selectedCustomer) {
           await createInvitation({
             fromId: newCustomerId,
-            toId: selectedCustomerId,
+            toId: selectedCustomer._id,
           }).unwrap();
-          apiMessage.success("Taklif muvaffaqiyatli qo'shildi!");
-          setSelectedCustomerId(null);
-          onClose(true);
-        } else {
-          navigate(`/customer/${newCustomerId}`);
-          onClose(true);
+          setSelectedCustomer(null);
         }
+        navigate(`/customer/${newCustomerId}`);
+        onClose(true);
       }
     } catch (err: any) {
       setError(checkErrorMessage(err.data.message));
@@ -118,17 +115,7 @@ const CustomerPopup: React.FC<Props> = ({
     setError(null);
     setShowSearch(false);
     setSearch("");
-    setSelectedCustomerId(null); 
-  };
-
-  const handleClick = (selected: { toId: string }) => {
-    console.log(invitation);
-    
-    if (invitation) {
-      setSelectedCustomerId(selected.toId);
-      console.log("Tanlangan mijoz ID (toId):", selected.toId);
-      apiMessage.info("Do'st tanlandi!");
-    }
+    setSelectedCustomer(null);
   };
 
   return (
@@ -181,56 +168,78 @@ const CustomerPopup: React.FC<Props> = ({
           />
         </Form.Item>
 
-        <Form.Item>
-          <Checkbox
-            checked={showSearch}
-            onChange={(e) => {
-              setShowSearch(e.target.checked);
-              setSearch("");
-            }}
-          >
-            Taklif qilingan mijozni qidiring
-          </Checkbox>
-        </Form.Item>
+        {!selectedCustomer && (
+          <Form.Item>
+            <Checkbox
+              checked={showSearch}
+              onChange={(e) => {
+                setShowSearch(e.target.checked);
+                setSearch("");
+              }}
+            >
+              Taklif qilingan mijozni qidiring
+            </Checkbox>
+          </Form.Item>
+        )}
 
-        {showSearch && (
-          <>
-            <Form.Item>
-              <Input
-                placeholder="Mijoz ismini yozing..."
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                allowClear
-              />
-            </Form.Item>
+        {selectedCustomer ? (
+          <div className="flex justify-between mb-4 border border-gray-200 rounded p-2 bg-gray-50 dark:bg-gray-800 dark:border-gray-700">
+            <div>
+              <p className="font-medium text-gray-900 dark:text-gray-100">
+                {selectedCustomer.full_name}
+              </p>
+              <p className="text-sm text-gray-500 dark:text-gray-400">
+                {selectedCustomer.tel_primary}
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={() => setSelectedCustomer(null)}
+              className="text-sm text-gray-500 dark:text-gray-400 px-2 rounded cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-700"
+            >
+              <FiX />
+            </button>
+          </div>
+        ) : (
+          showSearch && (
+            <>
+              <Form.Item>
+                <Input
+                  placeholder="Mijoz ismini yozing..."
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  allowClear
+                />
+              </Form.Item>
 
-            {customersLoading ? (
-              <div className="text-center">
-                <Spin />
-              </div>
-            ) : Array.isArray(customersData) && customersData.length > 0 ? (
-              <div className="max-h-48 overflow-y-auto border rounded p-2 bg-gray-50 dark:bg-gray-800 dark:border-gray-700 space-y-2">
-                {customersData?.map((customer) => (
-                  <div
-                    key={customer._id}
-                    className="cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-700 p-2 rounded"
-                    onClick={() => {
-                      handleClick({ toId: customer._id });
-                    }}
-                  >
-                    <p className="font-medium text-gray-900 dark:text-gray-100">
-                      {customer.full_name}
-                    </p>
-                    <p className="text-sm text-gray-500 dark:text-gray-400">
-                      {customer.tel_primary}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            ) : debouncedSearch.trim() ? (
-              <div className="text-gray-500 text-sm">Hech narsa topilmadi</div>
-            ) : null}
-          </>
+              {customersLoading ? (
+                <div className="text-center">
+                  <Spin />
+                </div>
+              ) : !customersError && debouncedSearch ? (
+                <div className="max-h-48 overflow-y-auto border border-gray-200 mb-4 rounded p-2 bg-gray-50 dark:bg-gray-800 dark:border-gray-700 space-y-2">
+                  {customersData?.map((customer) => (
+                    <div
+                      key={customer._id}
+                      className="cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-700 p-2 rounded"
+                      onClick={() => setSelectedCustomer(customer)}
+                    >
+                      <p className="font-medium text-gray-900 dark:text-gray-100">
+                        {customer.full_name}
+                      </p>
+                      <p className="text-sm text-gray-500 dark:text-gray-400">
+                        {customer.tel_primary}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              ) : debouncedSearch.trim() ? (
+                <div className="text-red-500 text-sm mb-4 text-center">
+                  Hech kim topilmadi
+                </div>
+              ) : null}
+            </>
+          )
         )}
 
         {error && (

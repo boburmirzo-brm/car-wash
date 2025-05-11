@@ -11,7 +11,7 @@ export interface IPaymentAmount {
 export interface ICustomerUpdate {
   id?: string;
   full_name: string;
-  tel_primary?: string;
+  tel_primary?: string | null;
 }
 
 export interface ICarUpdate {
