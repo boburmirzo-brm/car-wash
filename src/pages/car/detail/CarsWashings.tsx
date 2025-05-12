@@ -166,6 +166,21 @@ const CarsWashings: FC<Props> = ({ data, profile }) => {
                             title="Bonus xizmat"
                           />
                         )}
+                        {item?.invitationId && (
+                          <div
+                            title={`Taklif orqali kelgan. ${
+                              item.invitationId?.percent
+                                ? `${item.invitationId.percent}% chegirma`
+                                : ""
+                            }`}
+                            className="tooltip tooltip-top"
+                          >
+                            <FiTag
+                              className="text-green-500 text-xl"
+                              title="Chegirma foizi"
+                            />
+                          </div>
+                        )}
                       </strong>
                     )}
 
