@@ -24,7 +24,7 @@ const CustomerDetail = () => {
   const { data, isLoading } = useGetCustomerByIdQuery(id || "");
   const [modalType, setModalType] = useState<ModalType>(null);
   const role = useSelector((state: RootState) => state.role.value);
-
+  const filters = { limit: 1000 };
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -112,7 +112,7 @@ const CustomerDetail = () => {
                   </Button>
                 </div>
               </div>
-              <Invitations id={customer?._id} />
+              <Invitations id={customer?._id} filters={filters} />
             </div>
           )}
         </Box>

@@ -13,6 +13,7 @@ const invalidateCustomerTag = async (
         "AUTH",
         "CAR",
         "CUSTOMER",
+        "INVITATION"
       ])
     );
   } catch (error) {
