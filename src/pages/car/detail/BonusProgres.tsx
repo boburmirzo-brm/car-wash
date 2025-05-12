@@ -87,8 +87,8 @@ export const BonusProgress = ({
                 targetAmount - completedAmountBonus <= 0
                   ? "Tabriklaymiz! To'lov qiymati to'ldi 🎉"
                   : `Yana ${
-                      targetAmount - completedAmountBonus
-                    } ta yuvish kerak`
+                      (targetAmount - completedAmountBonus).toLocaleString()
+                    } so'mlik yuvish kerak`
               }
             >
               <Progress

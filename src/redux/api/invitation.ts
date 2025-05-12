@@ -35,14 +35,22 @@ const extendedApi = mainApi.injectEndpoints({
       },
     }),
 
-    getCustomerInvitations: build.query<any, string>({
-      query: (id) => ({
-        url: `/invitations/customer/${id}`,
-        method: "GET",
-        params: {limit: 1000}
-      }),
+    getCustomerInvitations: build.query<any, any>({
+      query: ({ id, filters }) => {
+        return {
+          url: `/invitations/customer/${id}`,
+          method: "GET",
+          params: filters,
+        };
+      },
       providesTags: ["INVITATION"],
     }),
+
+    getInvitationById: build.query<any, string>({
+      query: (id) => `/invitation/${id}`,
+      providesTags: ["INVITATION"],
+    }),
+
     updateInvitation: build.mutation<any, { id: string; data: any }>({
       query: ({ id, data }) => {
         console.log("invitations", id);
@@ -65,6 +73,7 @@ export const {
   useCreateInvitationMutation,
   useUpdateInvitationMutation,
   useGetAllInvitationQuery,
+  useGetInvitationByIdQuery
 } = extendedApi;
 
 export default extendedApi;

@@ -33,7 +33,7 @@ export const extendedApi = mainApi.injectEndpoints({
 
     getCustomerById: build.query<IDetailPayload<ICustomerDetail>, string>({
       query: (id) => `/customer/${id}`,
-      providesTags: ["CUSTOMER"],
+      providesTags: ["CUSTOMER","INVITATION"],
     }),
     createCustomer: build.mutation<any, any>({
       query: (body) => ({
