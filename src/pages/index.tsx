@@ -1,16 +1,16 @@
 import { Suspense } from "@/utils";
 import React, { lazy } from "react";
 import { useRoutes } from "react-router-dom";
-import ActiveAdmins from "./admins/active-admins/ActiveAdmins";
-import InactiveAdmins from "./admins/inactive-admins/InactiveAdmins";
-import Tariff from "./tariff/Tariff";
-import CarWashingBonus from "./dashboard/car-washing-bonus/CarWashingBonus";
+
 
 // Dashboard
 const Dashboard = lazy(() => import("./dashboard/Dashboard"));
 const Cars = lazy(() => import("./customer-car/cars/Cars"));
 const Customers = lazy(() => import("./customer-car/customers/Customers"));
 const CustomerCar = lazy(() => import("./customer-car/CustomerCar"));
+const Tariff = lazy(() => import("./tariff/Tariff"));
+const InactiveAdmins = lazy(() => import("./admins/inactive-admins/InactiveAdmins"));
+const ActiveAdmins = lazy(() => import("./admins/active-admins/ActiveAdmins"));
 const ActiveEmployees = lazy(
   () => import("./employees/active-employees/ActiveEmployees")
 );
@@ -109,14 +109,6 @@ const AppRouter = () => {
                           element: (
                             <Suspense>
                               <CarWashingDone />
-                            </Suspense>
-                          ),
-                        },
-                        {
-                          path: "car-washing-bonus",
-                          element: (
-                            <Suspense>
-                              <CarWashingBonus />
                             </Suspense>
                           ),
                         },

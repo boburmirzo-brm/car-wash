@@ -53,7 +53,6 @@ const extendedApi = mainApi.injectEndpoints({
 
     updateInvitation: build.mutation<any, { id: string; data: any }>({
       query: ({ id, data }) => {
-        console.log("invitations", id);
         return {
           url: `/invitation/${id}`,
           method: "PATCH",

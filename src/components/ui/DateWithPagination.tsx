@@ -80,8 +80,6 @@ const DateWithPagination: FC<Props> = ({
   const { getParam } = useParamsHook();
   const fromDate = getParam("fromDate") || "";
   const toDate = getParam("toDate") || "";
-  console.log(fromDate); // 2025-04-06
-  console.log(toDate); // 2025-04-13
 
   let betweenDay = 0;
 
@@ -126,17 +124,16 @@ const DateWithPagination: FC<Props> = ({
             30 Kun
           </Button>
           <Options handleFilterChange={handleFilterChange} />
-          {suffix !== "UZS" && extraOptions}
+          {extraOptions}
           <Button type="default" onClick={clearFilters}>
             <PiBroom className="text-xl" />
           </Button>
-          {suffix === "UZS" && extraOptions}
         </div>
         <div className="min-[600px]:w-full text-right  max-[600px]:order-2 relative">
           <h3 className="text-2xl text-text font-bold mr-3">
             {isError ? "0" : totalAmount?.toLocaleString()} {suffix}
           </h3>
-          {(!isError && suffix === "UZS") && (
+          {!isError && suffix === "UZS" && (
             <span className="absolute -top-2.5 right-0 bg-primary block text-xs text-white  px-1 rounded-full">
               {totalItems}
             </span>
@@ -144,14 +141,20 @@ const DateWithPagination: FC<Props> = ({
         </div>
       </div>
       {isError && <CustomEmpty />}
-      {isFetching && !isLoading && <MiniLoading />}
-      {!isError && children}
+      {/* {isFetching && !isLoading && <MiniLoading />} */}
+      <div className="relative">
+        {isFetching && !isLoading && (
+          <div className="absolute top-0 left-0 z-10 w-full h-full bg-white/50 dark:bg-slate-800/50 rounded pt-20">
+            <MiniLoading />
+          </div>
+        )}
+        {!isError && children}
+      </div>
       {isLoading && (
         <Box>
           <Skeleton />
         </Box>
       )}
-      {isFetching && !isLoading && <MiniLoading />}
       {!isError && totalItems > limit && (
         <div className="flex justify-end mt-4">
           <Pagination

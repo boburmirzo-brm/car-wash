@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React from "react";
 import {
   BarChart,
   Bar,
@@ -6,21 +6,11 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  PieChart,
-  Pie,
   Cell,
   ResponsiveContainer,
-  Legend,
 } from "recharts";
-import { DatePicker, Button } from "antd";
-import { PiBroom } from "react-icons/pi";
 import Box from "../ui/Box";
-import { useParamsHook } from "../../hooks/useParamsHook";
-
-// interface ChartData {
-//   name: string;
-//   value: number;
-// }
+import { useParamsHook } from "@/hooks/useParamsHook";
 
 interface StatisticData {
   pendingTotal: number;
@@ -34,10 +24,7 @@ interface StatisticData {
 interface StatisticBarCharProps {
   data?: StatisticData;
   title?: string;
-  hiddenDate?: boolean;
 }
-
-const { RangePicker } = DatePicker;
 
 const DEFAULT_DATA: StatisticData = {
   pendingTotal: 0,
@@ -68,11 +55,7 @@ const CustomTooltip = ({ active, payload, label }: any) => {
 };
 
 const formatChartData = (data: StatisticData) => ({
-  barData: [
-    { name: "Jarayonda", value: data.pendingTotal },
-    { name: "Yakunlangan", value: data.completedTotal },
-  ],
-  pieData: [
+  expenseData: [
     { name: "Xodim xarajatlari", value: data.employeeExpense },
     { name: "Boshqa xarajatlar", value: data.totalExpense },
   ],
@@ -85,96 +68,23 @@ const formatChartData = (data: StatisticData) => ({
 const StatisticBarChar: React.FC<StatisticBarCharProps> = ({
   data = DEFAULT_DATA,
   title,
-  hiddenDate = false,
 }) => {
-  const { setParam, removeParam, removeParams } = useParamsHook();
-  const { barData, pieData, profitData } = formatChartData(data);
-
-  const handleFilterChange = useCallback(
-    (dates: any) => {
-      if (dates?.length === 2) {
-        setParam("fromDate", dates[0].format("YYYY-MM-DD"));
-        setParam("toDate", dates[1].format("YYYY-MM-DD"));
-      } else {
-        removeParam("fromDate");
-        removeParam("toDate");
-      }
-    },
-    [setParam, removeParam]
-  );
-
-  const clearFilters = useCallback(() => {
-    removeParams(["fromDate", "toDate", "page"]);
-  }, [removeParams]);
+  const { expenseData, profitData } = formatChartData(data);
+  const { getParam } = useParamsHook();
+  const fromDate = getParam("fromDate") || "";
+  const toDate = getParam("toDate") || "";
 
   return (
     <div className="flex flex-col gap-4 p-4">
       <Box className="flex flex-wrap items-center justify-between gap-4">
         {title && <h2 className="text-xl font-bold text-text">{title}</h2>}
-        {hiddenDate && (
-          <div className="flex gap-2">
-            <RangePicker
-              className="custom-range-picker"
-              format="YYYY-MM-DD"
-              onChange={handleFilterChange}
-            />
-            <Button
-              type="default"
-              onClick={clearFilters}
-              icon={<PiBroom className="text-xl" />}
-              aria-label="Clear filters"
-            />
-          </div>
-        )}
       </Box>
-
       <div className="rounded-xl bg-white p-4 shadow dark:bg-gray-800">
-        {!hiddenDate && (
+        {fromDate && toDate && (
           <p className="mb-4 text-sm text-gray-500">
-            {new Date().toLocaleDateString("uz-UZ")}
+            {fromDate?.dateFormat()} / {toDate?.dateFormat()}
           </p>
         )}
-        <h3 className="mb-4 text-lg font-semibold">
-          Mashina Holatlari ({data.pendingTotal + data.completedTotal} ta)
-        </h3>
-        <ResponsiveContainer width="100%" height={250}>
-          <BarChart data={barData}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="name" />
-            <YAxis allowDecimals={false} />
-            <Tooltip content={<CustomTooltip />} />
-            <Bar dataKey="value" fill="#8884d8" radius={[6, 6, 0, 0]} />
-          </BarChart>
-        </ResponsiveContainer>
-      </div>
-
-      <div className="rounded-xl bg-white p-4 shadow dark:bg-gray-800">
-        <h3 className="mb-4 text-lg font-semibold">Xarajatlar Taqqoslash</h3>
-        <ResponsiveContainer width="100%" height={250}>
-          <PieChart>
-            <Pie
-              data={pieData}
-              dataKey="value"
-              nameKey="name"
-              cx="50%"
-              cy="50%"
-              outerRadius={80}
-              label
-            >
-              {pieData.map((_, index) => (
-                <Cell
-                  key={`expense-cell-${index}`}
-                  fill={EXPENSE_COLORS[index % EXPENSE_COLORS.length]}
-                />
-              ))}
-            </Pie>
-            <Tooltip content={<CustomTooltip />} />
-            <Legend />
-          </PieChart>
-        </ResponsiveContainer>
-      </div>
-
-      <div className="rounded-xl bg-white p-4 shadow dark:bg-gray-800">
         <h3 className="mb-4 text-lg font-semibold">Daromad vs Xarajatlar</h3>
         <ResponsiveContainer width="100%" height={250}>
           <BarChart data={profitData}>
@@ -182,7 +92,7 @@ const StatisticBarChar: React.FC<StatisticBarCharProps> = ({
             <XAxis dataKey="name" />
             <YAxis
               allowDecimals={false}
-              tickFormatter={(value) => value.toLocaleString()}
+              tickFormatter={(value) => value.reduceNumber()}
             />
             <Tooltip content={<CustomTooltip />} />
             <Bar dataKey="value" radius={[8, 8, 0, 0]}>
@@ -190,6 +100,29 @@ const StatisticBarChar: React.FC<StatisticBarCharProps> = ({
                 <Cell
                   key={`profit-cell-${index}`}
                   fill={PROFIT_COLORS[index % PROFIT_COLORS.length]}
+                />
+              ))}
+            </Bar>
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
+
+      <div className="rounded-xl bg-white p-4 shadow dark:bg-gray-800">
+        <h3 className="mb-4 text-lg font-semibold">Xarajatlar Taqqoslash</h3>
+        <ResponsiveContainer width="100%" height={250}>
+          <BarChart data={expenseData}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="name" />
+            <YAxis
+              allowDecimals={false}
+              tickFormatter={(value) => value.reduceNumber()}
+            />
+            <Tooltip content={<CustomTooltip />} />
+            <Bar dataKey="value" fill="#8884d8" radius={[6, 6, 0, 0]}>
+              {expenseData.map((_, index) => (
+                <Cell
+                  key={`profit-cell-${index}`}
+                  fill={EXPENSE_COLORS[index % EXPENSE_COLORS.length]}
                 />
               ))}
             </Bar>

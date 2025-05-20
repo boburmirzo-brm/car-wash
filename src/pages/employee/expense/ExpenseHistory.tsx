@@ -15,12 +15,12 @@ const ExpenseHistory: React.FC = () => {
   const params = new URLSearchParams(search);
   const filter = params.get("filter");
 
-  useEffect(() => {
-    if (filter === "admin") {
-      // filterga qarab ma'lumot olib kelish yoki filterlash
-      console.log("Admin filter ishladi");
-    }
-  }, [filter]);
+  // useEffect(() => {
+  //   if (filter === "admin") {
+  //     // filterga qarab ma'lumot olib kelish yoki filterlash
+  //     console.log("Admin filter ishladi");
+  //   }
+  // }, [filter]);
   const {
     clearFilters,
     filters,

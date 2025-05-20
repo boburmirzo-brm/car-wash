@@ -53,6 +53,7 @@ const ExpenseHistory = () => {
       } else {
         removeParam("filter");
       }
+      setParam("page", "1")
     },
     [setParam, removeParam]
   );
@@ -65,6 +66,7 @@ const ExpenseHistory = () => {
       } else {
         removeParam("type");
       }
+      setParam("page", "1")
     },
     [setParam, removeParam]
   );

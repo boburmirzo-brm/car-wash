@@ -11,11 +11,8 @@ interface Props {
 
 const Invitations: FC<Props> = ({ id, select, item, amount }) => {
   const filters = { isValid: true, limit: 1000 };
-  console.log(filters);
   
   const { data, error } = useGetCustomerInvitationsQuery({ id, filters });
-  console.log(data);
-  
 
   const invitations = data?.data?.payload;
 

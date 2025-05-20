@@ -51,7 +51,6 @@ const BonusWash: FC<Props> = ({ tariffData }) => {
               form.setFieldsValue({
                 washAmount: selectedTariff.faza[0].price,
               });
-              console.log(selectedTariff.faza[0].price);
             }
           }}
         />

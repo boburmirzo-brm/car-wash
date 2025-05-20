@@ -12,6 +12,7 @@ const useFilter = (beforeDays: number = 0, allTime: boolean = false, limitAmount
   const toDate = getParam("toDate") || (allTime ? "" : to);
   const page = parseInt(getParam("page") || "1", 10);
   const filter = getParam("filter") || "";
+  const bonus = getParam("bonus") || "";
   const type = getParam("type") || "";
   const limit = limitAmount;
 
@@ -22,9 +23,10 @@ const useFilter = (beforeDays: number = 0, allTime: boolean = false, limitAmount
       page,
       limit,
       filter,
+      bonus,
       type
     }),
-    [fromDate, toDate, page, filter, type]
+    [fromDate, toDate, page, filter, type,bonus]
   );
 
   const handleFilterChange = useCallback(
@@ -44,7 +46,7 @@ const useFilter = (beforeDays: number = 0, allTime: boolean = false, limitAmount
   );
 
   const clearFilters = useCallback(() => {
-    removeParams(["fromDate", "toDate", "page", "filter", "type"]);
+    removeParams(["fromDate", "toDate", "page", "filter", "type", "bonus"]);
   }, [removeParams]);
 
   const handlePageChange = useCallback(

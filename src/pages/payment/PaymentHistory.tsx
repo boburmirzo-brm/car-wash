@@ -36,6 +36,7 @@ const PaymentHistory = () => {
       } else {
         removeParam("type");
       }
+      setParam("page", "1")
     },
     [setParam, removeParam]
   );

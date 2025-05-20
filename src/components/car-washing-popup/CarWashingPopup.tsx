@@ -164,7 +164,6 @@ const CarWashingPopup: React.FC<Props> = ({
             data.paidAmount =
               amount - amount * (selectedInvitation?.percent / 100);
           }
-          console.log(data);
 
           updateCarWashing({
             id: prevData._id,

@@ -36,7 +36,6 @@ const extendedApi = mainApi.injectEndpoints({
     }),
     updateBonus: build.mutation<any, { id: string; data: any }>({
       query: ({ id, data }) => {
-        console.log("BONUSS",id);
         return {
           url: `/bonus/${id}`,
           method: "PATCH",

@@ -4,6 +4,22 @@ interface String {
   dateFormat(): string;
   timeFormat(): string;
 }
+interface Number {
+  reduceNumber(): string;
+}
+
+Number.prototype.reduceNumber = function () {
+  const num = this as number;
+  if (num >= 1_000_000_000) {
+    return `${+(num / 1_000_000_000).toFixed(1)} mlrd`;
+  } else if (num >= 1_000_000) {
+    return `${+(num / 1_000_000).toFixed(1)} mln`;
+  } else if (num >= 1_000) {
+    return `${+(num / 1_000).toFixed(1)} min`;
+  } else {
+    return `${num}`;
+  }
+};
 
 String.prototype.plateNumberFormat = function () {
   return this.replace(
