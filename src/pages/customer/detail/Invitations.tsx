@@ -29,7 +29,7 @@ const Invitations: FC<Props> = ({ id }) => {
         <h3 className="text-text-muted font-bold">Taklif qilinganlar :</h3>
         {showMore && (
           <Button type="primary" onClick={() => setShowMore(false)}>
-            Ko'rinmasin
+            Yashirish
           </Button>
         )}
       </div>
@@ -40,10 +40,18 @@ const Invitations: FC<Props> = ({ id }) => {
             {invitations?.slice(0, 3)?.map((item: any) => (
               <Tooltip
                 key={item._id}
-                title={`${item?.fromId?.full_name} - ${item.percent}%`}
-                placement="bottom"
+                title={`${!item.valid ? "Ishlatilgan - " : ""} ${
+                  item?.fromId?.full_name
+                } - ${item.percent}% `}
+                placement="top"
               >
-                <div className="flex items-center justify-center shadow cursor-pointer bg-gray-200 -ml-3 gap-2 size-9 rounded-full border-4 border-gray-400  dark:border-gray-600 dark:bg-gray-700">
+                <div
+                  className={`flex items-center justify-center shadow cursor-pointer  -ml-3 gap-2 size-9 rounded-full border-4    ${
+                    item.valid
+                      ? "bg-gray-200 border-gray-400 dark:border-gray-600 dark:bg-gray-700"
+                      : "bg-gray-100 border-gray-200 dark:border-gray-400 dark:bg-gray-500"
+                  }`}
+                >
                   <span className="text-gray-400 font-semibold">
                     {item?.fromId?.full_name[0]}
                   </span>
@@ -66,14 +74,12 @@ const Invitations: FC<Props> = ({ id }) => {
             return (
               <div
                 key={item._id}
-                className={`grid grid-cols-2 md:grid-cols-4 gap-2 py-1.5 cursor-pointer border-t border-gray-200 dark:border-gray-700 ${
-                  isInvalid ? "bg-red-50 dark:bg-red-900/20" : ""
-                }`}
+                className={`grid grid-cols-2 md:grid-cols-4 gap-2 py-1.5 cursor-pointer border-t border-gray-200 dark:border-gray-700 `}
               >
                 <Tooltip
                   title={
                     isInvalid
-                      ? `Bu taklif ishlatilingan - ${item.updatedAt.dateFormat()} ${item.updatedAt.timeFormat()}`
+                      ? `Ishlatilgan sana - ${item.updatedAt.timeFormat()} ${item.updatedAt.dateFormat()}`
                       : ""
                   }
                   placement="topLeft"
@@ -82,16 +88,14 @@ const Invitations: FC<Props> = ({ id }) => {
                     <Link
                       to={`/customer/${item?.fromId?._id}`}
                       className={`font-bold ${
-                        isInvalid
-                          ? "text-red-500 opacity-70 italic"
-                          : "text-text"
+                        isInvalid ? " opacity-70" : "text-text"
                       }`}
                     >
                       {item?.fromId?.full_name}
                     </Link>
                     {isInvalid && (
                       <span className="text-xs text-red-500 bg-red-100 dark:bg-red-800 dark:text-red-300 px-2 py-0.5 rounded">
-                        Ishlatilingan
+                        Ishlatilgan
                       </span>
                     )}
                   </div>

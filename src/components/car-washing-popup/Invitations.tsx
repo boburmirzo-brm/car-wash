@@ -1,5 +1,5 @@
 import { useGetCustomerInvitationsQuery } from "@/redux/api/invitation";
-import { Button } from "antd";
+import { Button, Tooltip } from "antd";
 import React, { FC } from "react";
 
 interface Props {
@@ -11,7 +11,7 @@ interface Props {
 
 const Invitations: FC<Props> = ({ id, select, item, amount }) => {
   const filters = { isValid: true, limit: 1000 };
-  
+
   const { data, error } = useGetCustomerInvitationsQuery({ id, filters });
 
   const invitations = data?.data?.payload;
@@ -38,19 +38,33 @@ const Invitations: FC<Props> = ({ id, select, item, amount }) => {
       ) : (
         <>
           <div className="text-gray-500 font-semibold text-sm">Taklif :</div>
-          <div className="flex pl-3">
-            <button
-              disabled={Boolean(!amount)}
-              onClick={() => select(invitations[0])}
-              className="disabled:opacity-50 disabled:cursor-default relative flex items-center justify-center shadow cursor-pointer bg-gray-200 -ml-3 gap-2 size-9 rounded-full border-4 border-gray-400 dark:border-gray-600 dark:bg-gray-700"
-            >
-              <span className="text-gray-400 font-semibold">
-                {invitations && invitations[0]?.fromId?.full_name[0]}
-              </span>
-              <span className=" font-semibold absolute -top-1 -right-5 bg-green-500 text-white rounded-full px-1 text-xs dark:bg-green-600">
-                {invitations && invitations[0]?.percent}%
-              </span>
-            </button>
+          <div className="flex relative">
+            <div className="flex flex-wrap pl-3 group gap-y-2">
+              {invitations?.map((item: any) => (
+                <Tooltip
+                  key={item._id}
+                  title={`${item?.fromId?.full_name} - ${item.percent}% `}
+                  placement="top"
+                >
+                  <button
+                    type="button"
+                    disabled={Boolean(!amount)}
+                    onClick={() => select(item)}
+                    className=" disabled:cursor-default relative flex items-center justify-center shadow cursor-pointer bg-gray-200 -ml-3  group-hover:mr-7 duration-500 gap-2 size-9 rounded-full border-4 border-gray-400 dark:border-gray-600 dark:bg-gray-700"
+                  >
+                    <span className="text-gray-400 font-semibold">
+                      {item?.fromId?.full_name[0]}
+                    </span>
+                    <span className=" font-semibold absolute -top-1 -right-5 bg-green-500 text-white rounded-full px-1 text-xs dark:bg-green-600">
+                      {item?.percent}%
+                    </span>
+                  </button>
+                </Tooltip>
+              ))}
+            </div>
+            {Boolean(!amount) && (
+              <div className="absolute top-0 left-0 w-full h-full bg-white/70 dark:bg-[#1f1f1fb7]"></div>
+            )}
           </div>
         </>
       )}

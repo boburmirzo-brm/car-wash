@@ -7,6 +7,7 @@ import {
 } from "react-icons/fa";
 import Confetti from "react-confetti";
 import { useWindowSize } from "react-use";
+import "./style.css"
 
 interface Props {
   completedCountBonus: number;
@@ -70,6 +71,7 @@ export const BonusProgress = ({
               <Progress
                 percent={countPercent}
                 status="active"
+                className="bonus-progress"
                 strokeColor="#22c55e"
                 format={() => `${completedCountBonus}/${targetCount} ta yuvish`}
               />
@@ -95,6 +97,7 @@ export const BonusProgress = ({
                 percent={amountPercent}
                 status="active"
                 strokeColor="#22c55e"
+                className="bonus-progress"
                 format={() =>
                   `${completedAmountBonus.toLocaleString()}/${targetAmount.toLocaleString()} so‘m`
                 }

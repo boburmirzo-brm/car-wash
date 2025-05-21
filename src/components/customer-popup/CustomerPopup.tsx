@@ -183,22 +183,25 @@ const CustomerPopup: React.FC<Props> = ({
         )}
 
         {selectedCustomer ? (
-          <div className="flex justify-between mb-4 border border-gray-200 rounded p-2 bg-gray-50 dark:bg-gray-800 dark:border-gray-700">
-            <div>
-              <p className="font-medium text-gray-900 dark:text-gray-100">
-                {selectedCustomer.full_name}
-              </p>
-              <p className="text-sm text-gray-500 dark:text-gray-400">
-                {selectedCustomer.tel_primary}
-              </p>
+          <div>
+            <h3>Shu do'stingiz orqali taklif qilinyapsiz</h3>
+            <div className="flex justify-between mb-4 border border-green-200 rounded p-2 bg-green-50 dark:bg-green-950 dark:border-green-900">
+              <div>
+                <p className="font-medium text-gray-900 dark:text-gray-100">
+                  {selectedCustomer.full_name}
+                </p>
+                <p className="text-sm text-gray-500 dark:text-gray-400">
+                  {selectedCustomer.tel_primary}
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setSelectedCustomer(null)}
+                className="text-sm text-gray-500 dark:text-gray-400 px-2 rounded cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-700"
+              >
+                <FiX />
+              </button>
             </div>
-            <button
-              type="button"
-              onClick={() => setSelectedCustomer(null)}
-              className="text-sm text-gray-500 dark:text-gray-400 px-2 rounded cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-700"
-            >
-              <FiX />
-            </button>
           </div>
         ) : (
           showSearch && (

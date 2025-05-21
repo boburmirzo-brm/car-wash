@@ -2,6 +2,7 @@ import React, { FC } from "react";
 import { Form, Select } from "antd";
 import { TariffItem } from "@/types";
 import TextArea from "antd/es/input/TextArea";
+import { useGetAllTariffQuery } from "@/redux/api/tariff";
 
 type FieldType = {
   washAmount?: string;
@@ -14,23 +15,26 @@ interface Props {
   tariffData?: any;
 }
 
-const BonusWash: FC<Props> = ({ tariffData }) => {
-  const [form] = Form.useForm();
+const BonusWash: FC<Props> = () => {
+   const { data: tariffData } = useGetAllTariffQuery({});
+  // const [form] = Form.useForm();
 
   const tariffOptions =
     tariffData?.data?.payload?.map((item: TariffItem) => {
       const minPrice = Math.min(...(item.faza?.map((f) => f.price) || [0]));
       return {
         label: `${item.class} - ${minPrice.toLocaleString()} so'm`,
-        value: item._id,
+        value: minPrice,
         price: minPrice,
       };
     }) || [];
+    console.log(tariffOptions);
+    
   return (
     <>
       <Form.Item
         label="Tariff tanlang"
-        name="tariffId"
+        name="tariff"
         rules={[{ required: true, message: "Tariffni tanlang!" }]}
       >
         <Select
@@ -38,21 +42,20 @@ const BonusWash: FC<Props> = ({ tariffData }) => {
           placeholder="Tariffni tanlang"
           showSearch
           optionFilterProp="label"
-          dropdownMatchSelectWidth={false}
           optionLabelProp="label"
           dropdownStyle={{ maxHeight: 250, overflowY: "auto" }}
           style={{ width: "100%" }}
-          onChange={(selectedId) => {
-            const selectedTariff = tariffData?.data?.payload?.find(
-              (item: TariffItem) => item._id === selectedId
-            );
+          // onChange={(selectedId) => {
+          //   const selectedTariff = tariffData?.data?.payload?.find(
+          //     (item: TariffItem) => item._id === selectedId
+          //   );
 
-            if (selectedTariff && selectedTariff.faza.length > 0) {
-              form.setFieldsValue({
-                washAmount: selectedTariff.faza[0].price,
-              });
-            }
-          }}
+          //   if (selectedTariff && selectedTariff.faza.length > 0) {
+          //     form.setFieldsValue({
+          //       washAmount: selectedTariff.faza[0].price,
+          //     });
+          //   }
+          // }}
         />
       </Form.Item>
 

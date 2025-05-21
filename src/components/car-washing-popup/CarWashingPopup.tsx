@@ -24,8 +24,8 @@ import { toNumber } from "@/helper";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { MSAW, MSBW } from "@/static";
-import { useGetAllTariffQuery } from "../../redux/api/tariff";
-import { TariffItem } from "../../types";
+// import { useGetAllTariffQuery } from "../../redux/api/tariff";
+// import { TariffItem } from "../../types";
 import BonusWash from "./BonusWash";
 import Invitations from "./Invitations";
 
@@ -68,7 +68,6 @@ const CarWashingPopup: React.FC<Props> = ({
   const priceInputRef = useRef<InputRef>(null);
   const navigate = useNavigate();
   useModalNavigation(open, onClose);
-  const { data: tariffData } = useGetAllTariffQuery({});
 
   const amount = toNumber(washAmount);
 
@@ -87,21 +86,19 @@ const CarWashingPopup: React.FC<Props> = ({
     comment?: string;
     nasiya?: boolean;
     paymentType?: string;
-    tariffId?: string;
+    tariff?: string;
   }) => {
     if (prevData) {
-      // Handle the case when it's a bonus
       if (prevData.isBonus) {
-        // Find the selected tariff to get the correct price
-        const selectedTariff = tariffData?.data?.payload?.find(
-          (item: TariffItem) => item._id === values.tariffId
-        );
+        // const selectedTariff = 1000
+        // tariffData?.data?.payload?.find(
+        //   (item: TariffItem) => item._id === values.tariffId
+        // );
 
-        // Get washAmount from the selected tariff if available
-        const washAmount =
-          selectedTariff && selectedTariff.faza.length > 0
-            ? selectedTariff.faza[0].price
-            : toNumber(values.washAmount);
+        const washAmount = values?.tariff;
+        // selectedTariff && selectedTariff.faza.length > 0
+        //   ? selectedTariff.faza[0].price
+        //   : toNumber(values.washAmount);
 
         let data = {
           washAmount,
@@ -251,7 +248,7 @@ const CarWashingPopup: React.FC<Props> = ({
         onFinish={handleSave}
       >
         {prevData?.isBonus ? (
-          <BonusWash tariffData={tariffData} />
+          <BonusWash />
         ) : prevData ? (
           <>
             {selectedInvitation && (
@@ -339,7 +336,7 @@ const CarWashingPopup: React.FC<Props> = ({
             <Alert message={error} type="error" />
           </div>
         )}
-        {prevData && (
+        {prevData && !nasiya && !prevData?.isBonus && (
           <Invitations
             id={customerId || ""}
             select={setSelectedInvitation}
