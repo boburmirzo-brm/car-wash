@@ -1,13 +1,12 @@
 import { Progress, Card, Tooltip } from "antd";
 import {
   FaGift,
-  FaCheckCircle,
   FaListOl,
   FaMoneyBillWave,
 } from "react-icons/fa";
 import Confetti from "react-confetti";
-import { useWindowSize } from "react-use";
-import "./style.css"
+import "./style.css";
+import { useEffect, useState } from "react";
 
 interface Props {
   completedCountBonus: number;
@@ -22,9 +21,9 @@ export const BonusProgress = ({
   freeCounter,
   freeCounterAmount,
 }: Props) => {
-  const { width, height } = useWindowSize();
   const targetCount = freeCounter - 1;
   const targetAmount = freeCounterAmount;
+  const [timeline, setTimeline] = useState(false);
 
   const countPercent = Math.min((completedCountBonus / targetCount) * 100, 100);
   const amountPercent = Math.min(
@@ -34,25 +33,29 @@ export const BonusProgress = ({
 
   const isEligible =
     completedCountBonus >= targetCount && completedAmountBonus >= targetAmount;
+  useEffect(() => {
+    if (isEligible) {
+      setTimeline(true);
+      setTimeout(() => {
+        setTimeline(false);
+      }, 7000);
+    }
+  }, [isEligible]);
 
   return (
     <Card
       size="small"
       className="border border-green-200 bg-green-50"
       title={
-        <div className="flex items-center gap-2 text-green-700 font-semibold">
+        <div className={`${isEligible ? "text-xl" : ""} flex items-center gap-2 text-green-700 font-semibold`}>
           <FaGift />
-          <span>Bonus yuvishga qoldi</span>
+          <span>{isEligible ? "Bugun bonus yuvish kuni yani BEPUL 🎉🎉🎉" : "Bonus yuvishga qoldi"}</span>
         </div>
       }
     >
       {isEligible ? (
-        <div className="relative">
-          <Confetti width={width} height={height} numberOfPieces={200} />
-          <div className="flex items-center gap-2 text-green-700 font-medium z-10 relative">
-            <FaCheckCircle className="text-lg" />
-            <span>Sizda hozir tekin yuvish mavjud!</span>
-          </div>
+        <div className="fixed top-0 left-0 w-full">
+          {timeline && <Confetti className="w-full" numberOfPieces={200} />}
         </div>
       ) : (
         <div className="space-y-3">
@@ -78,33 +81,35 @@ export const BonusProgress = ({
             </Tooltip>
           </div>
 
-          {targetAmount !== 0 ? 
-          <div>
-            <div className="flex items-center gap-2 mb-1 text-text-muted">
-              <FaMoneyBillWave />
-              <span>To'langan summa</span>
-            </div>
-            <Tooltip
-              title={
-                targetAmount - completedAmountBonus <= 0
-                  ? "Tabriklaymiz! To'lov qiymati to'ldi 🎉"
-                  : `Yana ${
-                      (targetAmount - completedAmountBonus).toLocaleString()
-                    } so'mlik yuvish kerak`
-              }
-            >
-              <Progress
-                percent={amountPercent}
-                status="active"
-                strokeColor="#22c55e"
-                className="bonus-progress"
-                format={() =>
-                  `${completedAmountBonus.toLocaleString()}/${targetAmount.toLocaleString()} so‘m`
+          {targetAmount !== 0 ? (
+            <div>
+              <div className="flex items-center gap-2 mb-1 text-text-muted">
+                <FaMoneyBillWave />
+                <span>To'langan summa</span>
+              </div>
+              <Tooltip
+                title={
+                  targetAmount - completedAmountBonus <= 0
+                    ? "Tabriklaymiz! To'lov qiymati to'ldi 🎉"
+                    : `Yana ${(
+                        targetAmount - completedAmountBonus
+                      ).toLocaleString()} so'mlik yuvish kerak`
                 }
-              />
-            </Tooltip>
-          </div> : <></>
-          }
+              >
+                <Progress
+                  percent={amountPercent}
+                  status="active"
+                  strokeColor="#22c55e"
+                  className="bonus-progress"
+                  format={() =>
+                    `${completedAmountBonus.toLocaleString()}/${targetAmount.toLocaleString()} so‘m`
+                  }
+                />
+              </Tooltip>
+            </div>
+          ) : (
+            <></>
+          )}
         </div>
       )}
     </Card>

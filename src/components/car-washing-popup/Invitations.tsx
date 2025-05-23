@@ -1,6 +1,6 @@
 import { useGetCustomerInvitationsQuery } from "@/redux/api/invitation";
 import { Button, Tooltip } from "antd";
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 
 interface Props {
   id: string;
@@ -11,6 +11,7 @@ interface Props {
 
 const Invitations: FC<Props> = ({ id, select, item, amount }) => {
   const filters = { isValid: true, limit: 1000 };
+  const [show, setShow] = useState(true);
 
   const { data, error } = useGetCustomerInvitationsQuery({ id, filters });
 
@@ -39,8 +40,8 @@ const Invitations: FC<Props> = ({ id, select, item, amount }) => {
         <>
           <div className="text-gray-500 font-semibold text-sm">Taklif :</div>
           <div className="flex relative">
-            <div className="flex flex-wrap pl-3 group gap-y-2">
-              {invitations?.map((item: any) => (
+            <div className="flex flex-wrap pl-3 gap-y-2 relative z-10">
+              {invitations?.slice(0, show ? 3 : 100)?.map((item: any) => (
                 <Tooltip
                   key={item._id}
                   title={`${item?.fromId?.full_name} - ${item.percent}% `}
@@ -50,7 +51,9 @@ const Invitations: FC<Props> = ({ id, select, item, amount }) => {
                     type="button"
                     disabled={Boolean(!amount)}
                     onClick={() => select(item)}
-                    className=" disabled:cursor-default relative flex items-center justify-center shadow cursor-pointer bg-gray-200 -ml-3  group-hover:mr-7 duration-500 gap-2 size-9 rounded-full border-4 border-gray-400 dark:border-gray-600 dark:bg-gray-700"
+                    className={`${
+                      !show ? "mr-7" : ""
+                    } disabled:cursor-default relative flex items-center justify-center shadow cursor-pointer bg-gray-200 -ml-3 duration-500 gap-2 size-9 rounded-full border-4 border-gray-400 dark:border-gray-600 dark:bg-gray-700`}
                   >
                     <span className="text-gray-400 font-semibold">
                       {item?.fromId?.full_name[0]}
@@ -62,8 +65,14 @@ const Invitations: FC<Props> = ({ id, select, item, amount }) => {
                 </Tooltip>
               ))}
             </div>
+            <div
+              onClick={() => setShow((p) => !p)}
+              className={`${
+                show ? "z-20" : "z-0"
+              } absolute top-0 left-0 w-full h-full`}
+            ></div>
             {Boolean(!amount) && (
-              <div className="absolute top-0 left-0 w-full h-full bg-white/70 dark:bg-[#1f1f1fb7]"></div>
+              <div className="absolute z-20 top-0 left-0 w-full h-full bg-white/70 dark:bg-[#1f1f1fb7]"></div>
             )}
           </div>
         </>
