@@ -7,13 +7,17 @@ import path from "path";
 const root = path.resolve(__dirname, "src");
 
 export default defineConfig({
+  server: {
+    host: "127.0.0.1",
+    port: 5174, // yoki boshqa port
+  },
   plugins: [
     tailwindcss(),
     react(),
     VitePWA({
-      registerType: 'autoUpdate',
+      registerType: "autoUpdate",
       devOptions: {
-        enabled: false
+        enabled: false,
       },
       manifest: {
         name: "Car Wash",
@@ -25,20 +29,20 @@ export default defineConfig({
           {
             src: "/pwa-192x192.png",
             sizes: "192x192",
-            type: "image/png"
+            type: "image/png",
           },
           {
             src: "/pwa-512x512.png",
             sizes: "512x512",
-            type: "image/png"
-          }
-        ]
-      }
-    })
+            type: "image/png",
+          },
+        ],
+      },
+    }),
   ],
   resolve: {
     alias: {
       "@": root,
     } as AliasOptions,
   },
-})
+});

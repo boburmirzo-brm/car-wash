@@ -1,6 +1,8 @@
 import { Suspense } from "@/utils";
 import React, { lazy } from "react";
 import { useRoutes } from "react-router-dom";
+import { SubscriptionPayment } from "./subs-payment/SubscriptionPayment";
+import SignUp from "./signup/SignUp";
 
 
 // Dashboard
@@ -419,10 +421,26 @@ const AppRouter = () => {
           ],
         },
         {
+          path: "/register",
+          element: (
+            <Suspense>
+              <SignUp />
+            </Suspense>
+          ),
+        },
+        {
           path: "/login",
           element: (
             <Suspense>
               <Login />
+            </Suspense>
+          ),
+        },
+        {
+          path: "/subscription",
+          element: (
+            <Suspense>
+              <SubscriptionPayment />
             </Suspense>
           ),
         },

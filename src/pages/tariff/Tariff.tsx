@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Card, Spin, Typography, message, FloatButton, Popover } from "antd";
+import { Card, Spin, Typography, message, FloatButton, Popover, Empty } from "antd";
 import {
   CarOutlined,
   InfoCircleOutlined,
@@ -24,7 +24,7 @@ const Tariff: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedTariff, setSelectedTariff] = useState<TariffItem | null>(null);
 
-  if (error) {
+  if (error && error.status !== 404) {
     message.error("Tarif ma'lumotlarini olishda xatolik yuz berdi.");
   }
 
@@ -127,9 +127,10 @@ const Tariff: React.FC = () => {
             </Card>
           ))
         ) : (
-          <Paragraph style={{ textAlign: "center" }}>
-            Tariflar mavjud emas
-          </Paragraph>
+          <Empty
+            description="Tariff'lar mavjud emas"
+            image={Empty.PRESENTED_IMAGE_SIMPLE}
+          />
         )}
       </div>
 

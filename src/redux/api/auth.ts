@@ -17,6 +17,14 @@ const invalidateCustomerTag = async (
 
 const extendedApi = mainApi.injectEndpoints({
   endpoints: (build: EndpointBuilder<any, any, any>) => ({
+    createOwner: build.mutation<any, any>({
+      query: (body) => ({
+        url: "/auth/signup",
+        method: "POST",
+        body,
+      }),
+    }),
+
     signInUser: build.mutation<any, any>({
       query: (body) => ({
         url: "auth/signin",
@@ -38,4 +46,4 @@ const extendedApi = mainApi.injectEndpoints({
   overrideExisting: false,
 });
 
-export const { useSignInUserMutation, useCheckTokenQuery } = extendedApi;
+export const { useSignInUserMutation, useCheckTokenQuery, useCreateOwnerMutation } = extendedApi;
