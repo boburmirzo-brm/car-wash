@@ -4,7 +4,7 @@ import { ICarUpdate } from "@/types";
 import { useModalNavigation } from "@/hooks/useModalNavigation";
 import { useCreateCarMutation, useUpdateCarMutation } from "@/redux/api/car";
 import { checkErrorMessage } from "@/helper";
-import {CarOutlined } from "@ant-design/icons"
+import { CarOutlined } from "@ant-design/icons";
 import { FaPlus } from "react-icons/fa6";
 
 type FieldType = {
@@ -90,10 +90,12 @@ const CarPopup: React.FC<Props> = ({ open, onClose, prevData, customerId }) => {
         layout="vertical"
         onFinish={handleSave}
       >
-        <div className="flex justify-center">
-            <CarOutlined className="text-[100px]"/>
-            <FaPlus className="text-[40px] mt-1 -ml-2"/>
-        </div>
+        {!prevData && (
+          <div className="flex justify-center">
+            <CarOutlined className="text-[100px]" />
+            <FaPlus className="text-[40px] mt-1 -ml-2" />
+          </div>
+        )}
         <Form.Item<FieldType>
           label="Mashina nomi"
           name="name"

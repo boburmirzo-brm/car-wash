@@ -131,9 +131,11 @@ const CustomerPopup: React.FC<Props> = ({
         layout="vertical"
         onFinish={handleSave}
       >
-      <div className="flex justify-center">
-        <FiUserPlus className="text-[100px]"/>
-      </div>
+        {!prevData && (
+          <div className="flex justify-center">
+            <FiUserPlus className="text-[100px]" />
+          </div>
+        )}
         <div className="flex gap-2">
           <Form.Item
             label="Ism"
