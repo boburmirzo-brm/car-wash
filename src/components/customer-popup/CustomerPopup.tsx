@@ -21,7 +21,7 @@ import { useModalNavigation } from "@/hooks/useModalNavigation";
 import { checkErrorMessage } from "@/helper";
 import { useDebounce } from "@/hooks/useDebounce";
 import { useCreateInvitationMutation } from "../../redux/api/invitation";
-import { FiX } from "react-icons/fi";
+import { FiUserPlus, FiX } from "react-icons/fi";
 
 interface Props {
   open: boolean;
@@ -131,6 +131,9 @@ const CustomerPopup: React.FC<Props> = ({
         layout="vertical"
         onFinish={handleSave}
       >
+      <div className="flex justify-center">
+        <FiUserPlus className="text-[100px]"/>
+      </div>
         <div className="flex gap-2">
           <Form.Item
             label="Ism"

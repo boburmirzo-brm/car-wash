@@ -66,7 +66,7 @@ const CustomerDetail = () => {
                   <p className="text-text-muted mt-3 flex items-center gap-2">
                     <TbUserShield className="text-lg" />
                     <span className="">
-                      {customer?.employerId?.l_name?.charAt(0)}.{" "}
+                      {customer?.employerId?.l_name}{" "}
                       {customer?.employerId?.f_name}
                     </span>
                   </p>
