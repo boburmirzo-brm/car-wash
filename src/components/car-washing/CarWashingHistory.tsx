@@ -26,6 +26,7 @@ const CarWashingHistory = () => {
         handleFilterChange={handleFilterChange}
         handlePageChange={handlePageChange}
         totalAmount={data?.data?.totalAmount || 0}
+        totalSalary={data?.data?.totalSalary}
         isError={isError}
         isLoading={isLoading}
         isFetching={isFetching}

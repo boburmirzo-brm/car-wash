@@ -327,7 +327,7 @@ const CarWashingPopup: React.FC<Props> = ({
           </>
         ) : (
           <div className="text-text-muted flex justify-center py-6 text-8xl">
-            <MdOutlineLocalCarWash />
+            <MdOutlineLocalCarWash className="text-blue-500 car-wash-animation" />
           </div>
         )}
 

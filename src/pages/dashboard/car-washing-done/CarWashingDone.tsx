@@ -24,7 +24,7 @@ const CarWashingDone = () => {
     done: "1",
     isBonus: bonus === "bonus" ? true : null,
   });
-  
+
   const handleTypeChange = useCallback(
     (value: string) => {
       if (value === "bonus") {

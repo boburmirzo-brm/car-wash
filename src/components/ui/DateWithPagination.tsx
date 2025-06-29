@@ -48,6 +48,7 @@ interface Props {
   clearFilters: () => void;
   handlePageChange: (newPage: number) => void;
   totalAmount: number;
+  totalSalary?: number;
   title: string;
   isError: boolean;
   isFetching: boolean;
@@ -68,6 +69,7 @@ const DateWithPagination: FC<Props> = ({
   totalAmount,
   isError,
   isFetching,
+  totalSalary,
   isLoading,
   totalItems,
   limit,
@@ -133,6 +135,11 @@ const DateWithPagination: FC<Props> = ({
           <h3 className="text-2xl text-text font-bold mr-3">
             {isError ? "0" : totalAmount?.toLocaleString()} {suffix}
           </h3>
+          {totalSalary && (
+            <p className="text-xl text-text font-bold mr-3">
+              Maosh: {totalSalary?.toLocaleString()} UZS
+            </p>
+          )}
           {!isError && suffix === "UZS" && (
             <span className="absolute -top-2.5 right-0 bg-primary block text-xs text-white  px-1 rounded-full">
               {totalItems}
