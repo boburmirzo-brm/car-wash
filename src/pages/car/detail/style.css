@@ -1,3 +1,18 @@
 .bonus-progress .ant-progress-outer{
     display: block;
 }
+.car-wash-animation{
+    animation: carWashAnimation .5s linear infinite;
+    transform: rotate(0);
+}
+@keyframes carWashAnimation {
+    30%{
+        transform: rotate(5deg);
+    }
+    70%{
+        transform: rotate(-5deg);
+    }
+    100%{
+        transform: rotate(0);
+    }
+}

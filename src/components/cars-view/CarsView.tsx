@@ -21,7 +21,7 @@ const CarsView: FC<{ data: any }> = ({ data }) => {
             </h3>
             <div className="flex max-[500px]:w-full max-[500px]:justify-end">
               {car.isWashing && (
-                <div className="text-blue-500 px-2 py-1 rounded-md text-xl">
+                <div className="text-blue-500 px-2 py-1 rounded-md text-xl car-wash-animation">
                   <MdOutlineLocalCarWash />
                 </div>
               )}

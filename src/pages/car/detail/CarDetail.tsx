@@ -19,6 +19,7 @@ import { TbUser, TbUserShield } from "react-icons/tb";
 import useFilter from "@/hooks/useFilter";
 import DateWithPagination from "@/components/ui/DateWithPagination";
 import { BonusProgress } from "./BonusProgres";
+import { MdOutlineLocalCarWash } from "react-icons/md";
 
 type ModalType = "start" | "edit" | null;
 
@@ -47,6 +48,7 @@ const CarDetail = () => {
 
   const { data, isLoading } = useGetCarByIdQuery({ id });
   const car = data?.data.payload?.car;
+  console.log(car?.isWashing);
 
   const {
     data: carWashing,
@@ -87,7 +89,11 @@ const CarDetail = () => {
           ) : (
             <div className="flex flex-col md:flex-row items-center md:items-start justify-between gap-4 md:gap-6">
               <div className="flex w-full md:items-center flex-row-reverse md:flex-row gap-3">
-                <IoCarOutline className="text-7xl text-text-muted" />
+                {car?.isWashing ? (
+                  <MdOutlineLocalCarWash className="text-7xl text-blue-500 car-wash-animation" />
+                ) : (
+                  <IoCarOutline className="text-7xl text-text-muted" />
+                )}
                 <div className="w-full">
                   <h3 className="text-2xl font-medium">{car?.name}</h3>
                   <Link
@@ -100,8 +106,7 @@ const CarDetail = () => {
                   <p className="text-text-muted text-sm mt-3 flex items-center gap-2">
                     <TbUserShield className="text-lg" />
                     <span>
-                      {car?.employerId?.l_name?.charAt(0)}.{" "}
-                      {car?.employerId?.f_name}
+                      {car?.employerId?.l_name} {car?.employerId?.f_name}
                     </span>
                   </p>
                   <Tooltip
@@ -129,29 +134,30 @@ const CarDetail = () => {
                     disabled={isError || car?.isWashing}
                   >
                     <IoPlayOutline className="text-lg" />
-                    <span>Start</span>
+                    <span>
+                      {car?.isWashing ? "Yuvilmoqda" : "Yuvishni boshlash"}
+                    </span>
                   </Button>
                 </div>
               </div>
             </div>
           )}
-          {car &&
-            data?.data.payload.freeCounter !== 0 ?(
-              <div className="my-4">
-                <BonusProgress
-                  completedCountBonus={
-                    data?.data.payload.completedCountBonus || 0
-                  }
-                  completedAmountBonus={
-                    data?.data.payload.completedAmountBonus || 0
-                  }
-                  freeCounter={data?.data.payload.freeCounter || 5}
-                  freeCounterAmount={
-                    data?.data.payload.freeCounterAmount || 0
-                  }
-                />
-              </div>
-            ) : <></>}
+          {car && data?.data.payload.freeCounter !== 0 ? (
+            <div className="my-4">
+              <BonusProgress
+                completedCountBonus={
+                  data?.data.payload.completedCountBonus || 0
+                }
+                completedAmountBonus={
+                  data?.data.payload.completedAmountBonus || 0
+                }
+                freeCounter={data?.data.payload.freeCounter || 5}
+                freeCounterAmount={data?.data.payload.freeCounterAmount || 0}
+              />
+            </div>
+          ) : (
+            <></>
+          )}
         </Box>
 
         <DateWithPagination
